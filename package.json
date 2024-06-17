@@ -1,0 +1,12 @@
+{
+  "name": "event_rel_annotation_tool",
+  "version": "1.0.0",
+  "description": "Tool for annotating event knowledge graph",
+  "main": "server.js",
+  "directories": {},
+  "scripts": {},
+  "author": "Alon Eirew",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

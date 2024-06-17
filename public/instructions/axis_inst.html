@@ -1,0 +1,132 @@
+<div id="axis-instructions" class="instructions-container">
+    <div class="form-group">
+        <h2>Overview</h2>
+        <p>We want to find out which event can be anchored in time, i.e., has a well-defined notion of time. You will be given a question in the following format:</p>
+        <p>[In Washington today, the Federal Aviation Administration (<b>released</b>) air traffic control tapes from the night the TWA Flight eight hundred went down.]</p>
+        <p>Can the event (<b>released</b>) be anchored in time?</p>
+        <ul>
+            <li style="color:rgb(97, 189, 109);">Yes. It's anchorable (You need to choose this)</li>
+            <li>No. It's intention/wish/opinion</li>
+            <li>No. It's hypothetical/condition</li>
+            <li>No. It's negation</li>
+            <li>No. It's abstract/non-specific</li>
+            <li>No. It's static</li>
+            <li>No. It's recurrent</li>
+        </ul>
+
+        <p>You are able to select ONLY one of them, but if you think multiple choices are correct, please choose the first one from top to bottom. For example, if an event is both "intention" and "negation", you only need to choose "intention".</p>
+    </div>
+
+    <h2>What can be anchored</h2>
+    <p>We say an event can be anchored in real timeline if and only if</p>
+    <ul>
+        <li>Case 1: Event happened in the past, or is happening now.</li>
+        <li>Case 2: Event is unconditionally planned to happen in future.</li>
+    </ul>
+
+    <p>For example:</p>
+    <p>You should answer "Yes" to the following situations:</p>
+    <ul>
+        <li>Case 1</li>
+        <ul>
+            <li>In Washington today, the Federal Aviation Administration (<b>released</b>) air traffic control tapes from the night the TWA Flight eight hundred went down.</li>
+        </ul>
+        <li>Case 2</li>
+        <ul>
+            <li>I will be (<b>leaving</b>) tomorrow.</li>
+        </ul>
+    </ul>
+
+    <h2>Important Examples</h2>
+    <table style="width: 70%; border-color: #cccccc">
+        <tr>
+            <th style="text-align:center">Event</th>
+            <th style="text-align:center">Category</th>
+        </tr>
+        <tr>
+            <td style="text-align:left">I want to (<b>leave</b>) here</td>
+            <td style="text-align:left; background-color: #FDDA0D">No. It's intention/wish/opinion</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">I (<b>want</b>) to leave here</td>
+            <td style="text-align:left; background-color: #4CBB17">Yes. It's anchorable</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">I think he will (<b>win</b>) the presidential race.</td>
+            <td style="text-align:left; background-color: #FDDA0D">No. It's intention/wish/opinion</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">I (<b>think</b>) he will win the presidential race.</td>
+            <td style="text-align:left; background-color: #4CBB17">Yes. It's anchorable</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">The mayor has allocated funds to (<b>build</b>) a museum.</td>
+            <td style="text-align:left; background-color: #FDDA0D">No. It's intention/wish/opinion</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">The mayor has (<b>allocated</b>) funds to build a museum.</td>
+            <td style="text-align:left; background-color: #4CBB17">Yes. It's anchorable</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">If I'm (<b>elected</b>) as president, I will cut income tax for everyone.</td>
+            <td style="text-align:left; background-color: #FF5733">No. It's hypothetical/condition</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">If I'm elected as president, I will (<b>cut</b>) income tax for everyone.</td>
+            <td style="text-align:left; background-color: #FF5733">No. It's hypothetical/condition</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">The financial assistance from the World Bank is not (<b>helping</b>).</td>
+            <td style="text-align:left; background-color: #0096FF">No. It's negation</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">"They don't (<b>want</b>) to play with us.'' one U.S. crew chief said.</td>
+            <td style="text-align:left; background-color: #0096FF">No. It's negation</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">He failed to (<b>find</b>) buyers.</td>
+            <td style="text-align:left; background-color: #0096FF">No. It's negation</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">He not only (<b>found</b>) buyers, but also with a good price.</td>
+            <td style="text-align:left; background-color: #4CBB17">Yes. It's anchorable</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Fruit (<b>contains</b>) water.</td>
+            <td style="text-align:left; background-color: #BF40BF">No. It's abstract/non-specific</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Lions (<b>hunt</b>) zebras</td>
+            <td style="text-align:left; background-color: #BF40BF">No. It's abstract/non-specific</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">The lion (<b>hunted</b>) a zebra</td>
+            <td style="text-align:left; background-color: #4CBB17">Yes. It's anchorable</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">He (<b>is</b>) a brave man.</td>
+            <td style="text-align:left; background-color: #988558">No. It's static</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">New York (<b>is</b>) on the east coast.</td>
+            <td style="text-align:left; background-color: #988558">No. It's static</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">The shuttle will (<b>depart</b>) at 6:30 am every day.</td>
+            <td style="text-align:left; background-color: #F28C28">No. It's recurrent (must have a fixed period)</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">The shuttle will (<b>depart</b>) many times.</td>
+            <td style="text-align:left; background-color: #FDDA0D">No. It's intention/wish/opinion.</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">The shuttle will be (<b>depart</b>) at 6:30 am tomorrow.</td>
+            <td style="text-align:left; background-color: #4CBB17">Yes. It's anchorable</td>
+        </tr>
+
+    </table>
+
+    <br />
+    <br />
+
+</div>

@@ -1,0 +1,39 @@
+<div id="coref-instructions" class="instructions-container">
+    <div class="form-group">
+        <h2>Overview</h2>
+        <p><strong>You'll see sentences with events sharing an equal time relation (events that started at the same time). You need to decide IF these events refer to the same event in the world. <br> For example,</strong></p>
+        <p dir="ltr">
+            <em>[A traveler is <span style="color: royalblue">kidnapped</span>, and the police officers <span style="color: royalblue">said</span> he was <span style="color: orangered">taken</span> two days ago.]</em>
+        </p>
+
+        <p dir="ltr">[QUESTION] Which of the highlighted events refers to the same (<span style="color: royalblue">kidnapped</span>) event?</p>
+        <label>
+            <input type="checkbox" checked="checked" disabled="disabled"><span style="color:rgb(97, 189, 109);">taken (You need to choose this)</span><br>
+        </label>
+
+        <p><strong>EXPLANATION:</strong> Here, we have only a single event mention candidate that has equal start time with the event mention in focus.
+            We need to determine if the event mentions (<span style="color: royalblue">kidnapped</span>) and (<span style="color: orangered">taken</span>) describe the same real-world event.
+            To make this decision, we must consider the arguments associated with both event mentions—the time, location, and participants.
+            We observe that both mentions share the same participants (the kidnapped individual, "traveler/he") and the same time frame ("two days ago"),
+            confirming that they indeed represent the same event.
+        </p>
+
+        <h2>IMPORTANT RULE</h2>
+        <p><strong>An event is usually associated with four components: 1) an action component referring to what happens or holds; 2) a time slot which is responsible for anchoring the action in time ; 3) a location component which links the action component to a place/location; and 4) a participant component, which illustrates the "who" or "what" is involved in the action component.</strong></p>
+        <p><strong>We can say that two events are the same event if and only if we can infer that they share the same action, time, location, and participant(s), as much as indicated in the text and using common-sense. </strong></p>
+
+        <p dir="ltr">
+            <em>
+                [Achilles was <span style="color: royalblue">running</span> in the left lane and the turtle was <span style="color: orangered">running</span> in the right lane]
+            </em>
+        </p>
+
+        <p dir="ltr">[QUESTION] Which of the highlighted events refers to the same (<span style="color: royalblue">running</span>) event?</p>
+        <label>
+            <input type="checkbox" disabled="disabled">running<br>
+        </label>
+
+        <p><strong>EXPLANATION:</strong> while both (<span style="color: royalblue">running</span>) and (<span style="color: orangered">running</span>) share the same time and action,
+            they are clearly referring to different participant (Achilles and the turtle), therefore we can deduce they are two different events.</p>
+    </div>
+</div>

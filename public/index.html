@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html slick-uniqueid="1">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Event Annotation</title>
+    <script src="jquery.js"></script>
+    <script src="cytoscape.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="objects/enums.js"></script>
+    <script src="objects/all_axes_logic.js"></script>
+    <script src="objects/axis_logic.js"></script>
+    <script src="objects/doc_obj.js"></script>
+    <script src="objects/event_obj.js"></script>
+    <script src="objects/event_pair.js"></script>
+    <script src="objects/time_expr.js"></script>
+    <script src="objects/static_methods.js"></script>
+    <script src="objects/graph_algo.js"></script>
+    <script src="forms/forms.js"></script>
+    <script src="index.js"></script>
+    <script src="forms/axis.js"></script>
+    <script src="forms/anchor.js"></script>
+    <script src="forms/projection.js"></script>
+    <script src="objects/graph.js"></script>
+    <script src="forms/pairs_form.js"></script>
+    <script src="forms/onetomany.js"></script>
+    <script src="forms/temporal.js"></script>
+    <script src="forms/coref.js"></script>
+    <script src="forms/subevent.js"></script>
+    <script src="forms/causal.js"></script>
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="title-transparent-container">
+        <h1 id="title">Task-1: Can The Event Be Anchored In Time?</h1>
+        <button id="instruct-button" onclick="toggleInstructions()">Instructions &#10225;</button>
+    </div>
+
+    <div id="instructions-container"></div>
+
+    <br />
+    <br />
+
+    <div class="form-container">
+        <div class="form-group">
+            <form>
+                <div id="questions" class="questions"></div><br>
+                <div id="cy"></div><br>
+
+                <input type="file" id="file2" name="file">
+                <button type="button" onclick="loadSavedState('file2')">Load Saved File</button><br><br>
+                <button type="button" onclick="saveFile()">Save File</button>
+                <button type="button" onclick="finalExport()">Export</button>
+            </form>
+        </div>
+
+        <br />
+        <br />
+
+    </div>
+
+</body>
+</html>

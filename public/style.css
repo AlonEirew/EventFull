@@ -1,0 +1,237 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: aliceblue;
+}
+
+h1 {
+    font-family: Arial, sans-serif;
+    color: #848884;
+}
+
+h2 {
+    font-family: Arial, sans-serif;
+    color: lightslategray;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+p {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
+}
+
+.title-transparent-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: aliceblue
+}
+
+.form-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.instructions-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.form-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .form-group input[type="submit"] {
+        background-color: #4285f4;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ccc; /* Gray background color */
+    color: #666; /* Darker text color */
+    cursor: not-allowed; /* Change cursor to indicate not clickable */
+}
+
+.button-next-task {
+    background-color: #D70040;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+#cy {
+    max-width: 100%;
+    height: 800px;
+    /*display: block;*/
+    display: none;
+}
+
+.right-projection-container {
+    /*display: inline-block;*/
+    /*width: 48%; !* Adjust the width as needed *!*/
+    /*margin: 0 auto;*/
+    flex: 1;
+    margin-left: 52%;
+    border: 1px solid #ccc; /* Optional: Add border for visual separation */
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.left-projection-container {
+    position: fixed;
+    /*display: inline-block;*/
+    /*margin: 0 auto;*/
+    width: 38%; /* Adjust the width as needed */
+    border: 1px solid #ccc; /* Optional: Add border for visual separation */
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.projection-parent-container-not-fixed {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.left-projection-container-not-fixed {
+    flex: 1;
+    border: 1px solid #ccc; /* Optional: Add border for visual separation */
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.right-projection-container-not-fixed {
+    /*flex: 1;*/
+    border: 1px solid #ccc; /* Optional: Add border for visual separation */
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+    /*max-height: 300px;*/
+    overflow-y: auto;
+}
+
+.projection-parent-container {
+    display: flex;
+}
+
+.questions {
+    min-height: 450px;
+}
+
+.word-box {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    display: block;
+}
+
+.dropdown-check-list {
+    display: inline-block;
+}
+
+.dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 10px;
+    border: 1px solid #ccc;
+}
+
+.dropdown-check-list .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    padding: 5px;
+    right: 10px;
+    top: 20%;
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+}
+
+.dropdown-check-list .anchor:active:after {
+    right: 8px;
+    top: 21%;
+}
+
+.dropdown-check-list ul.items {
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.dropdown-check-list ul.items li {
+    list-style: none;
+}
+
+.dropdown-check-list.visible .anchor {
+    color: #0094ff;
+}
+
+.dropdown-check-list.visible .items {
+    display: block;
+}
