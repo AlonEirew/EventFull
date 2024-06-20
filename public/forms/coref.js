@@ -13,6 +13,11 @@ class CorefForm extends OneToManyForm {
     }
 
     loadForm() {
+        if (this._annotations !== null && this._annotations.length > 0) {
+            this._annotations = [];
+            this._annotationIndex = 0;
+        }
+
         const allRelEvents = this._allAxes.getAllRelEvents();
         for (let i = 0; i < allRelEvents.length; i++) {
             const allEqualEventIds = this.getAllRelevantRelations(allRelEvents[i].getId());
@@ -69,7 +74,8 @@ class CorefForm extends OneToManyForm {
             }
         }
 
-        return null;
+        this._annotationIndex = this._annotations.length - 1;
+        return false;
     }
 
     getPosFormRel() {
@@ -96,6 +102,14 @@ class CorefForm extends OneToManyForm {
         }
 
         return allEqualEvents;
+    }
+
+    annotationRemainder() {
+        if (this._annotations === null || this._annotations.length === 0) {
+            return 0;
+        }
+
+        return this._annotations.length - this._annotationIndex - 1;
     }
 
     graphPairRelationStyle(relationType) {

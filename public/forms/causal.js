@@ -6,7 +6,7 @@ class CausalForm extends OneToManyForm {
 
     constructor(pageIndex, allAxes) {
         if (allAxes != null) {
-            super(pageIndex, allAxes, [], FormType.CAUSAL, false, false);
+            super(pageIndex, allAxes, [], FormType.CAUSAL, true, false);
         }
     }
 
@@ -15,6 +15,11 @@ class CausalForm extends OneToManyForm {
     }
 
     loadForm() {
+        if (this._annotations !== null && this._annotations.length > 0) {
+            this._annotations = [];
+            this._annotationIndex = 0;
+        }
+
         const allRelEvents = this._allAxes.getAllRelEvents();
         for (let i = 0; i < allRelEvents.length; i++) {
             const allCorefEventIds = this.getAllCorefEvents(allRelEvents[i].getId()).map(event => event.getId());
@@ -76,6 +81,21 @@ class CausalForm extends OneToManyForm {
         return "Because of:";
     }
 
+    getNextUnhandledAnnotation() {
+        for (let i = 0; i < this._annotations.length; i++) {
+            const allRelevantRelations = this.getAllRelevantRelations(this._annotations[i].getId());
+            for (let j = 0; j < allRelevantRelations.length; j++) {
+                if(allRelevantRelations[j].getRelation() !== EventRelationType.CAUSE && allRelevantRelations[j].getRelation() !== EventRelationType.NO_CAUSE) {
+                    this._annotationIndex = i;
+                    return true;
+                }
+            }
+        }
+
+        this._annotationIndex = this._annotations.length - 1;
+        return false;
+    }
+
     getAllRelevantRelations(eventId) {
         const allRelAxes = this._allAxes.getAllRelAxes();
         let allBeforePairs = [];
@@ -91,6 +111,14 @@ class CausalForm extends OneToManyForm {
         }
 
         return allBeforePairs;
+    }
+
+    annotationRemainder() {
+        if (this._annotations === null || this._annotations.length === 0) {
+            return 0;
+        }
+
+        return this._annotations.length - this._annotationIndex - 1;
     }
 
     graphPairRelationStyle(relationType) {
