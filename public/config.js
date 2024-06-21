@@ -11,7 +11,7 @@ const config = {
         "showRemainingAnnot": true,
         "splitWindow": false,
         "debug": false,
-        "exportAlways": false,
+        "exportAlways": true,
         "removeTransitive": false,
     },
     instFiles: {
