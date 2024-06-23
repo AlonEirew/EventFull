@@ -93,26 +93,60 @@ class AxisForm extends UIForm {
                 let startIdx = event.getTokensIds()[0];
                 let endIdx = event.getTokensIds().at(-1);
                 for (let i = startIdx; i <= endIdx; i++) {
-                    text[i] = `<span style=\"color:red; font-weight: bold;\">${text[i]}</span>`;
+                    this.setAxisSpan(event, text, i, true);
                 }
             } else {
                 let startIdx = allEvents[eventIdx].getTokensIds()[0];
                 let endIdx = allEvents[eventIdx].getTokensIds().at(-1);
                 for (let i = startIdx; i <= endIdx; i++) {
-                    text[i] = `<span style=\"color:darkblue; font-weight: bold;\">${text[i]}</span>`;
+                    this.setAxisSpan(allEvents[eventIdx], text, i, false);
                 }
             }
         }
 
         return text.join(" ");
-        // let text = [...this._allAxes.getMainDocTokens()];
-        // let startIdx = this._annotations[this._annotationIndex].getTokensIds()[0];
-        // let endIdx = this._annotations[this._annotationIndex].getTokensIds().at(-1);
-        // for (let i = startIdx; i <= endIdx; i++) {
-        //     text[i] = `<span style=\"color:red; font-weight: bold;\">${text[i]}</span>`;
-        // }
-        //
-        // return text.join(" ");
+    }
+
+    setAxisSpan(event, text, i, weight) {
+        let fontWeight = "normal";
+        let border = "";
+        if (weight) {
+            fontWeight = "bold";
+            border = '2px solid black'
+        } else {
+            fontWeight = "normal";
+            border = "none";
+        }
+
+        switch (event.getAxisType()) {
+            case AxisType.MAIN:
+                text[i] = `<span class=\"label ANC\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            case AxisType.INTENT:
+                text[i] = `<span class=\"label INT\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            case AxisType.HYPOTHETICAL:
+                text[i] = `<span class=\"label HYP\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            case AxisType.NEGATION:
+                text[i] = `<span class=\"label NEG\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            case AxisType.ABSTRACT:
+                text[i] = `<span class=\"label ABS\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            case AxisType.STATIC:
+                text[i] = `<span class=\"label STT\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            case AxisType.RECURRENT:
+                text[i] = `<span class=\"label REC\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            case AxisType.NOT_EVENT:
+                text[i] = `<span class=\"label NOT\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+            default:
+                text[i] = `<span class=\"label NA\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                break;
+        }
     }
 
     annotationRemainder() {

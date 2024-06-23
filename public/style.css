@@ -235,3 +235,19 @@ button:disabled {
 .dropdown-check-list.visible .items {
     display: block;
 }
+
+.label {
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+}
+.ANC { background-color: #007bff; }
+.INT { background-color: #86af49; }
+.HYP { background-color: #ff7b25; }
+.NEG { background-color: #6b5b95; }
+.ABS { background-color: #878f99; }
+.STT { background-color: #405d27; }
+.REC { background-color: #ada397; }
+.NOT { background-color: #c94c4c; }
+.NA { background-color: #4040a1; }
