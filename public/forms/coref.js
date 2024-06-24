@@ -105,11 +105,16 @@ class CorefForm extends OneToManyForm {
     }
 
     annotationRemainder() {
-        if (this._annotations === null || this._annotations.length === 0) {
-            return 0;
+        for (let i = 0; i < this._annotations.length; i++) {
+            const allRelevantRelations = this.getAllRelevantRelations(this._annotations[i].getId());
+            for (let j = 0; j < allRelevantRelations.length; j++) {
+                if(allRelevantRelations[j].getRelation() !== EventRelationType.COREF && allRelevantRelations[j].getRelation() !== EventRelationType.NO_COREF) {
+                    return this._annotations.length - (i - 1);
+                }
+            }
         }
 
-        return this._annotations.length - this._annotationIndex - 1;
+        return 0;
     }
 
     graphPairRelationStyle(relationType) {

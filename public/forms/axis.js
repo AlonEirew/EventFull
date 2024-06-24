@@ -2,7 +2,7 @@
 // ################# axis functions #################
 // ####################################################
 const options = ["Yes. It's anchorable", "No. It's intention/wish/opinion", "No. It's hypothetical/condition",
-    "No. It's negation", "No. It's abstract/non-specific", "No. It's static", "No. It's recurrent", "No. It's not an event OR it's a causation event"];
+    "No. It's negation", "No. It's abstract/non-specific", "No. It's static", "No. It's recurrent", "No. It's not an event"];
 
 class AxisForm extends UIForm {
     constructor(pageIndex, allAxes) {
