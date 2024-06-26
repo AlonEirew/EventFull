@@ -73,6 +73,7 @@ class AllAxes {
         const tokens = this.main_doc.tokens;
         const allMentions = this.main_doc.mentions;
         const allPairs = this.getAllAxesPairs();
+        const allClusters = this.getExportClusters();
         // Clean pairID and axisID
         for (let i = 0; i < allPairs.length; i++) {
             allPairs[i]._pairId = null;
@@ -83,6 +84,7 @@ class AllAxes {
             'tokens': tokens,
             'allMentions': allMentions,
             'allPairs': allPairs,
+            'corefClusters': allClusters,
             '_tempAnnotationMade': this._tempAnnotationMade,
             '_corefAnnotationMade': this._corefAnnotationMade,
             '_causeAnnotationMade': this._causeAnnotationMade,
@@ -135,6 +137,24 @@ class AllAxes {
 
     getClusters() {
         return this.clusters;
+    }
+
+    getExportClusters() {
+        // TBD - add the rest of the axis pairs
+        let allUniqueClusters = new Set();
+        let allClusters = [];
+        this.getAllRelEvents().forEach(mention => {
+            const mentCluster = new ExportCluster(this._mainAxis.getAxisGraph().getAllCoreferringEvents(mention.getId()));
+            mentCluster.addEventToCluster(mention);
+            if (!allUniqueClusters.has(mentCluster.getClusterId())) {
+                allUniqueClusters.add(mentCluster.getClusterId());
+                if (mentCluster.getCluster().length > 1) {
+                    allClusters.push(mentCluster);
+                }
+            }
+        });
+
+        return allClusters;
     }
 
     getSourceTextWithMentPair(mentPair) {

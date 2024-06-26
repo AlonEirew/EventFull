@@ -1,10 +1,10 @@
 class OneToManyForm extends UIForm {
-    constructor(pageIndex, allAxes, allAxesPairs, formType, addNextUnhandled, handleDiscrepancies) {
+    constructor(pageIndex, allAxes, allAxesPairs, formType, addNextUnhandled, isHandleDiscrepancies) {
         super(pageIndex, allAxes, allAxesPairs);
         this.formType = formType;
         this._selectedNodes = [];
         this.addNextUnhandled = addNextUnhandled;
-        this.handleDiscrepancies = handleDiscrepancies;
+        this.isHandleDiscrepancies = isHandleDiscrepancies;
     }
 
     loadForm() {
@@ -26,7 +26,7 @@ class OneToManyForm extends UIForm {
             const uncheckedItems = allItems[1];
             const discrepancies = this.handleEventSelection(currentFocusEvent, checkedItems, uncheckedItems);
 
-            if (this.handleDiscrepancies && discrepancies.length > 0) {
+            if (this.isHandleDiscrepancies && discrepancies.length > 0) {
                 this.handleDiscrepancies(discrepancies[0]);
                 return false;
             }
@@ -191,6 +191,29 @@ class OneToManyForm extends UIForm {
                 highlightCurrentPair(allPairs[i]);
             }
         }
+    }
+
+    handleDiscrepancies(discrepancy) {
+        const disRootEdge = this._allAxes.getEventByEventId(discrepancy[0]).getTokens();
+        const disOtherEdge = this._allAxes.getEventByEventId(discrepancy[1]).getTokens();
+        const currentRelation = discrepancy[2];
+        const inferredRelation = discrepancy[3];
+
+        Swal.fire({
+            icon: "info",
+            title: 'Cluster Update!',
+            html:
+                '<p>Your last selection has change the relation between two events.<br/><br/>' +
+                'The relation currently set between the events: <span style=\"color:orangered; font-weight: bold;\">' + disRootEdge +'</span> and ' +
+                '<span style=\"color:orangered; font-weight: bold;\">' + disOtherEdge + '</span> is <span style=\"color:royalblue; font-weight: bold;\">' +
+                currentRelation + '</span>. However, due to your last selection, the events can be inferred as having a ' +
+                '<span style=\"color:royalblue; font-weight: bold;\">' + inferredRelation + '</span> relation. This will be fixed automaticly to maintain consistency with your last selection.<br/><br/>' +
+                '<span style=\"font-weight: bold;\">Make sure this is correct, and continue by clicking again on the \"next\" button.</p>',
+            showCancelButton: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            scrollbarPadding: true
+        });
     }
 
     formatText(eventInFocus) {
