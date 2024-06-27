@@ -36,6 +36,10 @@ class EventObject {
         return this.tokens;
     }
 
+    getTokensWithEventId() {
+        return this.tokens + ' (' + this.m_id + ')';
+    }
+
     getEventIndex() {
         return this.eventIndex;
     }

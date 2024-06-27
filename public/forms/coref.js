@@ -87,7 +87,7 @@ class CorefForm extends OneToManyForm {
     }
 
     getQuestionText(eventInFocus) {
-        return "[QUESTION] Which of the highlighted events refers to the same (<span style=\"color:royalblue\">" + eventInFocus.getTokens() + "</span>) event?";
+        return "[QUESTION] Which of the highlighted events refers to the same (<span style=\"color:royalblue\">" + eventInFocus.getTokensWithEventId() + "</span>) event?";
     }
 
     getDropDownTitle() {

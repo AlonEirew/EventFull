@@ -74,7 +74,7 @@ class CausalForm extends OneToManyForm {
     }
 
     getQuestionText(eventInFocus) {
-        return "[QUESTION] Why (<span style=\"color:royalblue\">" + eventInFocus.getTokens() + "</span>) had (have/will) happened?";
+        return "[QUESTION] Why (<span style=\"color:royalblue\">" + eventInFocus.getTokensWithEventId() + "</span>) had (have/will) happened?";
     }
 
     getDropDownTitle() {

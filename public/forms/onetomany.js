@@ -84,7 +84,7 @@ class OneToManyForm extends UIForm {
         const dropdown = document.createElement("div");
         dropdown.id = "list1";
         dropdown.className = "dropdown-check-list";
-        dropdown.tabIndex = "100";
+        dropdown.tabIndex = 100;
 
         const spanText = document.createElement('span');
         spanText.className = "anchor";
@@ -102,7 +102,7 @@ class OneToManyForm extends UIForm {
             checkbox.checked = items[i].getRelation() === this.getPosFormRel();
 
             const textElem = document.createElement('span');
-            textElem.innerHTML = this._allAxes.getEventByEventId(items[i].getFirstId()).getTokens();
+            textElem.innerHTML = this._allAxes.getEventByEventId(items[i].getFirstId()).getTokensWithEventId();
             if (withinListPairsByType != null && withinListPairsByType.has(i)) {
                 textElem.style.color = "green";
                 textElem.style.fontWeight = "bold";
@@ -221,26 +221,37 @@ class OneToManyForm extends UIForm {
         const allEvents = this._annotations;
         let start1Idx = eventInFocus.getTokensIds()[0];
         let end1Idx = eventInFocus.getTokensIds().at(-1);
+        let handledIds = new Set();
 
         for (let i = 0; i < allEvents.length; i++) {
-            const eventStartIds = allEvents[i].getTokensIds()[0];
-            const eventEndIds = allEvents[i].getTokensIds().at(-1);
-            for (let i = eventStartIds; i <= eventEndIds; i++) {
-                text[i] = `<span style=\"font-weight: bold;\">${text[i]}</span>`;
+            const eventStartId = allEvents[i].getTokensIds()[0];
+            const eventEndId = allEvents[i].getTokensIds().at(-1);
+            for (let j = eventStartId; j <= eventEndId; j++) {
+                text[j] = `<span style=\"font-weight: bold;\">${text[j]}`;
             }
+
+            text[eventEndId] += " (" + allEvents[i].getId() + ")</span>";
+            handledIds.add(allEvents[i].getId());
         }
 
         for (let i = start1Idx; i <= end1Idx; i++) {
             text[i] = `<span style=\"color:royalblue; font-weight: bold;\">${text[i]}</span>`;
         }
 
-        const allEqualPairs = this.getAllRelevantRelations(eventInFocus.getId());
-        for (let i = 0; i < allEqualPairs.length; i++) {
-            let curEvent = this._allAxes.getEventByEventId(allEqualPairs[i].getFirstId());
+        const allRelevantPairs = this.getAllRelevantRelations(eventInFocus.getId());
+        for (let i = 0; i < allRelevantPairs.length; i++) {
+            let curEvent = this._allAxes.getEventByEventId(allRelevantPairs[i].getFirstId());
             let start2Idx = curEvent.getTokensIds()[0];
             let end2Idx = curEvent.getTokensIds().at(-1);
-            for (let i = start2Idx; i <= end2Idx; i++) {
-                text[i] = `<span style=\"color:orangered; font-weight: bold;\">${text[i]}</span>`;
+            for (let j = start2Idx; j <= end2Idx; j++) {
+                text[j] = `<span style=\"color:orangered; font-weight: bold;\">${text[j]}`;
+            }
+
+            if (!handledIds.has(curEvent.getId())) {
+                text[end2Idx] += " (" + curEvent.getId() + ")</span>";
+                handledIds.add(curEvent.getId());
+            } else {
+                text[end2Idx] += "</span>";
             }
         }
 
