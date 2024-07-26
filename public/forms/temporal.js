@@ -109,15 +109,6 @@ class TemporalForm extends PairsForm {
                 const containsSelectedValue = checkedElement.value;
                 mainSelectedValue = TemporalForm.getCombinedQRelations(mainSelectedValue, containsSelectedValue);
             }
-
-            if(config.app.includeSubEvent) {
-                let divContains = TemporalForm.prepareQuestion2Div(pair, mainSelectedValue);
-                if (mainSelectedValue === EventRelationType.VAGUE || mainSelectedValue === EventRelationType.EQUAL) {
-                    divContains.style.display = "none";
-                } else {
-                    divContains.style.display = "block";
-                }
-            }
         });
 
         return divQuestion1;
@@ -171,19 +162,12 @@ class TemporalForm extends PairsForm {
         divQuestion1.appendChild(document.createElement("br"));
 
         let divContains = null;
-        if (config.app.includeSubEvent) {
-            divContains = TemporalForm.prepareQuestion2Div(pair, pair.getRelation());
-            divContains.style.display = "none";
-            divQuestion1.appendChild(divContains);
-        }
-
         if (pair.getRelation() !== EventRelationType.NA) {
             if (getRelationMappingSeparateTransitive(pair.getRelation()) === EventRelationType.BEFORE) {
                 input1.checked = true;
                 input2.checked = false;
                 input3.checked = false;
                 input4.checked = false;
-                if (divContains !== null) divContains.style.display = "block";
             } else if (getRelationMappingSeparateTransitive(pair.getRelation()) === EventRelationType.EQUAL) {
                 input1.checked = false;
                 input2.checked = false;
@@ -199,14 +183,12 @@ class TemporalForm extends PairsForm {
                 input2.checked = true;
                 input3.checked = false;
                 input4.checked = false;
-                if (divContains !== null) divContains.style.display = "block";
             } else {
                 // CONTAINS
                 input1.checked = true;
                 input2.checked = false;
                 input3.checked = false;
                 input4.checked = false;
-                if (divContains !== null) divContains.style.display = "block";
             }
 
             highlightCurrentPair(pair);

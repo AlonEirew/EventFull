@@ -147,13 +147,6 @@ function loadSavedState(filePath) {
             pageTitles.push(`Task-${pageIndex}: ${corefTitle}`);
         }
 
-        if (config.app.includeSubEvent) {
-            subEventForm = new SubEventForm(pageIndex, allAxesGlobal);
-            pages.push(subEventForm);
-            pageIndex++;
-            pageTitles.push(`Task-${pageIndex}: ${subEventTitle}`);
-        }
-
         if (config.app.includeCausal) {
             causalForm = new CausalForm(pageIndex, allAxesGlobal);
             pages.push(causalForm);

@@ -4,7 +4,6 @@ const config = {
         "includeTemp": true,
         "includeCoref": true,
         "includeCausal": true,
-        "includeSubEvent": false,
         "showRemainingAnnot": true,
         "debug": false,
         "exportAlways": true,

@@ -13,10 +13,6 @@ class GraphObj {
             if (config.app.includeCoref) {
                 this._corefGraphHandler = new CorefGraphHandler();
             }
-
-            if (config.app.includeSubEvent) {
-                this._subEventGraphHandler = new SubEventGraphHandler();
-            }
         }
     }
 
