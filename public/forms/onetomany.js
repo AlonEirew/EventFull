@@ -128,13 +128,10 @@ class OneToManyForm extends UIForm {
 
         const questions = document.getElementById("questions");
         const summaryPanel = document.createElement("div");
-        if (config.app.includeAnchor === true && config.app.includeAxis === true) {
-            createAndAddAxisColorBoxes(questions);
-        }
-
         const buttonBackTask = this.createPrevTaskButton();
         const buttonNextTask = this.createNextTaskButton();
         const paragraph = document.createElement("p");
+
         if (eventInFocus != null) {
             paragraph.innerHTML = this.formatText(eventInFocus);
             summaryPanel.appendChild(paragraph);

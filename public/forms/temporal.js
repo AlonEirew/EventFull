@@ -297,15 +297,8 @@ class TemporalForm extends PairsForm {
             let eventIdsSorted = [];
             for (let j = 0; j < allAxesEvents.length; j++) {
                 if (eventIds.has(allAxesEvents[j].getId())) {
-                    if (config.app.includeProjection === true) {
-                        if (allAxesEvents[j].getCorefState() === CorefState.COREF) {
-                            eventIdsSorted.push(allAxesEvents[j].getId());
-                            eventsToPresent.push(allAxesEvents[j])
-                        }
-                    } else {
-                        eventIdsSorted.push(allAxesEvents[j].getId());
-                        eventsToPresent.push(allAxesEvents[j])
-                    }
+                    eventIdsSorted.push(allAxesEvents[j].getId());
+                    eventsToPresent.push(allAxesEvents[j])
                 }
             }
 

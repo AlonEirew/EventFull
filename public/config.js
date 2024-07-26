@@ -1,8 +1,6 @@
 const config = {
     app: {
         "includeAxis": true,
-        "includeAnchor": false,
-        "includeProjection": false,
         "includeTemp": true,
         "includeCoref": true,
         "includeCausal": true,

@@ -133,13 +133,6 @@ function loadSavedState(filePath) {
             pageTitles.push(`Task-${pageIndex}: ${axisTitle}`);
         }
 
-        if (config.app.includeAnchor) {
-            anchorForm = new AnchorForm(pageIndex, allAxesGlobal);
-            pages.push(anchorForm);
-            pageIndex++;
-            pageTitles.push(`Task-${pageIndex}: ${anchorTitle}`);
-        }
-
         if (config.app.includeTemp) {
             temporalForm = new TemporalForm(pageIndex, allAxesGlobal);
             pages.push(temporalForm);
@@ -259,25 +252,6 @@ function toggleGraphDivOn() {
 function toggleGraphDivOff() {
     const divGraph = document.getElementById("cy");
     divGraph.style.display = "none";
-}
-
-function createAndAddAxisColorBoxes(questions) {
-    const colorBoxMain = document.createElement("div");
-    colorBoxMain.style.backgroundColor = "red";
-    colorBoxMain.style.width = "text-width"
-    colorBoxMain.innerHTML = "Main Axis";
-
-    const colorBoxHy = document.createElement("div");
-    colorBoxHy.style.backgroundColor = "yellow";
-    colorBoxHy.innerHTML = "Hypothetical Axis";
-
-    const colorBoxInt = document.createElement("div");
-    colorBoxInt.style.backgroundColor = "green";
-    colorBoxInt.innerHTML = "Intent Axis";
-
-    questions.appendChild(colorBoxMain);
-    questions.appendChild(colorBoxHy);
-    questions.appendChild(colorBoxInt);
 }
 
 function showErrorMessage() {

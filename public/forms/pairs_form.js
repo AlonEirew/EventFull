@@ -28,13 +28,10 @@ class PairsForm extends UIForm {
 
         const questions = document.getElementById("questions");
         const summaryPanel = document.createElement("div");
-        if (config.app.includeAnchor === true && config.app.includeAxis === true) {
-            createAndAddAxisColorBoxes(questions);
-        }
-
         const buttonBackTask = this.createPrevTaskButton();
         const buttonNextTask = this.createNextTaskButton();
         const paragraph = document.createElement("p");
+
         if (pair != null) {
             paragraph.innerHTML = this.formatText(pair);
             summaryPanel.appendChild(paragraph);
