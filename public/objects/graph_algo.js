@@ -24,8 +24,6 @@ class GraphObj {
                 return this._causalGraphHandler.handleEdgeSelection(this, firstId, secondId, selectedValue);
             case FormType.COREF:
                 return this._corefGraphHandler.handleEdgeSelection(this, firstId, secondId, selectedValue);
-            case FormType.SUB_EVENT:
-                return this._subEventGraphHandler.handleEdgeSelection(this, firstId, secondId, selectedValue);
         }
     }
 
@@ -37,8 +35,6 @@ class GraphObj {
                 return this._causalGraphHandler.reachAndTransitiveClosureRel(this);
             case FormType.COREF:
                 return this._corefGraphHandler.reachAndTransitiveClosureRel(this);
-            case FormType.SUB_EVENT:
-                return this._subEventGraphHandler.reachAndTransitiveClosureRel(this);
         }
     }
 
@@ -54,9 +50,6 @@ class GraphObj {
             case FormType.COREF:
                 reachAndDiscrepancies = this._corefGraphHandler.reachAndTransitiveClosureRel(this);
                 return this._corefGraphHandler.fillMissingRelations(this, reachAndDiscrepancies[0]);
-            case FormType.SUB_EVENT:
-                return;
-                // return this._subEventGraphHandler.reachAndTransitiveClosureRel(this)[1];
         }
     }
 

@@ -2,7 +2,6 @@ const FormType = {
     TEMPORAL: 'temporal',
     CAUSAL: 'causal',
     COREF: 'coref',
-    SUB_EVENT: 'sub_event',
     NA: 'na'
 }
 

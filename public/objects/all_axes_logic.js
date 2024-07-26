@@ -11,9 +11,6 @@ class AllAxes {
 
         this._mainAxis = new Axis();
         this._mainAxis._axisType = AxisType.MAIN;
-        this._hypotheticalAxis = new Axis();
-        this._hypotheticalAxis._axisType = AxisType.NA;
-        this._intentAxis = [];
         this._tempAnnotationMade = 0;
         this._causeAnnotationMade = 0;
         this._corefAnnotationMade = 0;
@@ -30,18 +27,6 @@ class AllAxes {
 
         if(jsonObject['_mainAxis'] != null) {
             allAxes.setMainAxis(Axis.fromJsonObject(jsonObject['_mainAxis']));
-        }
-
-        if(jsonObject['_hypotheticalAxis'] != null) {
-            allAxes.setHypotheticalAxis(Axis.fromJsonObject(jsonObject['_hypotheticalAxis']));
-        }
-
-        if(jsonObject['_intentAxis'] != null && jsonObject['_intentAxis'].length > 0) {
-            allAxes.resetIntentAxes();
-            const intentAxes = jsonObject['_intentAxis'];
-            for(let i = 0; i < intentAxes.length; i++) {
-                allAxes.addAxisToIntentAxes(Axis.fromJsonObject(intentAxes[i]));
-            }
         }
 
         return allAxes;
@@ -77,22 +62,6 @@ class AllAxes {
         return this._mainAxis;
     }
 
-    setHypotheticalAxis(hypotheticalAxis) {
-        this._hypotheticalAxis = hypotheticalAxis;
-    }
-
-    resetIntentAxes() {
-        this._intentAxis = [];
-    }
-
-    addAxisToIntentAxes(intentAxis) {
-        if(this._intentAxis === null) {
-            this._intentAxis = [];
-        }
-
-        this._intentAxis.push(intentAxis);
-    }
-
     initTextAndEvents(jsonObject) {
         if(jsonObject != null) {
             this.main_doc = DocObject.fromJsonObject(jsonObject['main_doc']);
@@ -107,14 +76,6 @@ class AllAxes {
 
             this.addEventsToAxes(this.main_doc.mentions);
         }
-    }
-
-    getSources() {
-        return this.sources;
-    }
-
-    getClusters() {
-        return this.clusters;
     }
 
     getExportClusters() {
@@ -133,35 +94,6 @@ class AllAxes {
         });
 
         return allClusters;
-    }
-
-    getSourceTextWithMentPair(mentPair) {
-        let sourcesWithBothEvents = [];
-        let firstEvent = this.getEventByEventId(mentPair.getFirstId());
-        let secondEvent = this.getEventByEventId(mentPair.getSecondId());
-        let firstCluster = this.clusters.find(cluster => cluster['main_mention']['m_id'] === firstEvent.getId());
-        let secondCluster = this.clusters.find(cluster => cluster['main_mention']['m_id'] === secondEvent.getId());
-        if (this.sources != null) {
-            for (let i = 0; i < this.sources.length; i++) {
-                // Find events in source
-                const found1 = this.sources[i]['mentions'].filter(mention => firstCluster['src_mentions'].some(obj => obj['m_id'] === mention['m_id'])
-                    && 'corefState' in mention && mention['corefState'] === CorefState.COREF);
-                // const found1 = this.sources[i]['mentions'].find(mention => mention['m_id'] === firstEvent.getId());
-                const found2 = this.sources[i]['mentions'].filter(mention => secondCluster['src_mentions'].some(obj => obj['m_id'] === mention['m_id'])
-                    && 'corefState' in mention && mention['corefState'] === CorefState.COREF);
-                if (found1.length > 0 || found2.length > 0) {
-                    let newSource = {
-                        'doc_id': this.sources[i]['doc_id'],
-                        'tokens': this.sources[i]['tokens'],
-                        'firstMentions': found1,
-                        'secondMentions': found2
-                    };
-                    sourcesWithBothEvents.push(newSource);
-                }
-            }
-        }
-
-        return sourcesWithBothEvents;
     }
 
     getMainDocTokens() {
@@ -216,14 +148,8 @@ class AllAxes {
     }
 
     getAllAxesPairs() {
-        // TBD - add the rest of the axis pairs
         let allPairs = [];
         allPairs.push.apply(allPairs, this._mainAxis.getAxisGraph().exportAllReachAndTransGraphPairs(this._mainAxis.getAxisId()));
-        allPairs.push.apply(allPairs, this._hypotheticalAxis.getAxisGraph().exportAllReachAndTransGraphPairs(this._hypotheticalAxis.getAxisId()));
-        for (let i = 0; i < this._intentAxis.length; i++) {
-            allPairs.push.apply(allPairs, this._intentAxis[i].getAxisGraph().exportAllReachAndTransGraphPairs(this._intentAxis[i].getAxisId()));
-        }
-
         return allPairs;
     }
 
@@ -260,14 +186,6 @@ class AllAxes {
     getAxisById(id) {
         if (this._mainAxis.getAxisId() === id) {
             return this._mainAxis;
-        } else if (this._hypotheticalAxis.getAxisId() === id) {
-            return this._hypotheticalAxis;
-        } else {
-            for (let i = 0; i < this._intentAxis.length; i++) {
-                if (this._intentAxis[i].getAxisId() === id) {
-                    return this._intentAxis[i];
-                }
-            }
         }
 
         return null;
