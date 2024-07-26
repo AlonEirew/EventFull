@@ -147,7 +147,7 @@ class OneToManyForm extends UIForm {
             summaryPanel.appendChild(this.createNextButton("Next"));
 
             if (this.addNextUnhandled === true) {
-                let nextUnhldButt = this.createUnhandledNextButton("Next Unhandled Pair");
+                let nextUnhldButt = this.createUnhandledNextButton("Next Unhandled Event");
                 nextUnhldButt.disabled = false;
                 summaryPanel.appendChild(nextUnhldButt);
             }
@@ -158,21 +158,8 @@ class OneToManyForm extends UIForm {
                 summaryPanel.appendChild(this.getAnnotationsRemainderElem());
             }
 
-            if (this.splitForm === true) {
-                const docContainer = document.createElement("div");
-                docContainer.className = "projection-parent-container-not-fixed";
-                summaryPanel.className = "left-projection-container-not-fixed";
-                let sourceTextWithMentPair = this._allAxes.getSourceTextWithMentPair(pair);
-                const rightPanel = document.createElement("div");
-                rightPanel.className = "right-projection-container-not-fixed";
-                rightPanel.appendChild(this.formatTextExamples(sourceTextWithMentPair));
+            questions.appendChild(summaryPanel);
 
-                docContainer.appendChild(summaryPanel);
-                docContainer.appendChild(rightPanel);
-                questions.appendChild(docContainer);
-            } else {
-                questions.appendChild(summaryPanel);
-            }
         } else {
             paragraph.innerHTML = "<p><b>All done with this annotation task! You can proceed to the next task.</b></p>";
             questions.appendChild(paragraph);

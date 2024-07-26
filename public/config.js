@@ -9,7 +9,6 @@ const config = {
         "includeSubEvent": false,
         "considerAxisAtAnnotation": [AxisType.MAIN],
         "showRemainingAnnot": true,
-        "splitWindow": false,
         "debug": false,
         "exportAlways": true,
         "removeTransitive": false,

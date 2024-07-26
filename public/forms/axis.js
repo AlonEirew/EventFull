@@ -1,8 +1,7 @@
 // ####################################################
 // ################# axis functions #################
 // ####################################################
-const options = ["Yes. It's anchorable", "No. It's intention/wish/opinion", "No. It's hypothetical/condition",
-    "No. It's negation", "No. It's abstract/non-specific", "No. It's static", "No. It's recurrent", "No. It's not an event"];
+const options = ["Yes. It's anchorable", "No. it's one of intention/wish/opinion/hypothetical/condition/negation/abstract/non-specific/static/recurrent, or it's not an event"];
 
 class AxisForm extends UIForm {
     constructor(pageIndex, allAxes) {
@@ -18,7 +17,7 @@ class AxisForm extends UIForm {
     handleSelection() {
         const radiosSelected = this.getRadiosSelected("multiChoice");
         if (radiosSelected != null) {
-            let selectedAxisType = AllAxes.convertSelectionFromOption(radiosSelected);
+            let selectedAxisType = this.convertOptionToAxis(radiosSelected);
             if (selectedAxisType !== this._annotations[this._annotationIndex].getAxisType()) {
                 console.log("User AxisType selection: " + selectedAxisType);
                 this._allAxes.removeEventFromAxes(this._annotations[this._annotationIndex]);
@@ -122,24 +121,6 @@ class AxisForm extends UIForm {
             case AxisType.MAIN:
                 text[i] = `<span class=\"label ANC\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
                 break;
-            case AxisType.INTENT:
-                text[i] = `<span class=\"label INT\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
-                break;
-            case AxisType.HYPOTHETICAL:
-                text[i] = `<span class=\"label HYP\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
-                break;
-            case AxisType.NEGATION:
-                text[i] = `<span class=\"label NEG\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
-                break;
-            case AxisType.ABSTRACT:
-                text[i] = `<span class=\"label ABS\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
-                break;
-            case AxisType.STATIC:
-                text[i] = `<span class=\"label STT\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
-                break;
-            case AxisType.RECURRENT:
-                text[i] = `<span class=\"label REC\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
-                break;
             case AxisType.NOT_EVENT:
                 text[i] = `<span class=\"label NOT\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
                 break;
@@ -163,20 +144,18 @@ class AxisForm extends UIForm {
     axisToOption(axisType) {
         if (axisType === AxisType.MAIN) {
             return options[0];
-        } else if (axisType === AxisType.INTENT) {
-            return options[1];
-        } else if (axisType === AxisType.HYPOTHETICAL) {
-            return options[2];
-        } else if (axisType === AxisType.NEGATION) {
-            return options[3];
-        } else if (axisType === AxisType.ABSTRACT) {
-            return options[4];
-        } else if (axisType === AxisType.STATIC) {
-            return options[5];
-        } else if (axisType === AxisType.RECURRENT) {
-            return options[6];
         } else if (axisType === AxisType.NOT_EVENT) {
-            return options[7];
+            return options[1];
+        } else {
+            throw new Error('Invalid axis type');
+        }
+    }
+
+    convertOptionToAxis(value) {
+        if (value === options[0]) {
+            return AxisType.MAIN;
+        } else if (value === options[1]) {
+            return AxisType.NOT_EVENT;
         } else {
             throw new Error('Invalid axis type');
         }

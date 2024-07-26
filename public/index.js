@@ -140,13 +140,6 @@ function loadSavedState(filePath) {
             pageTitles.push(`Task-${pageIndex}: ${anchorTitle}`);
         }
 
-        if (config.app.includeProjection) {
-            projectionForm = new ProjectionForm(pageIndex, allAxesGlobal);
-            pages.push(projectionForm);
-            pageIndex++;
-            pageTitles.push(`Task-${pageIndex}: ${projectionTitle}`);
-        }
-
         if (config.app.includeTemp) {
             temporalForm = new TemporalForm(pageIndex, allAxesGlobal);
             pages.push(temporalForm);

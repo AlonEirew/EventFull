@@ -20,28 +20,6 @@ class AllAxes {
         this._subeventAnnotationMade = 0;
     }
 
-    static convertSelectionFromOption(value) {
-        if (value === options[0]) {
-            return AxisType.MAIN;
-        } else if (value === options[1]) {
-            return AxisType.INTENT;
-        } else if (value === options[2]) {
-            return AxisType.HYPOTHETICAL;
-        } else if (value === options[3]) {
-            return AxisType.NEGATION;
-        } else if (value === options[4]) {
-            return AxisType.ABSTRACT;
-        } else if (value === options[5]) {
-            return AxisType.STATIC;
-        } else if (value === options[6]) {
-            return AxisType.RECURRENT;
-        } else if (value === options[7]) {
-            return AxisType.NOT_EVENT;
-        } else {
-            throw new Error('Invalid axis type');
-        }
-    }
-
     static fromJsonObject(jsonObject) {
         const allAxes = new AllAxes(jsonObject);
 

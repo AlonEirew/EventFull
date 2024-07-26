@@ -10,10 +10,6 @@ const AxisType = {
     MAIN: 'main',
     INTENT: 'intent',
     HYPOTHETICAL: 'hypothetical',
-    NEGATION: 'negation',
-    ABSTRACT: 'abstract',
-    STATIC: 'static',
-    RECURRENT: 'recurrent',
     NOT_EVENT: 'not_event',
     NA: 'na'
 }
