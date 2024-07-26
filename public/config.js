@@ -5,7 +5,6 @@ const config = {
         "includeCoref": true,
         "includeCausal": true,
         "includeSubEvent": false,
-        "considerAxisAtAnnotation": [AxisType.MAIN],
         "showRemainingAnnot": true,
         "debug": false,
         "exportAlways": true,

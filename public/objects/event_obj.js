@@ -64,20 +64,6 @@ class EventObject {
         return this.axisType;
     }
 
-    getRootAxisEventId() {
-        return this.rootAxisEventId;
-    }
-
-    setRootAxisEventId(value) {
-        if (value != null) {
-            if (this.axisType === AxisType.INTENT) {
-                this.rootAxisEventId = value;
-            } else {
-                throw new Error('Trying to set root axis event for non-intent event');
-            }
-        }
-    }
-
     setAxisTypeFromOption(value) {
         if(value != null) {
             if (this.axisType === AxisType.NA || this.axisType === value) {

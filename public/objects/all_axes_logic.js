@@ -12,7 +12,7 @@ class AllAxes {
         this._mainAxis = new Axis();
         this._mainAxis._axisType = AxisType.MAIN;
         this._hypotheticalAxis = new Axis();
-        this._hypotheticalAxis._axisType = AxisType.HYPOTHETICAL;
+        this._hypotheticalAxis._axisType = AxisType.NA;
         this._intentAxis = [];
         this._tempAnnotationMade = 0;
         this._causeAnnotationMade = 0;
@@ -191,18 +191,7 @@ class AllAxes {
 
     getAllRelAxes() {
         let allAxes = [];
-        if (config.app.considerAxisAtAnnotation.includes(AxisType.MAIN)) {
-            allAxes.push(this._mainAxis);
-        }
-
-        if (config.app.considerAxisAtAnnotation.includes(AxisType.HYPOTHETICAL)) {
-            allAxes.push(this._hypotheticalAxis);
-        }
-
-        if (config.app.considerAxisAtAnnotation.includes(AxisType.INTENT)) {
-            allAxes.push.apply(allAxes, this._intentAxis);
-        }
-
+        allAxes.push(this._mainAxis);
         return allAxes;
     }
 
@@ -307,24 +296,6 @@ class AllAxes {
         return false;
     }
 
-    removeIntentEventFromIntentAxes(event, rootEventId) {
-        if(event.getAxisType() === AxisType.INTENT) {
-            for(let i = this._intentAxis.length - 1; i >= 0; i--) {
-                if (this._intentAxis[i].getAnchorEventId() === rootEventId) {
-                    if (this._intentAxis[i].removeEvent(event)) {
-                        if (this._intentAxis[i].getEventIds().size === 0) {
-                            this._intentAxis.splice(i, 1);
-                        }
-
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
     addEventsToAxes(eventsToAdd) {
         for (let i = 0; i < eventsToAdd.length; i++) {
             this.addEventToAxes(eventsToAdd[i]);
@@ -332,54 +303,14 @@ class AllAxes {
     }
 
     addEventToAxes(eventToAdd) {
-        switch (eventToAdd.getAxisType()) {
-            case AxisType.MAIN:
-                this._mainAxis.getEventIds().add(eventToAdd.getId());
-                break;
-            case AxisType.HYPOTHETICAL:
-                this._hypotheticalAxis.getEventIds().add(eventToAdd.getId());
-                break;
-            case AxisType.INTENT:
-                this.addEventToIntentAxis(eventToAdd);
-                break;
+        if (eventToAdd.getAxisType() === AxisType.MAIN) {
+            this._mainAxis.getEventIds().add(eventToAdd.getId());
         }
-    }
-
-    addEventToIntentAxis(event) {
-        for (let i = 0; i < this._intentAxis.length; i++) {
-            if (this._intentAxis[i].getAnchorEventId() === event.getRootAxisEventId()) {
-                this._intentAxis[i].getEventIds().add(event.getId());
-
-                if (event.getRootAxisEventId() !== -1) {
-                    this._intentAxis[i].getEventIds().add(event.getRootAxisEventId());
-                }
-                return;
-            }
-        }
-
-        const axis = new Axis();
-        axis._anchoringEventId = event.getRootAxisEventId();
-        axis._eventIds.add(event.getId());
-
-        if(event.getRootAxisEventId() !== -1) {
-            axis._eventIds.add(event.getRootAxisEventId());
-        }
-
-        axis._axisType = AxisType.INTENT;
-        this._intentAxis.push(axis);
     }
 
     getEventAxisId(event) {
         if(event.getAxisType() === AxisType.MAIN) {
             return this._mainAxis.getAxisId();
-        } else if(event.getAxisType() === AxisType.HYPOTHETICAL) {
-            return this._hypotheticalAxis.getAxisId();
-        } else if(event.getAxisType() === AxisType.INTENT) {
-            for(let i = 0; i < this._intentAxis.length; i++) {
-                if(this._intentAxis[i].getAnchorEventId() === event.getRootAxisEventId()) {
-                    return this._intentAxis[i].getAxisId();
-                }
-            }
         }
 
         return null;
@@ -388,19 +319,7 @@ class AllAxes {
     // check if events can be paired
     isValidPair(event1, event2) {
         if(event1.getAxisType() === event2.getAxisType()) {
-            if (event1.getAxisType() === AxisType.INTENT) {
-                return event1.getRootAxisEventId() === event2.getRootAxisEventId();
-            } else {
-                return true;
-            }
-        } else {
-            if (event1.getAxisType() === AxisType.INTENT && event2.getAxisType() === AxisType.MAIN) {
-                return event1.getRootAxisEventId() === event2.getId();
-            } else if (event2.getAxisType() === AxisType.INTENT && event1.getAxisType() === AxisType.MAIN) {
-                return event2.getRootAxisEventId() === event1.getId();
-            } else {
-                return false;
-            }
+            return true;
         }
     }
 }

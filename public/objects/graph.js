@@ -88,12 +88,6 @@ function highlightCurrentPair(pair) {
 
 function setNodeSytleByType(nodeId, nodeType) {
     switch (nodeType) {
-        case AxisType.HYPOTHETICAL:
-            cy.$('#' + nodeId).style('background-color', 'yellow');
-            break;
-        case AxisType.INTENT:
-            cy.$('#' + nodeId).style('background-color', 'green');
-            break;
         case AxisType.MAIN:
             cy.$('#' + nodeId).style('background-color', 'red');
             break;
@@ -190,20 +184,6 @@ function getNodeTypeStyle(nodeType) {
                     'background-color': '#FFC300',
                 }
             };
-        case AxisType.INTENT:
-            return {
-                selector: '.intent',
-                style: {
-                    'background-color': '#DAF7A6',
-                }
-            };
-        case AxisType.HYPOTHETICAL:
-            return {
-                selector: '.hypothetical',
-                style: {
-                    'background-color': '#FAA0A0',
-                }
-            };
         case AxisType.NA:
             return {
                 selector: '.unknown',
@@ -239,8 +219,6 @@ function getGraphStyle(curForm) {
         curForm.graphPairRelationStyle(EventRelationType.NO_CAUSE),
         curForm.graphPairRelationStyle(EventRelationType.CONTAINS),
         this.getNodeTypeStyle(AxisType.MAIN),
-        this.getNodeTypeStyle(AxisType.INTENT),
-        this.getNodeTypeStyle(AxisType.HYPOTHETICAL),
         this.getNodeTypeStyle(AxisType.NA),
         this.getHighlightStyle(),
     ];

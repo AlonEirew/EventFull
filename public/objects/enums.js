@@ -8,8 +8,6 @@ const FormType = {
 
 const AxisType = {
     MAIN: 'main',
-    INTENT: 'intent',
-    HYPOTHETICAL: 'hypothetical',
     NOT_EVENT: 'not_event',
     NA: 'na'
 }
