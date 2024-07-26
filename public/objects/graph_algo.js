@@ -345,20 +345,10 @@ class TemporalGraphHandler extends DefaultGraphHandler {
                 graphMatrix[graphFirstId][graphSecondId] = EventRelationType.BEFORE;
                 graphMatrix[graphSecondId][graphFirstId] = EventRelationType.AFTER;
                 break;
-            case EventRelationType.CONTAINS:
-                console.log("user selected temporal relation EQUAL for nodes: {" + firstId + ", " + secondId + "}");
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.CONTAINS;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.AFTER_CONTAINS;
-                break;
             case EventRelationType.AFTER:
                 console.log("user selected temporal relation AFTER for nodes: {" + firstId + ", " + secondId + "}");
                 graphMatrix[graphFirstId][graphSecondId] = EventRelationType.AFTER;
                 graphMatrix[graphSecondId][graphFirstId] = EventRelationType.BEFORE;
-                break;
-            case EventRelationType.AFTER_CONTAINS:
-                console.log("user selected temporal relation AFTER for nodes: {" + firstId + ", " + secondId + "}");
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.AFTER_CONTAINS;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.CONTAINS;
                 break;
             case EventRelationType.EQUAL:
                 console.log("user selected temporal relation EQUAL for nodes: {" + firstId + ", " + secondId + "}");
@@ -709,54 +699,5 @@ class CausalGraphHandler extends CorefGraphHandler {
         } else {
             return super.getInferredTransitiveRelationType(reachGraph, i, j, k);
         }
-    }
-}
-
-class SubEventGraphHandler extends DefaultGraphHandler {
-    checkDiscrepancies(axisGraph) {
-        let discrepancy = [];
-        let graphMatrix = axisGraph.getGraphMatrix();
-        const length = graphMatrix.length;
-        let reachGraph = this.reachAndTransitiveClosureRel(axisGraph);
-        for (let k = 0; k < length; k++) {
-            for (let i = 0; i < length; i++) {
-                for (let j = 0; j < length; j++) {
-                    // Check cases that the transitive closure should be also annotated (path cannot determine if caused or not)
-                    if (reachGraph[i][j] === EventRelationType.BEFORE_TRANSITIVE && ((reachGraph[i][k] === EventRelationType.NO_SUB_EVENT && reachGraph[k][j] === EventRelationType.NO_SUB_EVENT) ||
-                        (reachGraph[i][k] === EventRelationType.SUB_EVENT && reachGraph[k][j] === EventRelationType.NO_SUB_EVENT))) {
-                        // Adding the transitive before relation to check if its a cause or no cause (as it is undetermined)
-                        // will trigger the logic to ask the user
-                        reachGraph[i][j] = EventRelationType.CONTAINS;
-                        reachGraph[j][i] = EventRelationType.AFTER_CONTAINS;
-                        graphMatrix[i][j] = EventRelationType.CONTAINS;
-                        graphMatrix[j][i] = EventRelationType.AFTER_CONTAINS;
-                    }
-                }
-            }
-        }
-
-        return discrepancy;
-    }
-
-    handleEdgeSelection(axisGraph, firstId, secondId, selectedRelation) {
-        let graphMatrix = axisGraph.getGraphMatrix();
-        let graphIndices = axisGraph.getGraphIndices();
-        const graphFirstId = graphIndices.indexOf(firstId);
-        const graphSecondId = graphIndices.indexOf(secondId);
-        if (selectedRelation === EventRelationType.SUB_EVENT) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.SUB_EVENT;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.AFTER_SUB_EVENT;
-        } else if (selectedRelation === EventRelationType.NO_SUB_EVENT) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.NO_SUB_EVENT;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.AFTER_NO_SUB_EVENT;
-        } else if (selectedRelation === EventRelationType.AFTER_SUB_EVENT) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.AFTER_SUB_EVENT;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.SUB_EVENT;
-        } else if (selectedRelation === EventRelationType.AFTER_NO_SUB_EVENT) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.AFTER_NO_SUB_EVENT;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.NO_SUB_EVENT;
-        }
-
-        this.checkDiscrepancies(axisGraph);
     }
 }

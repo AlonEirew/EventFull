@@ -89,9 +89,6 @@ class Axis {
                 } else if(graphMatrix[i][j] === EventRelationType.BEFORE) {
                     eventPair.setRelation(EventRelationType.BEFORE);
                     pairs.push(eventPair);
-                } else if (graphMatrix[i][j] === EventRelationType.CONTAINS) {
-                    eventPair.setRelation(EventRelationType.CONTAINS);
-                    pairs.push(eventPair);
                 } else if(graphMatrix[i][j] === EventRelationType.EQUAL) {
                     eventPair.setRelation(EventRelationType.EQUAL);
                     pairs.push(eventPair);
@@ -115,12 +112,6 @@ class Axis {
                     pairs.push(eventPair);
                 } else if(graphMatrix[i][j] === EventRelationType.UNCERTAIN_COREF) {
                     eventPair.setRelation(EventRelationType.UNCERTAIN_COREF);
-                    pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.SUB_EVENT) {
-                    eventPair.setRelation(EventRelationType.SUB_EVENT);
-                    pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.NO_SUB_EVENT) {
-                    eventPair.setRelation(EventRelationType.NO_SUB_EVENT);
                     pairs.push(eventPair);
                 }
             }

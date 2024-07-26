@@ -184,19 +184,6 @@ class CausalForm extends OneToManyForm {
                         'opacity': 0.2,
                     }
                 };
-            case EventRelationType.CONTAINS:
-            case EventRelationType.SUB_EVENT:
-            case EventRelationType.NO_SUB_EVENT:
-                return {
-                    selector: '.contains',
-                    style: {
-                        'line-style': 'solid',
-                        'target-arrow-color': '#808080',
-                        'target-arrow-shape': 'circle-triangle',
-                        'source-arrow-shape': 'circle',
-                        'opacity': 0,
-                    }
-                };
             default:
                 throw new Error("Unknown relation type: " + relationType);
         }

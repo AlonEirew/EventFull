@@ -17,8 +17,6 @@ const EventRelationType = {
     AFTER: 'after',
     EQUAL: 'equal',
     VAGUE: 'uncertain',
-    CONTAINS: 'contains',
-    AFTER_CONTAINS: 'after_contains',
     CAUSE: 'before/cause',
     EFFECT: 'after/effect',
     NO_CAUSE: 'before/no_cause',
@@ -28,10 +26,6 @@ const EventRelationType = {
     COREF: 'equal/coref',
     NO_COREF: 'equal/no_coref',
     UNCERTAIN_COREF: 'uncertain/coref',
-    SUB_EVENT: 'contains/sub_event',
-    NO_SUB_EVENT: 'contains/no_sub_event',
-    AFTER_SUB_EVENT: 'contains/after_sub_event',
-    AFTER_NO_SUB_EVENT: 'contains/after_no_sub_event',
     BEFORE_TRANSITIVE: 'before/transitive',
     AFTER_TRANSITIVE: 'after/transitive',
     EQUAL_TRANSITIVE: 'equal/transitive',
@@ -102,7 +96,6 @@ function getRelationMappingTransitive(relation) {
         case EventRelationType.CAUSE:
         case EventRelationType.NO_CAUSE:
         case EventRelationType.UNCERTAIN_CAUSE:
-        case EventRelationType.CONTAINS:
         case EventRelationType.BEFORE_TRANSITIVE:
         case EventRelationType.CAUSE_TRANSITIVE:
             return EventRelationType.BEFORE;
@@ -149,11 +142,6 @@ function getRelType(relation) {
         case EventRelationType.UNCERTAIN_CAUSE:
         case EventRelationType.UNCERTAIN_EFFECT:
             return FormType.CAUSAL;
-        case EventRelationType.SUB_EVENT:
-        case EventRelationType.NO_SUB_EVENT:
-        case EventRelationType.AFTER_SUB_EVENT:
-        case EventRelationType.AFTER_NO_SUB_EVENT:
-            return FormType.SUB_EVENT;
         case EventRelationType.NA:
         case EventRelationType.CANDIDATE:
             return FormType.NA;
@@ -278,12 +266,6 @@ function getRelationStrValue(relation) {
             return "6666";
         case EventRelationType.UNCERTAIN_CAUSE:
             return "6--6";
-        case EventRelationType.CONTAINS:
-            return "7777";
-        case EventRelationType.SUB_EVENT:
-            return "8888";
-        case EventRelationType.NO_SUB_EVENT:
-            return "9999";
         case EventRelationType.BEFORE_TRANSITIVE:
             return "100-";
         case EventRelationType.CANDIDATE:
@@ -295,12 +277,6 @@ function getRelationStrValue(relation) {
         case EventRelationType.UNCERTAIN_EFFECT:
         case EventRelationType.NO_EFFECT:
             return "-66-";
-        case EventRelationType.AFTER_CONTAINS:
-            return "-77-";
-        case EventRelationType.AFTER_SUB_EVENT:
-            return "-88-";
-        case EventRelationType.AFTER_NO_SUB_EVENT:
-            return "-99-";
         case EventRelationType.VAGUE:
             return "-101";
         case EventRelationType.AFTER_TRANSITIVE:

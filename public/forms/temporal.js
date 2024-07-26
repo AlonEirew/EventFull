@@ -19,8 +19,7 @@ class TemporalForm extends PairsForm {
     handleSelection() {
         let retVal = true;
         let selectedValue = this.getRadiosSelected("multiChoice1");
-        let selectedContainValue = this.getRadiosSelected("containChoice");
-        const combSelect = TemporalForm.getCombinedQRelations(selectedValue, selectedContainValue);
+        const combSelect = TemporalForm.getCombinedQRelations(selectedValue);
         if (combSelect != null) {
             let pair = this._annotations[this._annotationIndex];
             if (pair.getRelation() === EventRelationType.NA) {
@@ -52,10 +51,6 @@ class TemporalForm extends PairsForm {
             }
         } else if (newRelation === EventRelationType.BEFORE) {
             if (getRelationMappingSeparateTransitive(currentRelation) === EventRelationType.BEFORE) {
-                return false;
-            }
-        } else if (newRelation === EventRelationType.CONTAINS) {
-            if (getRelationMappingSeparateTransitive(currentRelation) === EventRelationType.CONTAINS) {
                 return false;
             }
         }
@@ -106,27 +101,17 @@ class TemporalForm extends PairsForm {
             let mainSelectedValue = document.querySelector('input[name="multiChoice1"]:checked').value;
             let checkedElement = document.querySelector('input[name="containChoice"]:checked');
             if (checkedElement !== null) {
-                const containsSelectedValue = checkedElement.value;
-                mainSelectedValue = TemporalForm.getCombinedQRelations(mainSelectedValue, containsSelectedValue);
+                mainSelectedValue = TemporalForm.getCombinedQRelations(mainSelectedValue);
             }
         });
 
         return divQuestion1;
     }
 
-    static getCombinedQRelations(selectRel, containsRel) {
+    static getCombinedQRelations(selectRel) {
         let retRel = null;
         if (selectRel !== null) {
             retRel = selectRel;
-            if (containsRel !== null) {
-                if (containsRel === "Yes") {
-                    if (selectRel === EventRelationType.BEFORE) {
-                        retRel = EventRelationType.CONTAINS;
-                    } else if (selectRel === EventRelationType.AFTER) {
-                        retRel = EventRelationType.AFTER_CONTAINS;
-                    }
-                }
-            }
         }
 
         return retRel;
@@ -193,61 +178,6 @@ class TemporalForm extends PairsForm {
 
             highlightCurrentPair(pair);
         }
-    }
-
-    static prepareQuestion2Div(pair, relation) {
-        let divContains = document.getElementById("divContains");
-        let question2 = document.getElementById("question2");
-        let inputY = document.getElementById("containChoiceY");
-        let inputN = document.getElementById("containChoiceN");
-
-        if (divContains === null) {
-            divContains = document.createElement("div");
-            divContains.id = "divContains";
-
-            question2 = document.createElement("h3");
-            question2.id = "question2";
-            divContains.appendChild(question2);
-
-            inputY = getOption("Yes", "containChoice");
-            inputY.id = "containChoiceY";
-            divContains.appendChild(inputY);
-            divContains.appendChild(document.createTextNode("Yes"));
-            divContains.appendChild(document.createElement("br"));
-
-            inputN = getOption("No", "containChoice");
-            inputN.id = "containChoiceN";
-            divContains.appendChild(inputN);
-            divContains.appendChild(document.createTextNode("No"));
-        }
-
-        const event1 = allAxesGlobal.getEventByEventId(pair.getFirstId()).getTokens();
-        const event2 = allAxesGlobal.getEventByEventId(pair.getSecondId()).getTokens();
-        if (relation === EventRelationType.BEFORE || relation === EventRelationType.CONTAINS ||
-            relation === EventRelationType.SUB_EVENT || relation === EventRelationType.NO_SUB_EVENT) {
-            question2.innerHTML = "[QUESTION-2] Is it possible that (<span style=\"color:orangered\">" + event2 + "</span>) " +
-                "duration is contained within the duration of (<span style=\"color:royalblue\">" + event1 + "</span>)?";
-            if (relation === EventRelationType.BEFORE) {
-                inputY.checked = false;
-                inputN.checked = true;
-            } else {
-                inputY.checked = true;
-                inputN.checked = false;
-            }
-        } else if (relation === EventRelationType.AFTER || relation === EventRelationType.AFTER_CONTAINS ||
-                    relation === EventRelationType.AFTER_SUB_EVENT || relation === EventRelationType.AFTER_NO_SUB_EVENT) {
-            question2.innerHTML = "[QUESTION-2] Is it possible that (<span style=\"color:royalblue\">" + event1 + "</span>) " +
-                "duration is contained within the duration of (<span style=\"color:orangered\">" + event2 + "</span>)?";
-            if (relation === EventRelationType.AFTER) {
-                inputY.checked = false;
-                inputN.checked = true;
-            } else {
-                inputY.checked = true;
-                inputN.checked = false;
-            }
-        }
-
-        return divContains;
     }
 
     annotationRemainder() {
@@ -401,18 +331,6 @@ class TemporalForm extends PairsForm {
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none'
-                    }
-                };
-            case EventRelationType.CONTAINS:
-            case EventRelationType.SUB_EVENT:
-            case EventRelationType.NO_SUB_EVENT:
-                return {
-                    selector: '.contains',
-                    style: {
-                        'line-style': 'solid',
-                        'target-arrow-color': '#808080',
-                        'target-arrow-shape': 'circle-triangle',
-                        'source-arrow-shape': 'circle'
                     }
                 };
             default:
