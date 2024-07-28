@@ -130,8 +130,9 @@ class PairsForm extends UIForm {
     handleDiscrepancies(discrepancy) {
         const disRootEdge = this._allAxes.getEventByEventId(discrepancy[0]).getTokens();
         const disOtherEdge = this._allAxes.getEventByEventId(discrepancy[1]).getTokens();
-        const currentRelation = discrepancy[2];
-        const inferredRelation = discrepancy[3];
+        const viaNode = this._allAxes.getEventByEventId(discrepancy[2]).getTokens();
+        const currentRelation = discrepancy[3];
+        const inferredRelation = discrepancy[4];
 
         Swal.fire({
             icon: "error",
@@ -139,7 +140,8 @@ class PairsForm extends UIForm {
             html:
                 '<p>Your last selection has created a discrepancy between two events.<br/><br/>The relation currently set between the events: <span style=\"color:orangered; font-weight: bold;\">' + disRootEdge +'</span> and ' +
                 '<span style=\"color:orangered; font-weight: bold;\">' + disOtherEdge + '</span> is <span style=\"color:royalblue; font-weight: bold;\">' +
-                currentRelation + '</span>. However, due to the last selection, the events can now be inferred indirectly also as having a ' +
+                currentRelation + '</span>. However, due to the last selection, the events can now be inferred indirectly via event ' +
+                '<span style=\"color:green; font-weight: bold;\">' + viaNode + '</span> as also having a ' +
                 '<span style=\"color:royalblue; font-weight: bold;\">' + inferredRelation + '</span> relation.<br/><br/>' +
                 '<span style=\"font-weight: bold;\">Please fix or contact the task admin for help.</p>',
             showCancelButton: false,

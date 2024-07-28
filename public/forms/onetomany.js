@@ -180,8 +180,9 @@ class OneToManyForm extends UIForm {
     handleDiscrepancies(discrepancy) {
         const disRootEdge = this._allAxes.getEventByEventId(discrepancy[0]).getTokens();
         const disOtherEdge = this._allAxes.getEventByEventId(discrepancy[1]).getTokens();
-        const currentRelation = discrepancy[2];
-        const inferredRelation = discrepancy[3];
+        // Handle presenting k
+        const currentRelation = discrepancy[3];
+        const inferredRelation = discrepancy[4];
 
         Swal.fire({
             icon: "info",

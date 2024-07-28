@@ -254,7 +254,7 @@ class DefaultGraphHandler {
                             reachGraph[i][j] = EventRelationType.BEFORE_TRANSITIVE;
                             reachGraph[j][i] = EventRelationType.AFTER_TRANSITIVE;
                         } else if(getRelationMappingTransitive(reachGraph[i][j]) !== EventRelationType.BEFORE) {
-                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     } else if (inferredTranRel === EventRelationType.EQUAL && i !== j) {
                         if (emptyTransRel) {
@@ -262,7 +262,7 @@ class DefaultGraphHandler {
                             reachGraph[i][j] = EventRelationType.EQUAL_TRANSITIVE;
                             reachGraph[j][i] = EventRelationType.EQUAL_TRANSITIVE;
                         } else if(getRelationMappingTransitive(reachGraph[i][j]) !== EventRelationType.EQUAL) {
-                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     }
 
@@ -270,19 +270,19 @@ class DefaultGraphHandler {
                     if (i !== j && directRel === EventRelationType.AFTER && (inferredTranRel === EventRelationType.BEFORE ||
                         inferredTranRel === EventRelationType.EQUAL)) {
                         // Check that the transitive closure was annotated as after however the path indicate a before/equal relation
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                     } else if (i !== j && directRel === EventRelationType.BEFORE && (inferredTranRel === EventRelationType.AFTER ||
                         inferredTranRel === EventRelationType.EQUAL)) {
                         // Check that the transitive closure was annotated as before however the path indicate an after/equal relation
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                     } else if (i !== j && directRel === EventRelationType.EQUAL && (inferredTranRel === EventRelationType.AFTER ||
                         inferredTranRel === EventRelationType.BEFORE)) {
                         // Check that the transitive closure was annotated as equals however the path indicate a before/after relation
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                     } else if (i !== j && directRel === EventRelationType.VAGUE && (inferredTranRel === EventRelationType.AFTER ||
                         inferredTranRel === EventRelationType.BEFORE || inferredTranRel === EventRelationType.EQUAL)) {
                         // Check that the transitive closure was annotated as equals however the path indicate a before/after relation
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                     }
                 }
             }
@@ -433,7 +433,7 @@ class CorefGraphHandler extends TemporalGraphHandler {
                             reachGraph[i][j] = EventRelationType.COREF;
                             reachGraph[j][i] = EventRelationType.COREF;
                         } else if (!isDirectEqual && reachGraph[i][j] !== EventRelationType.COREF && reachGraph[i][j] !== EventRelationType.COREF_TRANSITIVE) {
-                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     } else if (inferredTranRel === EventRelationType.NO_COREF && i !== j) {
                         if(emptyTransRel || reachGraph[i][j] === EventRelationType.EQUAL_TRANSITIVE) {
@@ -441,7 +441,7 @@ class CorefGraphHandler extends TemporalGraphHandler {
                             reachGraph[j][i] = EventRelationType.NO_COREF_TRANSITIVE;
                         } else if (!isDirectEqual && reachGraph[i][j] !== EventRelationType.NO_COREF && reachGraph[i][j] !== EventRelationType.UNCERTAIN_COREF &&
                             reachGraph[i][j] !== EventRelationType.NO_COREF_TRANSITIVE) {
-                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     }
 
@@ -452,7 +452,7 @@ class CorefGraphHandler extends TemporalGraphHandler {
                     } else if ((reachGraph[i][j] === EventRelationType.NO_COREF || reachGraph[i][j] === EventRelationType.UNCERTAIN_COREF) &&
                         inferredTranRel === EventRelationType.COREF && i !== j) {
                         // Check that the transitive closure was annotated as coref however the path indicate a contradicting relation
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                     }
                 }
             }
@@ -634,7 +634,7 @@ class CausalGraphHandler extends CorefGraphHandler {
                             reachGraph[i][j] = EventRelationType.CAUSE_TRANSITIVE;
                             reachGraph[j][i] = EventRelationType.EFFECT_TRANSITIVE;
                         } else if(getRelationMappingTransitive(reachGraph[i][j]) !== EventRelationType.BEFORE) {
-                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     }
 
@@ -642,7 +642,7 @@ class CausalGraphHandler extends CorefGraphHandler {
                     if (i !== j && (reachGraph[i][j] === EventRelationType.NO_CAUSE || reachGraph[i][j] === EventRelationType.UNCERTAIN_CAUSE) &&
                         inferredTranRel === EventRelationType.CAUSE) {
                         // Check that the transitive closure was annotated as after however the path indicate a before/equal relation
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                     }
                 }
             }
