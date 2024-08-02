@@ -21,8 +21,8 @@ npm start
 3) Save your work occasionally
 
 ## See Logs
-1) in the client browser click the left mouse button and select "inspect"
-2) go to the console tab
+1) In the client browser click the left mouse button and select "inspect"
+2) Go to the console tab
 
 ## Input format
 An example of how an input file should look like can be found in the `example` folder.
