@@ -35,8 +35,9 @@ An example of how an input file should look like can be found in the `example` f
 ## Configuration
 The tool can be configured by changing the `public/config.json` file.
 * To select which annotation steps to include, modify the following parameters:
-  * `includeTemp`
-  * `includeCoref`
-  * `includeCausal`
+  * `includeAxis` - Event selection step
+  * `includeTemp` - Temporal relation annotation step
+  * `includeCoref` - Coreference resolution step
+  * `includeCausal` - Causal relation annotation step
 * `showRemainingAnnot` - control whether to show the remaining annotations in the annotation panel
 * `exportAlways` - control whether to enable export even if the annotation is not complete
