@@ -1,0 +1,110 @@
+{
+    "main_doc": {
+        "doc_id": "0",
+        "tokens": [
+            "A",
+            "severe",
+            "car",
+            "accident",
+            "occurred",
+            "late",
+            "last",
+            "night",
+            ".",
+            "Two",
+            "vehicles",
+            "collided",
+            ",",
+            "causing",
+            "significant",
+            "damage",
+            ".",
+            "Emergency",
+            "services",
+            "responded",
+            "promptly",
+            ",",
+            "and",
+            "authorities",
+            "are",
+            "planning",
+            "to",
+            "investigate",
+            "."
+        ],
+        "mentions": [
+            {
+                "tokens": "accident",
+                "eventIndex": 0,
+                "m_id": "17",
+                "doc_id": "summary",
+                "tokens_ids": [
+                    3
+                ],
+                "axisType": "main",
+                "rootAxisEventId": -1,
+                "corefState": "unknown"
+            },
+            {
+                "tokens": "collided",
+                "eventIndex": 1,
+                "m_id": "11",
+                "doc_id": "summary",
+                "tokens_ids": [
+                    11
+                ],
+                "axisType": "main",
+                "rootAxisEventId": -1,
+                "corefState": "unknown"
+            },
+            {
+                "tokens": "damage",
+                "eventIndex": 2,
+                "m_id": "30",
+                "doc_id": "summary",
+                "tokens_ids": [
+                    15
+                ],
+                "axisType": "main",
+                "rootAxisEventId": -1,
+                "corefState": "unknown"
+            },
+            {
+                "tokens": "responded",
+                "eventIndex": 3,
+                "m_id": "13",
+                "doc_id": "summary",
+                "tokens_ids": [
+                    19
+                ],
+                "axisType": "main",
+                "rootAxisEventId": -1,
+                "corefState": "unknown"
+            },
+            {
+                "tokens": "investigate",
+                "eventIndex": 3,
+                "m_id": "34",
+                "doc_id": "summary",
+                "tokens_ids": [
+                    27
+                ],
+                "axisType": "main",
+                "rootAxisEventId": -1,
+                "corefState": "unknown"
+            }
+        ],
+        "time_exprs": [
+            {
+                "text": "late last night",
+                "indices": [
+                    [
+                        5,
+                        6,
+                        7
+                    ]
+                ]
+            }
+        ]
+    }
+}

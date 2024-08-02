@@ -1,0 +1,139 @@
+{
+  "tokens": [
+    "A",
+    "severe",
+    "car",
+    "accident",
+    "occurred",
+    "late",
+    "last",
+    "night",
+    ".",
+    "Two",
+    "vehicles",
+    "collided",
+    ",",
+    "causing",
+    "significant",
+    "damage",
+    ".",
+    "Emergency",
+    "services",
+    "responded",
+    "promptly",
+    ",",
+    "and",
+    "authorities",
+    "are",
+    "planning",
+    "to",
+    "investigate",
+    "."
+  ],
+  "allMentions": [
+    {
+      "tokens": "accident",
+      "eventIndex": 0,
+      "m_id": "17",
+      "doc_id": "summary",
+      "tokens_ids": [
+        3
+      ],
+      "axisType": "main",
+      "rootAxisEventId": -1,
+      "corefState": "unknown"
+    },
+    {
+      "tokens": "collided",
+      "eventIndex": 1,
+      "m_id": "11",
+      "doc_id": "summary",
+      "tokens_ids": [
+        11
+      ],
+      "axisType": "main",
+      "rootAxisEventId": -1,
+      "corefState": "unknown"
+    },
+    {
+      "tokens": "damage",
+      "eventIndex": 2,
+      "m_id": "30",
+      "doc_id": "summary",
+      "tokens_ids": [
+        15
+      ],
+      "axisType": "main",
+      "rootAxisEventId": -1,
+      "corefState": "unknown"
+    },
+    {
+      "tokens": "responded",
+      "eventIndex": 3,
+      "m_id": "13",
+      "doc_id": "summary",
+      "tokens_ids": [
+        19
+      ],
+      "axisType": "main",
+      "rootAxisEventId": -1,
+      "corefState": "unknown"
+    },
+    {
+      "tokens": "investigate",
+      "eventIndex": 4,
+      "m_id": "34",
+      "doc_id": "summary",
+      "tokens_ids": [
+        27
+      ],
+      "axisType": "not_event",
+      "rootAxisEventId": -1,
+      "corefState": "unknown"
+    }
+  ],
+  "allPairs": [
+    {
+      "_firstId": "17",
+      "_secondId": "11",
+      "_relation": "equal/coref"
+    },
+    {
+      "_firstId": "17",
+      "_secondId": "30",
+      "_relation": "before/cause"
+    },
+    {
+      "_firstId": "17",
+      "_secondId": "13",
+      "_relation": "before/cause"
+    },
+    {
+      "_firstId": "11",
+      "_secondId": "30",
+      "_relation": "before/cause"
+    },
+    {
+      "_firstId": "11",
+      "_secondId": "13",
+      "_relation": "before/cause"
+    },
+    {
+      "_firstId": "30",
+      "_secondId": "13",
+      "_relation": "before/no_cause"
+    }
+  ],
+  "corefClusters": [
+    {
+      "cluster": [
+        "11",
+        "17"
+      ],
+      "clusterId": "11-17"
+    }
+  ],
+  "_tempAnnotationMade": 3,
+  "_corefAnnotationMade": 4,
+  "_causeAnnotationMade": 0
+}
