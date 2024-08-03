@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: aliceblue;
+    background-color: #ECF0F1;
 }
 
 h1 {
@@ -27,7 +27,7 @@ p {
     max-width: 80%;
     margin: 0 auto;
     padding: 20px;
-    background-color: aliceblue
+    background-color: #D6EAF8;
 }
 
 .form-container {
@@ -83,10 +83,10 @@ p {
     }
 
 .button {
-    background-color: #4CAF50;
+    background-color: #8CA9D3;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 12px 12px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -102,10 +102,10 @@ button:disabled {
 }
 
 .button-next-task {
-    background-color: #D70040;
+    background-color: #F26659;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 8px 12px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -242,12 +242,6 @@ button:disabled {
     color: white;
     font-weight: bold;
 }
-.ANC { background-color: #007bff; }
-.INT { background-color: #86af49; }
-.HYP { background-color: #ff7b25; }
-.NEG { background-color: #6b5b95; }
-.ABS { background-color: #878f99; }
-.STT { background-color: #405d27; }
-.REC { background-color: #ada397; }
-.NOT { background-color: #c94c4c; }
+.ANC { background-color: #5DADE2; }
+.NOT { background-color: #F26659; }
 .NA { background-color: #4040a1; }

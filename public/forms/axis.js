@@ -1,7 +1,7 @@
 // ####################################################
 // ################# axis functions #################
 // ####################################################
-const options = ["Yes. It's anchorable", "No. it's one of intention/wish/opinion/hypothetical/condition/negation/abstract/non-specific/static/recurrent, or it's not an event"];
+const options = ["Yes. It's anchorable", "No."];
 
 class AxisForm extends UIForm {
     constructor(pageIndex, allAxes) {
@@ -33,6 +33,7 @@ class AxisForm extends UIForm {
         cleanQuestions();
         const questions = document.getElementById("questions");
         const paragraph = document.createElement("p");
+        paragraph.style.backgroundColor = "#EBF5FB";
 
         paragraph.innerHTML = this.formatText();
         questions.appendChild(paragraph);

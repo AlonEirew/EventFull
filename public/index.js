@@ -1,11 +1,8 @@
 let pageTitles = [];
-const axisTitle = 'Can The Event Be Anchored In Time?';
-const anchorTitle = 'Grounding Intentional/Opinion/Wish With Triggering Event';
+const axisTitle = 'Event Selection';
 const temporalTitle = 'Temporal Relation';
 const corefTitle = 'Coreference Relation';
-const subEventTitle = 'Sub-Event Relation';
 const causalTitle = 'Causal Relation';
-const projectionTitle = 'Projection Relation';
 
 const yes = 'Yes';
 const no = 'No';
