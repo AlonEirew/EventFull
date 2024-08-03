@@ -41,7 +41,6 @@
         "tokens_ids": [
           3
         ],
-        "axisType": "main",
         "rootAxisEventId": -1,
         "corefState": "unknown"
       },
@@ -53,7 +52,6 @@
         "tokens_ids": [
           11
         ],
-        "axisType": "main",
         "rootAxisEventId": -1,
         "corefState": "unknown"
       },
@@ -65,7 +63,6 @@
         "tokens_ids": [
           15
         ],
-        "axisType": "main",
         "rootAxisEventId": -1,
         "corefState": "unknown"
       },
@@ -77,7 +74,6 @@
         "tokens_ids": [
           19
         ],
-        "axisType": "main",
         "rootAxisEventId": -1,
         "corefState": "unknown"
       },
@@ -89,7 +85,6 @@
         "tokens_ids": [
           27
         ],
-        "axisType": "main",
         "rootAxisEventId": -1,
         "corefState": "unknown"
       }
