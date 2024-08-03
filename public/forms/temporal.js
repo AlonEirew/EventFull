@@ -7,6 +7,7 @@ class TemporalForm extends UIForm {
         super(pageIndex, allAxes, null);
         this.formType = FormType.TEMPORAL;
         this._selectedNodes = [];
+        this._discrepancy = [];
     }
 
     getInstructions() {
@@ -151,7 +152,6 @@ class TemporalForm extends UIForm {
     }
 
     handleSelection() {
-        let retVal = true;
         let selectedValue = this.getRadiosSelected("multiChoice1");
         const combSelect = TemporalForm.getCombinedQRelations(selectedValue);
         if (combSelect != null) {
@@ -164,17 +164,22 @@ class TemporalForm extends UIForm {
                 let axisById = this._allAxes.getAxisById(pair.getAxisId());
                 const firstId = pair.getFirstId();
                 const secondId = pair.getSecondId();
-                let discrepancies = axisById.handleFormRelations(firstId, secondId, combSelect, this.formType);
-                if (discrepancies.length > 0) {
-                    this.handleDiscrepancies(discrepancies[0]);
-                    retVal = false;
+                this._discrepancy = axisById.handleFormRelations(firstId, secondId, combSelect, this.formType);
+                if (this._discrepancy.length > 0) {
+                    this.handleDiscrepancies(this._discrepancy[0]);
+                    pair.setRelation(combSelect);
+                    this.createUI();
+                    return false;
                 }
 
                 this._annotations = this._allAxes.getAllAxesPairsFlat(FormType.TEMPORAL);
+            } else if (this._discrepancy.length > 0) {
+                this.handleDiscrepancies(this._discrepancy[0]);
+                return false;
             }
         }
 
-        return retVal;
+        return true;
     }
 
     handleDiscrepancies(discrepancy) {
