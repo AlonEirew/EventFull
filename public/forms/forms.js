@@ -11,6 +11,8 @@ class UIForm {
 
     loadForm() {
         readInstructions(this.getInstructions());
+        const title = document.getElementById("title");
+        title.innerHTML = pageTitles[currentPageIdx];
         this.createUI();
     }
 
@@ -52,18 +54,15 @@ class UIForm {
         buttonNextTask.onclick = function() {
             pages[currentPageIdx].handleSelection();
             if (pages[currentPageIdx].isFinalized()) {
-                const title = document.getElementById("title");
                 toggleGraphDivOff();
                 // pages[currentPageIdx].nextClick();
                 if (currentPageIdx < pages.length - 1) {
                     currentPageIdx++;
-                    title.innerHTML = pageTitles[currentPageIdx];
                     pages[currentPageIdx].loadForm();
                 } else {
                     for (let i = 0; i < pages.length; i++) {
                         if (pages[i].annotationRemainder() > 0) {
                             currentPageIdx = i;
-                            title.innerHTML = pageTitles[currentPageIdx];
                             pages[currentPageIdx].loadForm();
                             pages[currentPageIdx].nextUnhandledClick();
                             Swal.fire({
