@@ -222,7 +222,7 @@ class OneToManyForm extends UIForm {
         }
 
         for (let i = start1Idx; i <= end1Idx; i++) {
-            text[i] = `<span style=\"color:royalblue; font-weight: bold;\">${text[i]}</span>`;
+            text[i] = `<span class=\"label ANC\">${text[i]}</span>`;
         }
 
         const allRelevantPairs = this.getAllRelevantRelations(eventInFocus.getId());
@@ -231,7 +231,7 @@ class OneToManyForm extends UIForm {
             let start2Idx = curEvent.getTokensIds()[0];
             let end2Idx = curEvent.getTokensIds().at(-1);
             for (let j = start2Idx; j <= end2Idx; j++) {
-                text[j] = `<span style=\"color:orangered; font-weight: bold;\">${text[j]}`;
+                text[j] = `<span class=\"label NOT\">${text[j]}`;
             }
 
             if (!handledIds.has(curEvent.getId())) {

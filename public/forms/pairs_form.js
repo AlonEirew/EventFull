@@ -174,13 +174,13 @@ class PairsForm extends UIForm {
         }
 
         for (let i = start1Idx; i <= end1Idx; i++) {
-            text[i] = `<span style=\"color:royalblue; font-weight: bold;\">${text[i]}</span>`;
+            text[i] = `<span class=\"label ANC\" \">${text[i]}</span>`;
         }
 
         let start2Idx = event2.getTokensIds()[0];
         let end2Idx = event2.getTokensIds().at(-1);
         for (let i = start2Idx; i <= end2Idx; i++) {
-            text[i] = `<span style=\"color:orangered; font-weight: bold;\">${text[i]}</span>`;
+            text[i] = `<span class=\"label NOT\">${text[i]}</span>`;
         }
 
         return text.join(" ");
