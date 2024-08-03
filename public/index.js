@@ -13,11 +13,8 @@ let currentPageIdx = 0; // 0 - axis, 1 - anchor, 2 - temporal, 3 - coref, 4 - ca
 let pages = null; // array of pages (forms) to be displayed
 
 let axisForm = null;
-let anchorForm = null;
-let projectionForm = null;
 let temporalForm = null;
 let corefForm = null;
-let subEventForm = null;
 let causalForm = null;
 
 let currentLoadedFileName = null;

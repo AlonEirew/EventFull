@@ -93,7 +93,8 @@ class TemporalForm extends PairsForm {
     getQuestion(pair) {
         const divQuestion1 = document.createElement("div");
         const question1 = document.createElement("h2");
-        question1.innerHTML = "[QUESTION-1] Which event started first?";
+        question1.innerHTML = "Which event started first?";
+        question1.style.color = "black";
         divQuestion1.appendChild(question1);
         this.prepareQuestion1Div(divQuestion1, pair);
 

@@ -31,7 +31,7 @@ class PairsForm extends UIForm {
         const buttonBackTask = this.createPrevTaskButton();
         const buttonNextTask = this.createNextTaskButton();
         const paragraph = document.createElement("p");
-        paragraph.style.backgroundColor = "#ECF0F1";
+        paragraph.style.backgroundColor = "#EBF5FB";
 
         if (pair != null) {
             paragraph.innerHTML = this.formatText(pair);

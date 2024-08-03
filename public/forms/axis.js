@@ -40,6 +40,7 @@ class AxisForm extends UIForm {
 
         const question = document.createElement("h2");
         question.innerHTML = this.getQuestion(this._annotations[this._annotationIndex]);
+        question.style.color = "black";
         questions.appendChild(question);
 
         let selectedValue = null;
