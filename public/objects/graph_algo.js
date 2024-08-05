@@ -571,10 +571,10 @@ class CausalGraphHandler extends CorefGraphHandler {
             graphMatrix[graphSecondId][graphFirstId] = EventRelationType.UNCERTAIN_CAUSE;
         }
 
-        let reachAndDiscrepancies = this.reachAndTransitiveClosureRel(axisGraph);
-        this.fillMissingRelations(axisGraph, reachAndDiscrepancies[0]);
+        // let reachAndDiscrepancies = this.reachAndTransitiveClosureRel(axisGraph);
+        // this.fillMissingRelations(axisGraph, reachAndDiscrepancies[0]);
         console.log("Axis pairs AFTER selection (for pair-{" + firstId + ", " + secondId + "})");
-        return reachAndDiscrepancies[1];
+        return null;
     }
 
     getAllCausalPairCandidates(axisGraph, eventId) {

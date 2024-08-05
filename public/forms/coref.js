@@ -126,7 +126,7 @@ class CorefForm extends OneToManyForm {
                         'line-style': 'dashed',
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
-                        'opacity': 0.2,
+                        'opacity': 0,
                     }
                 };
             case EventRelationType.EQUAL:
@@ -150,7 +150,7 @@ class CorefForm extends OneToManyForm {
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none',
-                        'opacity': 0.2,
+                        'opacity': 0,
                     }
                 };
             case EventRelationType.CAUSE:
@@ -161,7 +161,7 @@ class CorefForm extends OneToManyForm {
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none',
-                        'opacity': 0.2,
+                        'opacity': 0,
                     }
                 };
             case EventRelationType.NO_CAUSE:
@@ -173,7 +173,7 @@ class CorefForm extends OneToManyForm {
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none',
-                        'opacity': 0.2,
+                        'opacity': 0,
                     }
                 };
             default:

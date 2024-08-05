@@ -181,7 +181,7 @@ class CausalForm extends OneToManyForm {
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none',
-                        'opacity': 0.2,
+                        'opacity': 0,
                     }
                 };
             default:

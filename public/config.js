@@ -4,7 +4,7 @@ const config = {
         "includeTemp": true,
         "includeCoref": true,
         "includeCausal": true,
-        "showRemainingAnnot": true,
+        "showRemainingAnnot": false,
         "debug": false,
         "exportAlways": true,
         "removeTransitive": false,
