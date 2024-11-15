@@ -130,8 +130,10 @@ class TemporalForm extends UIForm {
             const eventStartIds = allEvents[i].getTokensIds()[0];
             const eventEndIds = allEvents[i].getTokensIds().at(-1);
             for (let i = eventStartIds; i <= eventEndIds; i++) {
-                text[i] = `<span style=\"font-weight: bold;\">${text[i]}</span>`;
+                text[i] = `<span style=\"font-weight: bold;\">${text[i]}`;
             }
+
+            text[eventEndIds] += " (" + allEvents[i].getId() + ")</span>";
         }
 
         for (let i = 0; i < allTimeExpressions.length; i++) {
