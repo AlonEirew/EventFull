@@ -148,7 +148,7 @@ class CausalForm extends OneToManyForm {
                         'line-style': 'dotted',
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
-                        'opacity': 0,
+                        'opacity': 0.2,
                     }
                 };
             case EventRelationType.BEFORE:

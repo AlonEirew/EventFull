@@ -90,28 +90,28 @@ class Axis {
                 } else if(pairRelation === EventRelationType.BEFORE && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.BEFORE);
                     pairs.push(eventPair);
-                } else if(pairRelation === EventRelationType.EQUAL && pairIsManuallyAnnotated) {
+                } else if(pairRelation === EventRelationType.EQUAL && (pairIsManuallyAnnotated || formType === FormType.COREF)) {
                     eventPair.setRelation(EventRelationType.EQUAL);
                     pairs.push(eventPair);
                 } else if(pairRelation === EventRelationType.VAGUE && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.VAGUE);
                     pairs.push(eventPair);
-                } else if(pairRelation === EventRelationType.COREF && pairIsManuallyAnnotated) {
+                } else if(pairRelation === EventRelationType.COREF && (pairIsManuallyAnnotated || formType === FormType.COREF || formType === FormType.CAUSE)) {
                     eventPair.setRelation(EventRelationType.COREF);
                     pairs.push(eventPair);
-                } else if(pairRelation === EventRelationType.CAUSE && pairIsManuallyAnnotated) {
+                } else if(pairRelation === EventRelationType.CAUSE && (pairIsManuallyAnnotated || formType === FormType.CAUSE)) {
                     eventPair.setRelation(EventRelationType.CAUSE);
                     pairs.push(eventPair);
-                } else if(pairRelation === EventRelationType.NO_CAUSE && pairIsManuallyAnnotated) {
+                } else if(pairRelation === EventRelationType.NO_CAUSE && (pairIsManuallyAnnotated || formType === FormType.CAUSE)) {
                     eventPair.setRelation(EventRelationType.NO_CAUSE);
                     pairs.push(eventPair);
-                } else if(pairRelation === EventRelationType.UNCERTAIN_CAUSE && pairIsManuallyAnnotated) {
+                } else if(pairRelation === EventRelationType.UNCERTAIN_CAUSE && (pairIsManuallyAnnotated || formType === FormType.CAUSE)) {
                     eventPair.setRelation(EventRelationType.UNCERTAIN_CAUSE);
                     pairs.push(eventPair);
-                } else if(pairRelation === EventRelationType.NO_COREF && pairIsManuallyAnnotated) {
+                } else if(pairRelation === EventRelationType.NO_COREF && (pairIsManuallyAnnotated || formType === FormType.COREF || formType === FormType.CAUSE)) {
                     eventPair.setRelation(EventRelationType.NO_COREF);
                     pairs.push(eventPair);
-                } else if(pairRelation === EventRelationType.UNCERTAIN_COREF && pairIsManuallyAnnotated) {
+                } else if(pairRelation === EventRelationType.UNCERTAIN_COREF && (pairIsManuallyAnnotated || formType === FormType.COREF)) {
                     eventPair.setRelation(EventRelationType.UNCERTAIN_COREF);
                     pairs.push(eventPair);
                 }
