@@ -83,33 +83,35 @@ class Axis {
         for(let i = 0; i < eventIds.length; i++) {
             for(let j = 0; j < eventIds.length; j++) {
                 let eventPair = EventPair.initFromData(this.getAxisId(), eventIds[i], eventIds[j]);
-                if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.CANDIDATE) {
+                const pairRelation = this._axisGraph.getEdgeRelation(i, j);
+                const pairIsManuallyAnnotated = this._axisGraph.getEdgeManuallyAnnotated(i, j);
+                if(pairRelation === EventRelationType.CANDIDATE) {
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.BEFORE) {
+                } else if(pairRelation === EventRelationType.BEFORE && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.BEFORE);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.EQUAL) {
+                } else if(pairRelation === EventRelationType.EQUAL && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.EQUAL);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.VAGUE) {
+                } else if(pairRelation === EventRelationType.VAGUE && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.VAGUE);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.COREF) {
+                } else if(pairRelation === EventRelationType.COREF && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.COREF);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.CAUSE) {
+                } else if(pairRelation === EventRelationType.CAUSE && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.CAUSE);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.NO_CAUSE) {
+                } else if(pairRelation === EventRelationType.NO_CAUSE && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.NO_CAUSE);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.UNCERTAIN_CAUSE) {
+                } else if(pairRelation === EventRelationType.UNCERTAIN_CAUSE && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.UNCERTAIN_CAUSE);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.NO_COREF) {
+                } else if(pairRelation === EventRelationType.NO_COREF && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.NO_COREF);
                     pairs.push(eventPair);
-                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.UNCERTAIN_COREF) {
+                } else if(pairRelation === EventRelationType.UNCERTAIN_COREF && pairIsManuallyAnnotated) {
                     eventPair.setRelation(EventRelationType.UNCERTAIN_COREF);
                     pairs.push(eventPair);
                 }

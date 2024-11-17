@@ -5,7 +5,7 @@ function styleSelect(relation) {
     let styleClass;
     if (relation === EventRelationType.VAGUE) {
         styleClass = EventRelationType.VAGUE;
-    } else if (getRelationMappingSeparateTransitive(relation) === EventRelationType.EQUAL) {
+    } else if (getRelationMapping(relation) === EventRelationType.EQUAL) {
         styleClass = EventRelationType.EQUAL;
     } else if (relation === EventRelationType.CAUSE) {
         styleClass = "causal";

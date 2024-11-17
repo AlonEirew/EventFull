@@ -23,10 +23,10 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EFFECT, true);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -37,13 +37,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.NO_CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.NO_CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.NO_EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.NO_EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -57,13 +57,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.UNCERTAIN_CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.UNCERTAIN_CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.UNCERTAIN_EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -77,13 +77,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.NO_CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.NO_EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.NO_EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -97,13 +97,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.UNCERTAIN_CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.UNCERTAIN_EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -117,13 +117,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.NO_CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.NO_CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.NO_EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.NO_CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.NO_EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.NO_EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.NO_EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -137,13 +137,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.UNCERTAIN_CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.UNCERTAIN_CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.UNCERTAIN_EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.UNCERTAIN_CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.UNCERTAIN_EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -157,13 +157,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.UNCERTAIN_CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.NO_CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.NO_EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.UNCERTAIN_CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.UNCERTAIN_EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.NO_EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -177,13 +177,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.NO_CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.UNCERTAIN_CAUSE;
-        refGraphMatrix[1][0] = EventRelationType.UNCERTAIN_EFFECT;
-        refGraphMatrix[1][2] = EventRelationType.NO_CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.NO_EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.NO_EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -367,13 +367,13 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.EQUAL;
-        refGraphMatrix[1][0] = EventRelationType.EQUAL;
-        refGraphMatrix[1][2] = EventRelationType.CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EFFECT, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
@@ -391,12 +391,12 @@ describe('Causal Graph Algo Tests', () => {
         graphObj.handleFormRelations(2, 3, EventRelationType.CAUSE, FormType.CAUSAL);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.COREF;
-        refGraphMatrix[1][0] = EventRelationType.COREF;
-        refGraphMatrix[1][2] = EventRelationType.CAUSE;
-        refGraphMatrix[2][1] = EventRelationType.EFFECT;
-        refGraphMatrix[2][3] = EventRelationType.CAUSE;
-        refGraphMatrix[3][2] = EventRelationType.EFFECT;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EFFECT, true);
+        refGraphMatrix[2][3] = new GraphEdge(EventRelationType.CAUSE,true);
+        refGraphMatrix[3][2] = new GraphEdge(EventRelationType.EFFECT, true);
         // refGraphMatrix[0][2] = EventRelationType.BEFORE;
         // refGraphMatrix[2][0] = EventRelationType.AFTER;
 

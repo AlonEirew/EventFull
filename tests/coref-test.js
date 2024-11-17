@@ -23,10 +23,10 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.COREF;
-        refGraphMatrix[1][0] = EventRelationType.COREF;
-        refGraphMatrix[1][2] = EventRelationType.COREF;
-        refGraphMatrix[2][1] = EventRelationType.COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.COREF, true);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -37,10 +37,10 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.NO_COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.COREF;
-        refGraphMatrix[1][0] = EventRelationType.COREF;
-        refGraphMatrix[1][2] = EventRelationType.NO_COREF;
-        refGraphMatrix[2][1] = EventRelationType.NO_COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.NO_COREF, true);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -51,10 +51,10 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.UNCERTAIN_COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.COREF;
-        refGraphMatrix[1][0] = EventRelationType.COREF;
-        refGraphMatrix[1][2] = EventRelationType.UNCERTAIN_COREF;
-        refGraphMatrix[2][1] = EventRelationType.UNCERTAIN_COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -65,10 +65,10 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.NO_COREF;
-        refGraphMatrix[1][0] = EventRelationType.NO_COREF;
-        refGraphMatrix[1][2] = EventRelationType.COREF;
-        refGraphMatrix[2][1] = EventRelationType.COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.COREF, true);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -80,12 +80,12 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(2, 3, EventRelationType.COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.COREF;
-        refGraphMatrix[1][0] = EventRelationType.COREF;
-        refGraphMatrix[1][2] = EventRelationType.NO_COREF;
-        refGraphMatrix[2][1] = EventRelationType.NO_COREF;
-        refGraphMatrix[2][3] = EventRelationType.COREF;
-        refGraphMatrix[3][2] = EventRelationType.COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[2][3] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[3][2] = new GraphEdge(EventRelationType.COREF, true);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -97,15 +97,15 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(2, 3, EventRelationType.NO_COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.NO_COREF;
-        refGraphMatrix[1][0] = EventRelationType.NO_COREF;
-        refGraphMatrix[1][2] = EventRelationType.COREF;
-        refGraphMatrix[2][1] = EventRelationType.COREF;
-        refGraphMatrix[2][3] = EventRelationType.NO_COREF;
-        refGraphMatrix[3][2] = EventRelationType.NO_COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[2][3] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[3][2] = new GraphEdge(EventRelationType.NO_COREF, true);
 
-        refGraphMatrix[0][3] = EventRelationType.EQUAL;
-        refGraphMatrix[3][0] = EventRelationType.EQUAL;
+        refGraphMatrix[0][3] = new GraphEdge(EventRelationType.EQUAL, false);
+        refGraphMatrix[3][0] = new GraphEdge(EventRelationType.EQUAL, false);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -116,10 +116,10 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.UNCERTAIN_COREF;
-        refGraphMatrix[1][0] = EventRelationType.UNCERTAIN_COREF;
-        refGraphMatrix[1][2] = EventRelationType.COREF;
-        refGraphMatrix[2][1] = EventRelationType.COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.COREF, true);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -130,16 +130,16 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.NO_COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.NO_COREF;
-        refGraphMatrix[1][0] = EventRelationType.NO_COREF;
-        refGraphMatrix[1][2] = EventRelationType.NO_COREF;
-        refGraphMatrix[2][1] = EventRelationType.NO_COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.NO_COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.NO_COREF, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
-        refGraphMatrix[0][2] = EventRelationType.EQUAL;
-        refGraphMatrix[2][0] = EventRelationType.EQUAL;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.EQUAL, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.EQUAL, false);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);
@@ -150,16 +150,16 @@ describe('Coref Graph Algo Tests', () => {
         graphObj.handleFormRelations(1, 2, EventRelationType.UNCERTAIN_COREF, FormType.COREF);
 
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.UNCERTAIN_COREF;
-        refGraphMatrix[1][0] = EventRelationType.UNCERTAIN_COREF;
-        refGraphMatrix[1][2] = EventRelationType.UNCERTAIN_COREF;
-        refGraphMatrix[2][1] = EventRelationType.UNCERTAIN_COREF;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.NA);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[0][2].getEdgeRelation()).toEqual(EventRelationType.NA);
+        expect(refGraphMatrix[2][0].getEdgeRelation()).toEqual(EventRelationType.NA);
 
-        refGraphMatrix[0][2] = EventRelationType.EQUAL;
-        refGraphMatrix[2][0] = EventRelationType.EQUAL;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.EQUAL, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.EQUAL, false);
 
         console.log(graphObj.printGraph());
         expect(graphObj.getGraphMatrix()).toEqual(refGraphMatrix);

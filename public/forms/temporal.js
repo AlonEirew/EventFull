@@ -210,11 +210,11 @@ class TemporalForm extends UIForm {
 
     isRelationChanged(currentRelation, newRelation) {
         if(newRelation === EventRelationType.EQUAL) {
-            if(getRelationMappingSeparateTransitive(currentRelation) === EventRelationType.EQUAL) {
+            if(getRelationMapping(currentRelation) === EventRelationType.EQUAL) {
                 return false;
             }
         } else if (newRelation === EventRelationType.BEFORE) {
-            if (getRelationMappingSeparateTransitive(currentRelation) === EventRelationType.BEFORE) {
+            if (getRelationMapping(currentRelation) === EventRelationType.BEFORE) {
                 return false;
             }
         }
@@ -313,12 +313,12 @@ class TemporalForm extends UIForm {
 
         let divContains = null;
         if (pair.getRelation() !== EventRelationType.NA) {
-            if (getRelationMappingSeparateTransitive(pair.getRelation()) === EventRelationType.BEFORE) {
+            if (getRelationMapping(pair.getRelation()) === EventRelationType.BEFORE) {
                 input1.checked = true;
                 input2.checked = false;
                 input3.checked = false;
                 input4.checked = false;
-            } else if (getRelationMappingSeparateTransitive(pair.getRelation()) === EventRelationType.EQUAL) {
+            } else if (getRelationMapping(pair.getRelation()) === EventRelationType.EQUAL) {
                 input1.checked = false;
                 input2.checked = false;
                 input3.checked = true;
@@ -328,7 +328,7 @@ class TemporalForm extends UIForm {
                 input2.checked = false;
                 input3.checked = false;
                 input4.checked = true;
-            } else if (getRelationMappingSeparateTransitive(pair.getRelation()) === EventRelationType.AFTER) { // AFTER
+            } else if (getRelationMapping(pair.getRelation()) === EventRelationType.AFTER) { // AFTER
                 input2.checked = false;
                 input2.checked = true;
                 input3.checked = false;

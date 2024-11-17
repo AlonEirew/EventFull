@@ -75,8 +75,9 @@ class GraphObj {
     initGraph(graphIndices) {
         if(this._graphMatrix == null) {
             this._graphIndices = graphIndices;
-            this._graphMatrix = Array(this._graphIndices.length).fill().map(() => Array(this._graphIndices.length).fill(
-                new GraphEdge(EventRelationType.NA, false)));
+            this._graphMatrix = Array(this._graphIndices.length).fill().map(() =>
+                Array(this._graphIndices.length).fill().map(() => new GraphEdge(EventRelationType.NA, false))
+            );
             for (let i = 0; i < this._graphIndices.length - 1; i++) {
                 this._graphMatrix[i][i+1] = new GraphEdge(EventRelationType.CANDIDATE, false);
                 this._graphMatrix[i+1][i] = new GraphEdge(EventRelationType.CANDIDATE, false);
@@ -91,7 +92,7 @@ class GraphObj {
                 for (let i = addedEventsIdxs.length - 1; i >= 0; i--) {
                     if (addedEventsIdxs[i] === true) {
                         // Add new row and column
-                        this._graphMatrix.splice(i, 0, Array(this._graphMatrix.length).fill(new GraphEdge(EventRelationType.NA, false)));
+                        this._graphMatrix.splice(i, 0, Array(this._graphMatrix.length).fill().map(() => new GraphEdge(EventRelationType.NA, false)));
                         for (let j = this._graphMatrix.length - 1; j >= 0; j--) {
                             this._graphMatrix[j].splice(i, 0, new GraphEdge(EventRelationType.NA, false));
                         }
@@ -141,6 +142,10 @@ class GraphObj {
         return this._graphMatrix[firstId][secondId].getEdgeRelation();
     }
 
+    getEdgeManuallyAnnotated(firstId, secondId) {
+        return this._graphMatrix[firstId][secondId].isManuallyAnnotated();
+    }
+
     getGraphIndices() {
         return this._graphIndices;
     }
@@ -169,7 +174,7 @@ class GraphObj {
         const graphEventId = graphIndices.indexOf(eventId);
         let equalEventsPairs = [];
         for (let i = 0; i < reachAndDiscrepancies.length; i++) {
-            if (getRelationMappingTransitive(reachAndDiscrepancies[graphEventId][i]) === EventRelationType.EQUAL) {
+            if (getRelationMapping(reachAndDiscrepancies[graphEventId][i]) === EventRelationType.EQUAL) {
                 const eventPair = EventPair.initFromData("null", graphIndices[i], eventId);
                 eventPair.setRelation(getOppositeRelation(getExportRelation(reachAndDiscrepancies[graphEventId][i])));
                 equalEventsPairs.push(eventPair);
@@ -201,7 +206,7 @@ class GraphObj {
                         allPairs.push(eventPair);
                     } else {
                         let eventPair = EventPair.initFromData(axisId, eventIds[i], eventIds[j]);
-                        if (getRelationMappingTransitive(causal[i][j]) === EventRelationType.EQUAL) {
+                        if (getRelationMapping(causal[i][j]) === EventRelationType.EQUAL) {
                             eventPair.setRelation(getExportRelation(coref[i][j]));
                         } else {
                             eventPair.setRelation(getExportRelation(causal[i][j]));
@@ -236,24 +241,24 @@ class DefaultGraphHandler {
         for (let k = 0; k < length; k++) {
             for (let i = 0; i < length; i++) {
                 for (let j = 0; j < length; j++) {
-                    const directRel = getRelationMappingSeparateTransitive(reachGraph[i][j]);
-                    const inferredTranRel = getRelationMappingSeparateTransitive(this.getInferredTransitiveRelationType(reachGraph, i, j, k));
+                    const directRel = getRelationMapping(reachGraph[i][j]);
+                    const inferredTranRel = getRelationMapping(this.getInferredTransitiveRelationType(reachGraph, i, j, k));
                     const emptyTransRel = reachGraph[i][j] === EventRelationType.NA || reachGraph[i][j] === EventRelationType.CANDIDATE;
                     // Check cases that the transitive closure should be also annotated (as before relation)
                     if (inferredTranRel === EventRelationType.BEFORE && i !== j) {
                         if (emptyTransRel) {
                             // [i][k] is equal or before and [k][j] is before
-                            reachGraph[i][j] = EventRelationType.BEFORE_TRANSITIVE;
-                            reachGraph[j][i] = EventRelationType.AFTER_TRANSITIVE;
-                        } else if(getRelationMappingTransitive(reachGraph[i][j]) !== EventRelationType.BEFORE) {
+                            reachGraph[i][j] = EventRelationType.BEFORE;
+                            reachGraph[j][i] = EventRelationType.AFTER;
+                        } else if(getRelationMapping(reachGraph[i][j]) !== EventRelationType.BEFORE) {
                             discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     } else if (inferredTranRel === EventRelationType.EQUAL && i !== j) {
                         if (emptyTransRel) {
                             // [i][k] is equal and [k][j] is equal
-                            reachGraph[i][j] = EventRelationType.EQUAL_TRANSITIVE;
-                            reachGraph[j][i] = EventRelationType.EQUAL_TRANSITIVE;
-                        } else if(getRelationMappingTransitive(reachGraph[i][j]) !== EventRelationType.EQUAL) {
+                            reachGraph[i][j] = EventRelationType.EQUAL;
+                            reachGraph[j][i] = EventRelationType.EQUAL;
+                        } else if(getRelationMapping(reachGraph[i][j]) !== EventRelationType.EQUAL) {
                             discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     }
@@ -301,15 +306,15 @@ class DefaultGraphHandler {
     }
 
     getInferredTransitiveRelationType(reachGraph, i, j, k) {
-        if((getRelationMappingTransitive(reachGraph[i][k]) === EventRelationType.AFTER && getRelationMappingTransitive(reachGraph[k][j]) === EventRelationType.AFTER) ||
-            (getRelationMappingTransitive(reachGraph[i][k]) === EventRelationType.AFTER && getRelationMappingTransitive(reachGraph[k][j]) === EventRelationType.EQUAL) ||
-            (getRelationMappingTransitive(reachGraph[i][k]) === EventRelationType.EQUAL && getRelationMappingTransitive(reachGraph[k][j]) === EventRelationType.AFTER)) {
+        if((getRelationMapping(reachGraph[i][k]) === EventRelationType.AFTER && getRelationMapping(reachGraph[k][j]) === EventRelationType.AFTER) ||
+            (getRelationMapping(reachGraph[i][k]) === EventRelationType.AFTER && getRelationMapping(reachGraph[k][j]) === EventRelationType.EQUAL) ||
+            (getRelationMapping(reachGraph[i][k]) === EventRelationType.EQUAL && getRelationMapping(reachGraph[k][j]) === EventRelationType.AFTER)) {
             return EventRelationType.AFTER;
-        } else if((getRelationMappingTransitive(reachGraph[i][k]) === EventRelationType.BEFORE && getRelationMappingTransitive(reachGraph[k][j]) === EventRelationType.BEFORE) ||
-            (getRelationMappingTransitive(reachGraph[i][k]) === EventRelationType.BEFORE && getRelationMappingTransitive(reachGraph[k][j]) === EventRelationType.EQUAL) ||
-            (getRelationMappingTransitive(reachGraph[i][k]) === EventRelationType.EQUAL && getRelationMappingTransitive(reachGraph[k][j]) === EventRelationType.BEFORE)) {
+        } else if((getRelationMapping(reachGraph[i][k]) === EventRelationType.BEFORE && getRelationMapping(reachGraph[k][j]) === EventRelationType.BEFORE) ||
+            (getRelationMapping(reachGraph[i][k]) === EventRelationType.BEFORE && getRelationMapping(reachGraph[k][j]) === EventRelationType.EQUAL) ||
+            (getRelationMapping(reachGraph[i][k]) === EventRelationType.EQUAL && getRelationMapping(reachGraph[k][j]) === EventRelationType.BEFORE)) {
             return EventRelationType.BEFORE;
-        } else if(getRelationMappingTransitive(reachGraph[i][k]) === EventRelationType.EQUAL && getRelationMappingTransitive(reachGraph[k][j]) === EventRelationType.EQUAL) {
+        } else if(getRelationMapping(reachGraph[i][k]) === EventRelationType.EQUAL && getRelationMapping(reachGraph[k][j]) === EventRelationType.EQUAL) {
             return EventRelationType.EQUAL;
         } else {
             return EventRelationType.NA;
@@ -386,16 +391,16 @@ class CorefGraphHandler extends TemporalGraphHandler {
         const graphSecondId = graphIndices.indexOf(secondId);
         switch (selectedRelation) {
             case EventRelationType.COREF:
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.COREF;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.COREF;
+                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.COREF, true);
+                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.COREF, true);
                 break;
             case EventRelationType.NO_COREF:
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.NO_COREF;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.NO_COREF;
+                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.NO_COREF, true);
+                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.NO_COREF, true);
                 break;
             case EventRelationType.UNCERTAIN_COREF:
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.UNCERTAIN_COREF;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.UNCERTAIN_COREF;
+                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
                 break;
             default:
                 throw new Error("Error: Relation " + selectedRelation + " not supported!");
@@ -414,27 +419,21 @@ class CorefGraphHandler extends TemporalGraphHandler {
             for (let i = 0; i < length; i++) {
                 for (let j = 0; j < length; j++) {
                     const emptyTransRel = reachGraph[i][j] === EventRelationType.NA || reachGraph[i][j] === EventRelationType.CANDIDATE;
-                    const isDirectEqual = getRelationMappingSeparateTransitive(reachGraph[i][j]) === EventRelationType.EQUAL;
+                    const isDirectEqual = getRelationMapping(reachGraph[i][j]) === EventRelationType.EQUAL;
                     const inferredTranRel = this.getInferredTransitiveRelationType(reachGraph, i, j, k);
                     if (inferredTranRel === EventRelationType.COREF && i !== j) {
-                        if(emptyTransRel || reachGraph[i][j] === EventRelationType.EQUAL_TRANSITIVE) {
-                            reachGraph[i][j] = EventRelationType.COREF_TRANSITIVE;
-                            reachGraph[j][i] = EventRelationType.COREF_TRANSITIVE;
-                        } else if (reachGraph[i][j] === EventRelationType.EQUAL_TRANSITIVE) {
-                            reachGraph[i][j] = EventRelationType.COREF_TRANSITIVE;
-                            reachGraph[j][i] = EventRelationType.COREF_TRANSITIVE;
-                        } else if (reachGraph[i][j] === EventRelationType.EQUAL) {
+                        if(emptyTransRel || reachGraph[i][j] === EventRelationType.EQUAL) {
                             reachGraph[i][j] = EventRelationType.COREF;
                             reachGraph[j][i] = EventRelationType.COREF;
-                        } else if (!isDirectEqual && reachGraph[i][j] !== EventRelationType.COREF && reachGraph[i][j] !== EventRelationType.COREF_TRANSITIVE) {
+                        } else if (!isDirectEqual && reachGraph[i][j] !== EventRelationType.COREF) {
                             discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     } else if (inferredTranRel === EventRelationType.NO_COREF && i !== j) {
-                        if(emptyTransRel || reachGraph[i][j] === EventRelationType.EQUAL_TRANSITIVE) {
-                            reachGraph[i][j] = EventRelationType.NO_COREF_TRANSITIVE;
-                            reachGraph[j][i] = EventRelationType.NO_COREF_TRANSITIVE;
+                        if(emptyTransRel || reachGraph[i][j] === EventRelationType.EQUAL) {
+                            reachGraph[i][j] = EventRelationType.NO_COREF;
+                            reachGraph[j][i] = EventRelationType.NO_COREF;
                         } else if (!isDirectEqual && reachGraph[i][j] !== EventRelationType.NO_COREF && reachGraph[i][j] !== EventRelationType.UNCERTAIN_COREF &&
-                            reachGraph[i][j] !== EventRelationType.NO_COREF_TRANSITIVE) {
+                            reachGraph[i][j] !== EventRelationType.NO_COREF) {
                             discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     }
@@ -462,18 +461,18 @@ class CorefGraphHandler extends TemporalGraphHandler {
             for (let i = 0; i < length; i++) {
                 for (let j = 0; j < length; j++) {
                     // Check cases that the transitive closure should be also annotated (path cannot determine if caused or not)
-                    const ikNoCoref = reachAndTransGraph[i][k] === EventRelationType.NO_COREF || reachAndTransGraph[i][k] === EventRelationType.NO_COREF_TRANSITIVE || reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_COREF;
-                    const kjNoCoref = reachAndTransGraph[k][j] === EventRelationType.NO_COREF || reachAndTransGraph[k][j] === EventRelationType.NO_COREF_TRANSITIVE || reachAndTransGraph[k][j] === EventRelationType.UNCERTAIN_COREF;
-                    const notDirectCoref = reachAndTransGraph[i][j] !== EventRelationType.COREF && reachAndTransGraph[i][j] !== EventRelationType.COREF_TRANSITIVE;
-                    if (i !== j && (getRelationMappingSeparateTransitive(reachAndTransGraph[i][j]) === EventRelationType.EQUAL_TRANSITIVE ||
-                        getRelationMappingSeparateTransitive(reachAndTransGraph[i][j]) === EventRelationType.NA) &&
+                    const ikNoCoref = reachAndTransGraph[i][k] === EventRelationType.NO_COREF || reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_COREF;
+                    const kjNoCoref = reachAndTransGraph[k][j] === EventRelationType.NO_COREF || reachAndTransGraph[k][j] === EventRelationType.UNCERTAIN_COREF;
+                    const notDirectCoref = reachAndTransGraph[i][j] !== EventRelationType.COREF;
+                    if (i !== j && (getRelationMapping(reachAndTransGraph[i][j]) === EventRelationType.EQUAL ||
+                        getRelationMapping(reachAndTransGraph[i][j]) === EventRelationType.NA) &&
                         ikNoCoref && kjNoCoref && notDirectCoref) {
                         // Adding the transitive before relation to check if its a cause or no cause (as it is undetermined)
                         // will trigger the logic to ask the user
                         reachAndTransGraph[i][j] = EventRelationType.EQUAL;
                         reachAndTransGraph[j][i] = EventRelationType.EQUAL;
-                        graphMatrix[i][j] = new GraphEdge(EventRelationType.EQUAL, false);
-                        graphMatrix[j][i] = new GraphEdge(EventRelationType.EQUAL, false);
+                        graphMatrix[i][j].setEdgeRelation(EventRelationType.EQUAL);
+                        graphMatrix[j][i].setEdgeRelation(EventRelationType.EQUAL);
                     }
                 }
             }
@@ -486,7 +485,7 @@ class CorefGraphHandler extends TemporalGraphHandler {
         const graphEventId = graphIndices.indexOf(eventId);
         let coreferringEvents = [];
         for (let i = 0; i < reachAndDiscrepancies.length; i++) {
-            if (reachAndDiscrepancies[graphEventId][i] === EventRelationType.COREF || reachAndDiscrepancies[graphEventId][i] === EventRelationType.COREF_TRANSITIVE) {
+            if (reachAndDiscrepancies[graphEventId][i] === EventRelationType.COREF) {
                 coreferringEvents.push(graphIndices[i]);
             }
         }
@@ -495,21 +494,16 @@ class CorefGraphHandler extends TemporalGraphHandler {
     }
 
     getInferredTransitiveRelationType(reachAndTransGraph, i, j, k) {
-        if ((reachAndTransGraph[i][k] === EventRelationType.COREF || reachAndTransGraph[i][k] === EventRelationType.COREF_TRANSITIVE) &&
-            (reachAndTransGraph[k][j] === EventRelationType.NO_COREF || reachAndTransGraph[k][j] === EventRelationType.UNCERTAIN_COREF ||
-                reachAndTransGraph[k][j] === EventRelationType.NO_COREF_TRANSITIVE)) {
+        if (reachAndTransGraph[i][k] === EventRelationType.COREF &&
+            (reachAndTransGraph[k][j] === EventRelationType.NO_COREF || reachAndTransGraph[k][j] === EventRelationType.UNCERTAIN_COREF)) {
             return EventRelationType.NO_COREF;
-        } else if ((reachAndTransGraph[i][k] === EventRelationType.NO_COREF || reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_COREF ||
-                reachAndTransGraph[i][k] === EventRelationType.NO_COREF_TRANSITIVE) &&
-            (reachAndTransGraph[k][j] === EventRelationType.COREF || reachAndTransGraph[k][j] === EventRelationType.COREF_TRANSITIVE)) {
+        } else if ((reachAndTransGraph[i][k] === EventRelationType.NO_COREF || reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_COREF) &&
+            reachAndTransGraph[k][j] === EventRelationType.COREF) {
             return EventRelationType.NO_COREF;
-        } else if (((reachAndTransGraph[i][k] === EventRelationType.COREF || reachAndTransGraph[i][k] === EventRelationType.COREF_TRANSITIVE) &&
-            (reachAndTransGraph[k][j] === EventRelationType.COREF || reachAndTransGraph[k][j] === EventRelationType.COREF_TRANSITIVE))) {
+        } else if (reachAndTransGraph[i][k] === EventRelationType.COREF && reachAndTransGraph[k][j] === EventRelationType.COREF) {
             return EventRelationType.COREF;
-        } else if ((reachAndTransGraph[i][k] === EventRelationType.NO_COREF || reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_COREF ||
-                reachAndTransGraph[i][k] === EventRelationType.NO_COREF_TRANSITIVE) &&
-            (reachAndTransGraph[k][j] === EventRelationType.NO_COREF || reachAndTransGraph[k][j] === EventRelationType.COREF_TRANSITIVE ||
-                reachAndTransGraph[k][j] === EventRelationType.NO_COREF_TRANSITIVE)) {
+        } else if ((reachAndTransGraph[i][k] === EventRelationType.NO_COREF || reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_COREF) &&
+            (reachAndTransGraph[k][j] === EventRelationType.NO_COREF || reachAndTransGraph[k][j] === EventRelationType.COREF)) {
             // This is NA because in this case we like to ask the user about i,j relation
             return EventRelationType.NA;
         } else {
@@ -526,8 +520,7 @@ class CorefGraphHandler extends TemporalGraphHandler {
             for (let j = 0; j < allPairs.length; j++) {
                 if (i !== j) {
                     const firstId = graphIndices.indexOf(allPairs[j].getFirstId());
-                    if (reachAndDiscrepancies[firstId][secondId] === EventRelationType.COREF ||
-                        reachAndDiscrepancies[firstId][secondId] === EventRelationType.COREF_TRANSITIVE) {
+                    if (reachAndDiscrepancies[firstId][secondId] === EventRelationType.COREF) {
                         withinCorefPairs.add(i);
                         withinCorefPairs.add(j);
                     }
@@ -577,7 +570,7 @@ class CausalGraphHandler extends CorefGraphHandler {
         const graphEventId = graphIndices.indexOf(eventId);
         let beforePairs = [];
         for (let i = 0; i < reachAndDiscrepancies.length; i++) {
-            if (getRelationMappingTransitive(reachAndDiscrepancies[graphEventId][i]) === EventRelationType.AFTER) {
+            if (getRelationMapping(reachAndDiscrepancies[graphEventId][i]) === EventRelationType.AFTER) {
                 const eventPair = EventPair.initFromData("null", graphIndices[i], eventId);
                 eventPair.setRelation(getOppositeRelation(getExportRelation(reachAndDiscrepancies[graphEventId][i])));
                 beforePairs.push(eventPair);
@@ -596,8 +589,7 @@ class CausalGraphHandler extends CorefGraphHandler {
             for (let j = 0; j < beforePairs.length; j++) {
                 if (i !== j) {
                     const firstId = graphIndices.indexOf(beforePairs[j].getFirstId());
-                    if (reachAndDiscrepancies[firstId][secondId] === EventRelationType.CAUSE ||
-                        reachAndDiscrepancies[firstId][secondId] === EventRelationType.CAUSE_TRANSITIVE) {
+                    if (reachAndDiscrepancies[firstId][secondId] === EventRelationType.CAUSE) {
                         withinCausalParis.add(i);
                         withinCausalParis.add(j);
                     }
@@ -621,13 +613,13 @@ class CausalGraphHandler extends CorefGraphHandler {
                 for (let j = 0; j < length; j++) {
                     const inferredTranRel = this.getInferredTransitiveRelationType(reachGraph, i, j, k);
                     const emptyTransRel = reachGraph[i][j] === EventRelationType.NA || reachGraph[i][j] === EventRelationType.CANDIDATE ||
-                        reachGraph[i][j] === EventRelationType.BEFORE || reachGraph[i][j] === EventRelationType.BEFORE_TRANSITIVE;
+                        reachGraph[i][j] === EventRelationType.BEFORE;
                     // Check cases that the transitive closure should be also annotated (as before relation)
                     if (inferredTranRel === EventRelationType.CAUSE && i !== j) {
                         if (emptyTransRel) {
-                            reachGraph[i][j] = EventRelationType.CAUSE_TRANSITIVE;
-                            reachGraph[j][i] = EventRelationType.EFFECT_TRANSITIVE;
-                        } else if(getRelationMappingTransitive(reachGraph[i][j]) !== EventRelationType.BEFORE) {
+                            reachGraph[i][j] = EventRelationType.CAUSE;
+                            reachGraph[j][i] = EventRelationType.EFFECT;
+                        } else if(getRelationMapping(reachGraph[i][j]) !== EventRelationType.BEFORE) {
                             discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                         }
                     }
@@ -658,21 +650,21 @@ class CausalGraphHandler extends CorefGraphHandler {
                         reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_CAUSE;
                     const isKJAnnot = reachAndTransGraph[k][j] === EventRelationType.CAUSE || reachAndTransGraph[k][j] === EventRelationType.NO_CAUSE ||
                         reachAndTransGraph[k][j] === EventRelationType.UNCERTAIN_CAUSE
-                    const isInferredCause = reachAndTransGraph[i][j] === EventRelationType.CAUSE_TRANSITIVE || this.getInferredTransitiveRelationType(reachAndTransGraph, i, j, k) === EventRelationType.CAUSE;
+                    const isInferredCause = this.getInferredTransitiveRelationType(reachAndTransGraph, i, j, k) === EventRelationType.CAUSE;
                     const isInferredBefore = this.getInferredTransitiveRelationType(reachAndTransGraph, i, j, k) === EventRelationType.BEFORE;
                     const isPathAnnotated = (isIKAnnot && isKJAnnot) ||
-                        (isIKAnnot && getRelationMappingTransitive(reachAndTransGraph[k][j]) === EventRelationType.EQUAL ||
-                            (isKJAnnot && getRelationMappingTransitive(reachAndTransGraph[i][k]) === EventRelationType.EQUAL));
+                        (isIKAnnot && getRelationMapping(reachAndTransGraph[k][j]) === EventRelationType.EQUAL ||
+                            (isKJAnnot && getRelationMapping(reachAndTransGraph[i][k]) === EventRelationType.EQUAL));
                     if (i !== j && !isDirectCauseAnnot && !isInferredCause && isPathAnnotated && isInferredBefore) {
                         // Adding the transitive before relation to check if its a cause or no cause (as it is undetermined)
                         // will trigger the logic to ask the user
                         reachAndTransGraph[i][j] = EventRelationType.BEFORE;
                         reachAndTransGraph[j][i] = EventRelationType.AFTER;
-                        graphMatrix[i][j] = new GraphEdge(EventRelationType.BEFORE, false);
-                        graphMatrix[j][i] = new GraphEdge(EventRelationType.AFTER, false);
+                        graphMatrix[i][j].setEdgeRelation(EventRelationType.BEFORE);
+                        graphMatrix[j][i].setEdgeRelation(EventRelationType.AFTER);
                     } else if (!isDirectCauseAnnot && isInferredCause && graphMatrix[i][j] === EventRelationType.BEFORE) {
-                        graphMatrix[i][j] = new GraphEdge(EventRelationType.CAUSE, false);
-                        graphMatrix[j][i] = new GraphEdge(EventRelationType.EFFECT, false);
+                        graphMatrix[i][j].setEdgeRelation(EventRelationType.CAUSE);
+                        graphMatrix[j][i].setEdgeRelation(EventRelationType.EFFECT);
                     }
                 }
             }
@@ -680,8 +672,7 @@ class CausalGraphHandler extends CorefGraphHandler {
     }
 
     getInferredTransitiveRelationType(reachGraph, i, j, k) {
-        if((reachGraph[i][k] === EventRelationType.CAUSE || reachGraph[i][k] === EventRelationType.CAUSE_TRANSITIVE) &&
-            (reachGraph[k][j] === EventRelationType.CAUSE || reachGraph[k][j] === EventRelationType.CAUSE_TRANSITIVE)) {
+        if(reachGraph[i][k] === EventRelationType.CAUSE && reachGraph[k][j] === EventRelationType.CAUSE) {
             return EventRelationType.CAUSE;
         } else {
             return super.getInferredTransitiveRelationType(reachGraph, i, j, k);

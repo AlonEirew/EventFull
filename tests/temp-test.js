@@ -11,8 +11,8 @@ describe('Temporal Graph Algo Tests', () => {
     it('test1 setting before relation between two edges', () => {
         graphObj.handleFormRelations(0, 1, EventRelationType.BEFORE, FormType.TEMPORAL);
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.BEFORE;
-        refGraphMatrix[1][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.AFTER, true);
         fillGraphCandidates(refGraphMatrix);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
@@ -21,8 +21,8 @@ describe('Temporal Graph Algo Tests', () => {
     it('test2 setting equal relation between two edges', () => {
         graphObj.handleFormRelations(0, 1, EventRelationType.EQUAL, FormType.TEMPORAL);
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.EQUAL;
-        refGraphMatrix[1][0] = EventRelationType.EQUAL;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EQUAL, true);
         fillGraphCandidates(refGraphMatrix);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
@@ -31,8 +31,8 @@ describe('Temporal Graph Algo Tests', () => {
     it('test3 setting vague relation between two edges', () => {
         graphObj.handleFormRelations(0, 1, EventRelationType.VAGUE, FormType.TEMPORAL);
         let refGraphMatrix = graphObjRef.getGraphMatrix();
-        refGraphMatrix[0][1] = EventRelationType.VAGUE;
-        refGraphMatrix[1][0] = EventRelationType.VAGUE;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.VAGUE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.VAGUE, true);
         fillGraphCandidates(refGraphMatrix);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
@@ -43,74 +43,74 @@ describe('Temporal Graph Algo Tests', () => {
         fillGraphCandidates(refGraphMatrix);
 
         graphObj.handleFormRelations(0, 1, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.BEFORE;
-        refGraphMatrix[1][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.BEFORE;
-        refGraphMatrix[2][1] = EventRelationType.AFTER;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(2, 4, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[2][3] = EventRelationType.BEFORE;
-        refGraphMatrix[3][2] = EventRelationType.AFTER;
+        refGraphMatrix[2][3] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[3][2] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(4, 5, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[3][4] = EventRelationType.BEFORE;
-        refGraphMatrix[4][3] = EventRelationType.AFTER;
+        refGraphMatrix[3][4] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[4][3] = new GraphEdge(EventRelationType.AFTER, true);
 
-        expect(refGraphMatrix[0][2]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[2][0]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[0][3]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[3][0]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[0][4]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[4][0]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[1][3]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[3][1]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[1][4]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[4][1]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[2][4]).toEqual(EventRelationType.CANDIDATE);
-        expect(refGraphMatrix[4][2]).toEqual(EventRelationType.CANDIDATE);
+        expect(refGraphMatrix[0][2]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[2][0]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[0][3]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[3][0]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[0][4]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[4][0]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[1][3]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[3][1]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[1][4]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[4][1]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[2][4]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
+        expect(refGraphMatrix[4][2]).toEqual(new GraphEdge(EventRelationType.CANDIDATE, false));
 
         // remove transitive (candidate) relations
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
-        refGraphMatrix[0][3] = EventRelationType.NA;
-        refGraphMatrix[3][0] = EventRelationType.NA;
+        refGraphMatrix[0][3] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[3][0] = new GraphEdge(EventRelationType.NA, false);
 
-        refGraphMatrix[0][4] = EventRelationType.NA;
-        refGraphMatrix[4][0] = EventRelationType.NA;
+        refGraphMatrix[0][4] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[4][0] = new GraphEdge(EventRelationType.NA, false);
 
-        refGraphMatrix[1][3] = EventRelationType.NA;
-        refGraphMatrix[3][1] = EventRelationType.NA;
+        refGraphMatrix[1][3] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[3][1] = new GraphEdge(EventRelationType.NA, false);
 
-        refGraphMatrix[1][4] = EventRelationType.NA;
-        refGraphMatrix[4][1] = EventRelationType.NA;
+        refGraphMatrix[1][4] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[4][1] = new GraphEdge(EventRelationType.NA, false);
 
-        refGraphMatrix[2][4] = EventRelationType.NA;
-        refGraphMatrix[4][2] = EventRelationType.NA;
+        refGraphMatrix[2][4] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[4][2] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
 
         graphObj.handleFormRelations(1, 2, EventRelationType.AFTER, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.AFTER;
-        refGraphMatrix[2][1] = EventRelationType.BEFORE;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.AFTER, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.BEFORE, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.CANDIDATE;
-        refGraphMatrix[2][0] = EventRelationType.CANDIDATE;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.CANDIDATE, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.CANDIDATE, false);
 
-        refGraphMatrix[0][3] = EventRelationType.CANDIDATE;
-        refGraphMatrix[3][0] = EventRelationType.CANDIDATE;
+        refGraphMatrix[0][3] = new GraphEdge(EventRelationType.CANDIDATE, false);
+        refGraphMatrix[3][0] = new GraphEdge(EventRelationType.CANDIDATE, false);
 
-        refGraphMatrix[0][4] = EventRelationType.CANDIDATE;
-        refGraphMatrix[4][0] = EventRelationType.CANDIDATE;
+        refGraphMatrix[0][4] = new GraphEdge(EventRelationType.CANDIDATE, false);
+        refGraphMatrix[4][0] = new GraphEdge(EventRelationType.CANDIDATE, false);
 
-        refGraphMatrix[1][3] = EventRelationType.CANDIDATE;
-        refGraphMatrix[3][1] = EventRelationType.CANDIDATE;
+        refGraphMatrix[1][3] = new GraphEdge(EventRelationType.CANDIDATE, false);
+        refGraphMatrix[3][1] = new GraphEdge(EventRelationType.CANDIDATE, false);
 
-        refGraphMatrix[1][4] = EventRelationType.CANDIDATE;
-        refGraphMatrix[4][1] = EventRelationType.CANDIDATE;
+        refGraphMatrix[1][4] = new GraphEdge(EventRelationType.CANDIDATE, false);
+        refGraphMatrix[4][1] = new GraphEdge(EventRelationType.CANDIDATE, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -120,31 +120,31 @@ describe('Temporal Graph Algo Tests', () => {
         fillGraphCandidates(refGraphMatrix);
 
         graphObj.handleFormRelations(0, 1, EventRelationType.VAGUE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.VAGUE;
-        refGraphMatrix[1][0] = EventRelationType.VAGUE;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.VAGUE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.VAGUE, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.BEFORE;
-        refGraphMatrix[2][1] = EventRelationType.AFTER;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(0, 2, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[0][2] = EventRelationType.BEFORE;
-        refGraphMatrix[2][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(2, 4, EventRelationType.AFTER, FormType.TEMPORAL);
-        refGraphMatrix[2][3] = EventRelationType.AFTER;
-        refGraphMatrix[3][2] = EventRelationType.BEFORE;
+        refGraphMatrix[2][3] = new GraphEdge(EventRelationType.AFTER, true);
+        refGraphMatrix[3][2] = new GraphEdge(EventRelationType.BEFORE, true);
 
         graphObj.handleFormRelations(1, 4, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[1][3] = EventRelationType.EQUAL;
-        refGraphMatrix[3][1] = EventRelationType.EQUAL;
+        refGraphMatrix[1][3] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[3][1] = new GraphEdge(EventRelationType.EQUAL, true);
         // Removing as there is a transitive path (3->1->2) --> This functionality was removed
-        // refGraphMatrix[2][3] = EventRelationType.NA;
-        // refGraphMatrix[3][2] = EventRelationType.NA;
+        // refGraphMatrix[2][3] = new GraphEdge(EventRelationType.NA, false);
+        // refGraphMatrix[3][2] = new GraphEdge(EventRelationType.NA, false);
 
         graphObj.handleFormRelations(0, 4, EventRelationType.VAGUE, FormType.TEMPORAL);
-        refGraphMatrix[0][3] = EventRelationType.VAGUE;
-        refGraphMatrix[3][0] = EventRelationType.VAGUE;
+        refGraphMatrix[0][3] = new GraphEdge(EventRelationType.VAGUE, true);
+        refGraphMatrix[3][0] = new GraphEdge(EventRelationType.VAGUE, true);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -154,26 +154,26 @@ describe('Temporal Graph Algo Tests', () => {
         fillGraphCandidates(refGraphMatrix);
 
         graphObj.handleFormRelations(0, 1, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.BEFORE;
-        refGraphMatrix[1][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.VAGUE, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.VAGUE;
-        refGraphMatrix[2][1] = EventRelationType.VAGUE;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.VAGUE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.VAGUE, true);
 
         graphObj.handleFormRelations(0, 2, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[0][2] = EventRelationType.BEFORE;
-        refGraphMatrix[2][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(2, 4, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[2][3] = EventRelationType.EQUAL;
-        refGraphMatrix[3][2] = EventRelationType.EQUAL;
+        refGraphMatrix[2][3] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[3][2] = new GraphEdge(EventRelationType.EQUAL, true);
         // Removing as there is a transitive path (0->2->3)
-        refGraphMatrix[0][3] = EventRelationType.NA;
-        refGraphMatrix[3][0] = EventRelationType.NA;
+        refGraphMatrix[0][3] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[3][0] = new GraphEdge(EventRelationType.NA, false);
         // Adding as there is no path
-        refGraphMatrix[1][3] = EventRelationType.CANDIDATE;
-        refGraphMatrix[3][1] = EventRelationType.CANDIDATE;
+        refGraphMatrix[1][3] = new GraphEdge(EventRelationType.CANDIDATE, false);
+        refGraphMatrix[3][1] = new GraphEdge(EventRelationType.CANDIDATE, false);
 
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
@@ -185,34 +185,34 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(1, 2, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.EQUAL;
-        refGraphMatrix[2][1] = EventRelationType.EQUAL;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EQUAL, true);
 
         graphObj.handleFormRelations(2, 4, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[2][3] = EventRelationType.EQUAL;
-        refGraphMatrix[3][2] = EventRelationType.EQUAL;
+        refGraphMatrix[2][3] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[3][2] = new GraphEdge(EventRelationType.EQUAL, true);
 
         graphObj.handleFormRelations(4, 5, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[3][4] = EventRelationType.EQUAL;
-        refGraphMatrix[4][3] = EventRelationType.EQUAL;
+        refGraphMatrix[3][4] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[4][3] = new GraphEdge(EventRelationType.EQUAL, true);
 
         graphObj.handleFormRelations(0, 1, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.BEFORE;
-        refGraphMatrix[1][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.AFTER, true);
 
         // removing transitive paths that are now can be reached and shouldn't be checked (candidate -> NA)
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
-        refGraphMatrix[0][3] = EventRelationType.NA;
-        refGraphMatrix[3][0] = EventRelationType.NA;
-        refGraphMatrix[0][4] = EventRelationType.NA;
-        refGraphMatrix[4][0] = EventRelationType.NA;
-        refGraphMatrix[1][3] = EventRelationType.NA;
-        refGraphMatrix[3][1] = EventRelationType.NA;
-        refGraphMatrix[1][4] = EventRelationType.NA;
-        refGraphMatrix[4][1] = EventRelationType.NA;
-        refGraphMatrix[2][4] = EventRelationType.NA;
-        refGraphMatrix[4][2] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[0][3] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[3][0] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[0][4] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[4][0] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[1][3] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[3][1] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[1][4] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[4][1] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][4] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[4][2] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -223,16 +223,16 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.BEFORE;
-        refGraphMatrix[1][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.BEFORE;
-        refGraphMatrix[2][1] = EventRelationType.AFTER;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.AFTER, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -243,16 +243,16 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.EQUAL;
-        refGraphMatrix[1][0] = EventRelationType.EQUAL;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EQUAL, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.BEFORE;
-        refGraphMatrix[2][1] = EventRelationType.AFTER;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.AFTER, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -263,16 +263,16 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.BEFORE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.BEFORE;
-        refGraphMatrix[1][0] = EventRelationType.AFTER;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.BEFORE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.AFTER, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.EQUAL;
-        refGraphMatrix[2][1] = EventRelationType.EQUAL;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EQUAL, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -283,16 +283,16 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.EQUAL;
-        refGraphMatrix[1][0] = EventRelationType.EQUAL;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EQUAL, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.EQUAL;
-        refGraphMatrix[2][1] = EventRelationType.EQUAL;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EQUAL, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -303,16 +303,16 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.AFTER, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.AFTER;
-        refGraphMatrix[1][0] = EventRelationType.BEFORE;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.AFTER, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.BEFORE, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.AFTER, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.AFTER;
-        refGraphMatrix[2][1] = EventRelationType.BEFORE;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.AFTER, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.BEFORE, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -323,16 +323,16 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.EQUAL;
-        refGraphMatrix[1][0] = EventRelationType.EQUAL;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.EQUAL, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.AFTER, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.AFTER;
-        refGraphMatrix[2][1] = EventRelationType.BEFORE;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.AFTER, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.BEFORE, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -343,16 +343,16 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.AFTER, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.AFTER;
-        refGraphMatrix[1][0] = EventRelationType.BEFORE;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.AFTER, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.BEFORE, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.EQUAL;
-        refGraphMatrix[2][1] = EventRelationType.EQUAL;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EQUAL, true);
 
         // Adding back transitives relations that are now needed due to the new relation
-        refGraphMatrix[0][2] = EventRelationType.NA;
-        refGraphMatrix[2][0] = EventRelationType.NA;
+        refGraphMatrix[0][2] = new GraphEdge(EventRelationType.NA, false);
+        refGraphMatrix[2][0] = new GraphEdge(EventRelationType.NA, false);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -363,12 +363,12 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.VAGUE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.VAGUE;
-        refGraphMatrix[1][0] = EventRelationType.VAGUE;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.VAGUE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.VAGUE, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.EQUAL, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.EQUAL;
-        refGraphMatrix[2][1] = EventRelationType.EQUAL;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.EQUAL, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.EQUAL, true);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -379,12 +379,12 @@ describe('Temporal Graph Algo Tests', () => {
 
         // in graph the indexes are as follows (0, 1, 2, 3=4, 4=5, 5=6, 6=7)
         graphObj.handleFormRelations(0, 1, EventRelationType.VAGUE, FormType.TEMPORAL);
-        refGraphMatrix[0][1] = EventRelationType.VAGUE;
-        refGraphMatrix[1][0] = EventRelationType.VAGUE;
+        refGraphMatrix[0][1] = new GraphEdge(EventRelationType.VAGUE, true);
+        refGraphMatrix[1][0] = new GraphEdge(EventRelationType.VAGUE, true);
 
         graphObj.handleFormRelations(1, 2, EventRelationType.VAGUE, FormType.TEMPORAL);
-        refGraphMatrix[1][2] = EventRelationType.VAGUE;
-        refGraphMatrix[2][1] = EventRelationType.VAGUE;
+        refGraphMatrix[1][2] = new GraphEdge(EventRelationType.VAGUE, true);
+        refGraphMatrix[2][1] = new GraphEdge(EventRelationType.VAGUE, true);
 
         expect(graphObj.getGraphMatrix()).toEqual(graphObjRef.getGraphMatrix());
     });
@@ -447,8 +447,9 @@ function fillGraphCandidates(refGraphMatrix) {
             if (i === j) {
                 continue;
             }
-            if (refGraphMatrix[i][j] === EventRelationType.NA) {
-                refGraphMatrix[i][j] = EventRelationType.CANDIDATE;
+
+            if (refGraphMatrix[i][j].getEdgeRelation() === EventRelationType.NA) {
+                refGraphMatrix[i][j].setEdgeRelation(EventRelationType.CANDIDATE);
             }
         }
     }

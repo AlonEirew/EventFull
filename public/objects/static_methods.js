@@ -11,7 +11,7 @@ function getAllPairsByRelationGroup(allAxesPairsFlat, relationGroupTest) {
 }
 
 function isEqualOrCoref(relation) {
-    return getRelationMappingTransitive(relation) === EventRelationType.EQUAL;
+    return getRelationMapping(relation) === EventRelationType.EQUAL;
     // return relation === EventRelationType.EQUAL ||
     //     relation === EventRelationType.COREF ||
     //     relation === EventRelationType.NO_COREF;
@@ -22,7 +22,7 @@ function isContainsOrSubEvent(relation) {
 }
 
 function isBeforeOrCause(relation) {
-    return getRelationMappingTransitive(relation) === EventRelationType.BEFORE;
+    return getRelationMapping(relation) === EventRelationType.BEFORE;
     // return relation === EventRelationType.BEFORE ||
     //     relation === EventRelationType.CAUSE ||
     //     relation === EventRelationType.NO_CAUSE;
