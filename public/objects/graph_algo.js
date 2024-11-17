@@ -391,16 +391,16 @@ class CorefGraphHandler extends TemporalGraphHandler {
         const graphSecondId = graphIndices.indexOf(secondId);
         switch (selectedRelation) {
             case EventRelationType.COREF:
-                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.COREF, true);
-                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.COREF, true);
+                graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.COREF);
+                graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.COREF);
                 break;
             case EventRelationType.NO_COREF:
-                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.NO_COREF, true);
-                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.NO_COREF, true);
+                graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.NO_COREF);
+                graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.NO_COREF);
                 break;
             case EventRelationType.UNCERTAIN_COREF:
-                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
-                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.UNCERTAIN_COREF, true);
+                graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.UNCERTAIN_COREF);
+                graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.UNCERTAIN_COREF);
                 break;
             default:
                 throw new Error("Error: Relation " + selectedRelation + " not supported!");
@@ -539,23 +539,23 @@ class CausalGraphHandler extends CorefGraphHandler {
         const graphFirstId = graphIndices.indexOf(firstId);
         const graphSecondId = graphIndices.indexOf(secondId);
         if (selectedRelation === EventRelationType.CAUSE) {
-            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.CAUSE, true);
-            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.EFFECT, true);
+            graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.CAUSE);
+            graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.EFFECT);
         } else if (selectedRelation === EventRelationType.NO_CAUSE) {
-            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.NO_CAUSE, true);
-            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.NO_EFFECT, true);
+            graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.NO_CAUSE);
+            graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.NO_EFFECT);
         } else if (selectedRelation === EventRelationType.UNCERTAIN_CAUSE) {
-            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
-            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
+            graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.UNCERTAIN_CAUSE);
+            graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.UNCERTAIN_EFFECT);
         } else if (selectedRelation === EventRelationType.EFFECT) {
-            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.EFFECT, true);
-            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.CAUSE, true);
+            graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.EFFECT);
+            graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.CAUSE);
         } else if (selectedRelation === EventRelationType.NO_EFFECT) {
-            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.NO_EFFECT, true);
-            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+            graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.NO_EFFECT);
+            graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.NO_CAUSE);
         } else if (selectedRelation === EventRelationType.UNCERTAIN_EFFECT) {
-            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
-            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+            graphMatrix[graphFirstId][graphSecondId].setEdgeRelation(EventRelationType.UNCERTAIN_EFFECT);
+            graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.UNCERTAIN_CAUSE);
         }
 
         // let reachAndDiscrepancies = this.reachAndTransitiveClosureRel(axisGraph);
