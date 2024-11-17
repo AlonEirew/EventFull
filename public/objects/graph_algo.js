@@ -54,23 +54,32 @@ class GraphObj {
     }
 
     static fromJsonObject(jsonObject) {
-        const graphObj = new GraphObj();
         if (jsonObject != null) {
-            graphObj._graphMatrix = jsonObject._graphMatrix;
+            const graphObj = new GraphObj();
             graphObj._graphIndices = jsonObject._graphIndices;
+            graphObj._graphMatrix = Array(graphObj._graphIndices.length).fill().map(() => Array(graphObj._graphIndices.length).fill(
+                new GraphEdge(EventRelationType.NA, false)));
+
+            for (let i = 0; i < graphObj._graphIndices.length; i++) {
+                for (let j = 0; j < graphObj._graphIndices.length; j++) {
+                    graphObj._graphMatrix[i][j] = GraphEdge.fromJsonObject(jsonObject._graphMatrix[i][j])
+                }
+            }
+
             return graphObj;
         }
 
-        return graphObj;
+        return null
     }
 
     initGraph(graphIndices) {
         if(this._graphMatrix == null) {
             this._graphIndices = graphIndices;
-            this._graphMatrix = Array(this._graphIndices.length).fill().map(() => Array(this._graphIndices.length).fill(EventRelationType.NA));
+            this._graphMatrix = Array(this._graphIndices.length).fill().map(() => Array(this._graphIndices.length).fill(
+                new GraphEdge(EventRelationType.NA, false)));
             for (let i = 0; i < this._graphIndices.length - 1; i++) {
-                this._graphMatrix[i][i+1] = EventRelationType.CANDIDATE;
-                this._graphMatrix[i+1][i] = EventRelationType.CANDIDATE;
+                this._graphMatrix[i][i+1] = new GraphEdge(EventRelationType.CANDIDATE, false);
+                this._graphMatrix[i+1][i] = new GraphEdge(EventRelationType.CANDIDATE, false);
             }
         } else {
             const thisGraphSorted = [...this._graphIndices].sort();
@@ -82,9 +91,9 @@ class GraphObj {
                 for (let i = addedEventsIdxs.length - 1; i >= 0; i--) {
                     if (addedEventsIdxs[i] === true) {
                         // Add new row and column
-                        this._graphMatrix.splice(i, 0, Array(this._graphMatrix.length).fill(EventRelationType.NA));
+                        this._graphMatrix.splice(i, 0, Array(this._graphMatrix.length).fill(new GraphEdge(EventRelationType.NA, false)));
                         for (let j = this._graphMatrix.length - 1; j >= 0; j--) {
-                            this._graphMatrix[j].splice(i, 0, EventRelationType.NA);
+                            this._graphMatrix[j].splice(i, 0, new GraphEdge(EventRelationType.NA, false));
                         }
                     }
                 }
@@ -101,27 +110,6 @@ class GraphObj {
                 }
 
                 this._graphIndices = graphIndices;
-            }
-        }
-    }
-
-    removeTemporalTransitiveRels() {
-        let currentGraph = this.getGraphMatrix();
-        for (let i = 0; i < currentGraph.length; i++) {
-            for (let j = 0; j < currentGraph[i].length; j++) {
-                if(i === j || currentGraph[i][j] === EventRelationType.NA) {
-                    continue;
-                }
-
-                let remRelReg = currentGraph[i][j];
-                let remRelRev = currentGraph[j][i];
-                currentGraph[i][j] = EventRelationType.NA;
-                currentGraph[j][i] = EventRelationType.NA;
-                let transitiveGraph = this._temporalGraphHandler.reachAndTransitiveClosureRel(this)[0];
-                if (transitiveGraph[i][j] === EventRelationType.NA || transitiveGraph[j][i] === EventRelationType.NA) {
-                    currentGraph[i][j] = remRelReg;
-                    currentGraph[j][i] = remRelRev;
-                }
             }
         }
     }
@@ -147,6 +135,10 @@ class GraphObj {
 
     getGraphMatrix() {
         return this._graphMatrix;
+    }
+
+    getEdgeRelation(firstId, secondId) {
+        return this._graphMatrix[firstId][secondId].getEdgeRelation();
     }
 
     getGraphIndices() {
@@ -301,7 +293,7 @@ class DefaultGraphHandler {
         let i, j;
         for (i = 0; i < length; i++) {
             for (j = 0; j < length; j++) {
-                reach[i][j] = graphMatrix[i][j];
+                reach[i][j] = graphMatrix[i][j].getEdgeRelation();
             }
         }
 
@@ -335,23 +327,23 @@ class TemporalGraphHandler extends DefaultGraphHandler {
         switch (selectedRelation) {
             case EventRelationType.BEFORE:
                 console.log("user selected temporal relation BEFORE for nodes: {" + firstId + ", " + secondId + "}");
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.BEFORE;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.AFTER;
+                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.BEFORE, true);
+                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.AFTER, true);
                 break;
             case EventRelationType.AFTER:
                 console.log("user selected temporal relation AFTER for nodes: {" + firstId + ", " + secondId + "}");
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.AFTER;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.BEFORE;
+                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.AFTER, true);
+                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.BEFORE, true);
                 break;
             case EventRelationType.EQUAL:
                 console.log("user selected temporal relation EQUAL for nodes: {" + firstId + ", " + secondId + "}");
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.EQUAL;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.EQUAL;
+                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.EQUAL, true);
+                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.EQUAL, true);
                 break;
             case EventRelationType.VAGUE:
                 console.log("user selected temporal relation VAGUE for nodes: {" + firstId + ", " + secondId + "}");
-                graphMatrix[graphFirstId][graphSecondId] = EventRelationType.VAGUE;
-                graphMatrix[graphSecondId][graphFirstId] = EventRelationType.VAGUE;
+                graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.VAGUE, true);
+                graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.VAGUE, true);
                 break;
         }
 
@@ -366,18 +358,20 @@ class TemporalGraphHandler extends DefaultGraphHandler {
         let graphMatrix = axisGraph.getGraphMatrix();
         for(let i = 0; i < axisGraph.getGraphIndices().length; i++) {
             for (let j = 0; j < axisGraph.getGraphIndices().length; j++) {
+                const graphMatrixEdgeRel = graphMatrix[i][j].getEdgeRelation();
+                const graphMatrixEdgeRelOpp = graphMatrix[j][i].getEdgeRelation();
                 // If i was able to get from i to second node after the change there is no path from i to the first node
                 if (reachAndTransGraph[i][j] === EventRelationType.NA && reachAndTransGraph[j][i] === EventRelationType.NA && i !== j) {
                     // console.log("Adding candidate pair for unreached: {" + i + ", " + j + "}");
-                    graphMatrix[i][j] = EventRelationType.CANDIDATE;
-                    graphMatrix[j][i] = EventRelationType.CANDIDATE;
+                    graphMatrix[i][j] = new GraphEdge(EventRelationType.CANDIDATE, false);
+                    graphMatrix[j][i] = new GraphEdge(EventRelationType.CANDIDATE, false);
                     reachAndTransGraph[i][j] = EventRelationType.CANDIDATE;
                     reachAndTransGraph[j][i] = EventRelationType.CANDIDATE;
-                } else if ((graphMatrix[i][j] === EventRelationType.CANDIDATE && graphMatrix[j][i] === EventRelationType.CANDIDATE) &&
+                } else if ((graphMatrixEdgeRel === EventRelationType.CANDIDATE && graphMatrixEdgeRelOpp === EventRelationType.CANDIDATE) &&
                     (reachAndTransGraph[i][j] !== EventRelationType.NA && reachAndTransGraph[j][i] !== EventRelationType.CANDIDATE)) {
                     // console.log("Removing candidate pair that can be reached: {" + i + ", " + j + "}");
-                    graphMatrix[i][j] = EventRelationType.NA;
-                    graphMatrix[j][i] = EventRelationType.NA;
+                    graphMatrix[i][j] = new GraphEdge(EventRelationType.NA, false);
+                    graphMatrix[j][i] = new GraphEdge(EventRelationType.NA, false);
                 }
             }
         }
@@ -478,8 +472,8 @@ class CorefGraphHandler extends TemporalGraphHandler {
                         // will trigger the logic to ask the user
                         reachAndTransGraph[i][j] = EventRelationType.EQUAL;
                         reachAndTransGraph[j][i] = EventRelationType.EQUAL;
-                        graphMatrix[i][j] = EventRelationType.EQUAL;
-                        graphMatrix[j][i] = EventRelationType.EQUAL;
+                        graphMatrix[i][j] = new GraphEdge(EventRelationType.EQUAL, false);
+                        graphMatrix[j][i] = new GraphEdge(EventRelationType.EQUAL, false);
                     }
                 }
             }
@@ -552,23 +546,23 @@ class CausalGraphHandler extends CorefGraphHandler {
         const graphFirstId = graphIndices.indexOf(firstId);
         const graphSecondId = graphIndices.indexOf(secondId);
         if (selectedRelation === EventRelationType.CAUSE) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.CAUSE;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.EFFECT;
+            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.CAUSE, true);
+            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.EFFECT, true);
         } else if (selectedRelation === EventRelationType.NO_CAUSE) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.NO_CAUSE;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.NO_EFFECT;
+            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.NO_CAUSE, true);
+            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.NO_EFFECT, true);
         } else if (selectedRelation === EventRelationType.UNCERTAIN_CAUSE) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.UNCERTAIN_CAUSE;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.UNCERTAIN_EFFECT;
+            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
+            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
         } else if (selectedRelation === EventRelationType.EFFECT) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.EFFECT;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.CAUSE;
+            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.EFFECT, true);
+            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.CAUSE, true);
         } else if (selectedRelation === EventRelationType.NO_EFFECT) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.NO_EFFECT;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.NO_CAUSE;
+            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.NO_EFFECT, true);
+            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.NO_CAUSE, true);
         } else if (selectedRelation === EventRelationType.UNCERTAIN_EFFECT) {
-            graphMatrix[graphFirstId][graphSecondId] = EventRelationType.UNCERTAIN_EFFECT;
-            graphMatrix[graphSecondId][graphFirstId] = EventRelationType.UNCERTAIN_CAUSE;
+            graphMatrix[graphFirstId][graphSecondId] = new GraphEdge(EventRelationType.UNCERTAIN_EFFECT, true);
+            graphMatrix[graphSecondId][graphFirstId] = new GraphEdge(EventRelationType.UNCERTAIN_CAUSE, true);
         }
 
         // let reachAndDiscrepancies = this.reachAndTransitiveClosureRel(axisGraph);
@@ -674,11 +668,11 @@ class CausalGraphHandler extends CorefGraphHandler {
                         // will trigger the logic to ask the user
                         reachAndTransGraph[i][j] = EventRelationType.BEFORE;
                         reachAndTransGraph[j][i] = EventRelationType.AFTER;
-                        graphMatrix[i][j] = EventRelationType.BEFORE;
-                        graphMatrix[j][i] = EventRelationType.AFTER;
+                        graphMatrix[i][j] = new GraphEdge(EventRelationType.BEFORE, false);
+                        graphMatrix[j][i] = new GraphEdge(EventRelationType.AFTER, false);
                     } else if (!isDirectCauseAnnot && isInferredCause && graphMatrix[i][j] === EventRelationType.BEFORE) {
-                        graphMatrix[i][j] = EventRelationType.CAUSE;
-                        graphMatrix[j][i] = EventRelationType.EFFECT;
+                        graphMatrix[i][j] = new GraphEdge(EventRelationType.CAUSE, false);
+                        graphMatrix[j][i] = new GraphEdge(EventRelationType.EFFECT, false);
                     }
                 }
             }
@@ -692,5 +686,36 @@ class CausalGraphHandler extends CorefGraphHandler {
         } else {
             return super.getInferredTransitiveRelationType(reachGraph, i, j, k);
         }
+    }
+}
+
+class GraphEdge {
+    constructor(relation, manually_annotated) {
+        this._relation = relation;
+        this._manually_annotated = manually_annotated;
+    }
+
+    static fromJsonObject(jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
+
+        return new GraphEdge(jsonObject._relation, jsonObject._manually_annotated);
+    }
+
+    getEdgeRelation() {
+        return this._relation;
+    }
+
+    isManuallyAnnotated() {
+        return this._manually_annotated;
+    }
+
+    setEdgeRelation(relation) {
+        this._relation = relation;
+    }
+
+    setManuallyAnnotated(manually_annotated) {
+        this._manually_annotated = manually_annotated;
     }
 }

@@ -393,10 +393,6 @@ class TemporalForm extends UIForm {
             }
 
             allAxes[i].getAxisGraph().initGraph(eventIdsSorted);
-            if (config.app.removeTransitive) {
-                allAxes[i].getAxisGraph().removeTemporalTransitiveRels();
-            }
-
             const axisPairs = allAxes[i].fromGraphToPairs(FormType.TEMPORAL);
             for(let j = 0; j < axisPairs.length; j++) {
                 const pairToAdd = axisPairs[j];

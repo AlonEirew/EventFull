@@ -79,38 +79,37 @@ class Axis {
     fromGraphToPairs(formType) {
         let pairs = [];
         this._axisGraph.fillFormMissingRel(formType);
-        let graphMatrix = this._axisGraph.getGraphMatrix();
         const eventIds = this._axisGraph.getGraphIndices();
-        for(let i = 0; i < graphMatrix.length; i++) {
-            for(let j = 0; j < graphMatrix[i].length; j++) {
+        for(let i = 0; i < eventIds.length; i++) {
+            for(let j = 0; j < eventIds.length; j++) {
                 let eventPair = EventPair.initFromData(this.getAxisId(), eventIds[i], eventIds[j]);
-                if(graphMatrix[i][j] === EventRelationType.CANDIDATE) {
+                if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.CANDIDATE) {
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.BEFORE) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.BEFORE) {
                     eventPair.setRelation(EventRelationType.BEFORE);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.EQUAL) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.EQUAL) {
                     eventPair.setRelation(EventRelationType.EQUAL);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.VAGUE) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.VAGUE) {
                     eventPair.setRelation(EventRelationType.VAGUE);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.COREF) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.COREF) {
                     eventPair.setRelation(EventRelationType.COREF);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.CAUSE) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.CAUSE) {
                     eventPair.setRelation(EventRelationType.CAUSE);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.NO_CAUSE) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.NO_CAUSE) {
                     eventPair.setRelation(EventRelationType.NO_CAUSE);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.UNCERTAIN_CAUSE) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.UNCERTAIN_CAUSE) {
                     eventPair.setRelation(EventRelationType.UNCERTAIN_CAUSE);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.NO_COREF) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.NO_COREF) {
                     eventPair.setRelation(EventRelationType.NO_COREF);
                     pairs.push(eventPair);
-                } else if(graphMatrix[i][j] === EventRelationType.UNCERTAIN_COREF) {
+                } else if(this._axisGraph.getEdgeRelation(i, j) === EventRelationType.UNCERTAIN_COREF) {
                     eventPair.setRelation(EventRelationType.UNCERTAIN_COREF);
                     pairs.push(eventPair);
                 }
