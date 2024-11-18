@@ -121,13 +121,14 @@ class OneToManyForm extends UIForm {
     }
 
     createUI() {
-        cleanQuestions();
+        const questions = document.getElementById("questions");
+        cleanPanel(questions);
+
         let eventInFocus = null;
         if (this._annotations.length > 0) {
             eventInFocus = this._annotations[this._annotationIndex];
         }
 
-        const questions = document.getElementById("questions");
         const summaryPanel = document.createElement("div");
         const buttonBackTask = this.createPrevTaskButton();
         const buttonNextTask = this.createNextTaskButton();

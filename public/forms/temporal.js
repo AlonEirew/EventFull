@@ -15,6 +15,10 @@ class TemporalForm extends UIForm {
     }
 
     loadForm() {
+        if(document.getElementById("axis-inst") != null) {
+            document.getElementById("axis-inst").style.display = "none";
+        }
+
         this._annotations = this.initTmpPairs();
         if (this._annotationIndex !== 0 && this._annotationIndex >= this._annotations.length) {
             this._annotationIndex = this._annotations.length - 1;
@@ -26,18 +30,18 @@ class TemporalForm extends UIForm {
     }
 
     createUI() {
-        cleanQuestions();
+        const questions = document.getElementById("questions");
+        cleanPanel(questions);
+
         let pair = null;
         if (this._annotations.length > 0) {
             pair = this._annotations[this._annotationIndex];
         }
 
-        const questions = document.getElementById("questions");
         const summaryPanel = document.createElement("div");
         const buttonBackTask = this.createPrevTaskButton();
         const buttonNextTask = this.createNextTaskButton();
         const paragraph = this.getParagraph();
-        paragraph.style.backgroundColor = "#EBF5FB";
 
         if (pair != null) {
             paragraph.innerHTML = this.formatText(pair);

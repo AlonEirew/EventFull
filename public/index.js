@@ -26,7 +26,10 @@ let currentLoadedFileName = null;
 function clearAll() {
     pages = [];
     currentPageIdx = 0;
-    cleanQuestions();
+    const leftPanel = document.getElementById("questions");
+    const rightPanel = document.getElementById("cy");
+    cleanPanel(leftPanel);
+    cleanPanel(rightPanel);
     toggleGraphDivOff();
     cy = null;
     graphEventsToPreset = null;
@@ -210,11 +213,10 @@ function readInstructions(instFile) {
     });
 }
 
-function cleanQuestions() {
+function cleanPanel(parantElem) {
     console.log("cleaning the main div element 'questions'");
-    const questions = document.getElementById("questions");
-    while (questions.firstChild) {
-        questions.removeChild(questions.firstChild);
+    while (parantElem.firstChild) {
+        parantElem.removeChild(parantElem.firstChild);
     }
 }
 

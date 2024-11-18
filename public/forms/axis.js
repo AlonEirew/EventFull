@@ -1,7 +1,6 @@
 // ####################################################
 // ################# axis functions #################
 // ####################################################
-const options = ["Yes - It's anchorable", "No"];
 
 class AxisForm extends UIForm {
     constructor(pageIndex, allAxes) {
@@ -28,31 +27,41 @@ class AxisForm extends UIForm {
     }
 
     createUI() {
-        cleanQuestions();
-        const questions = document.getElementById("questions");
-        const paragraph = this.getParagraph();
+        const leftPanel = document.getElementById("questions");
+        const rightPanel = document.getElementById("axis-inst");
+
+        cleanPanel(leftPanel);
+        cleanPanel(rightPanel);
+
+        rightPanel.style.display = "block";
 
         const question = document.createElement("h2");
         question.innerHTML = this.getQuestion(this._annotations[this._annotationIndex]);
-        question.style.color = "black";
-        questions.appendChild(question);
+        question.id = "axisQuestion";
+        // question.style.color = "black";
+        rightPanel.appendChild(question);
+        addLegend(rightPanel);
 
+        const paragraph = this.getParagraph();
         paragraph.innerHTML = this.formatText();
-        questions.appendChild(paragraph);
+        leftPanel.appendChild(paragraph);
 
-        if (this.annotationRemainder() === 0 && document.getElementById("next-task") == null) {
-            const questions = document.getElementById("questions");
-            questions.appendChild(this.createNextTaskButton());
+        let nextTaskButton = this.createNextTaskButton();
+        nextTaskButton.id = "next-task";
+        nextTaskButton.disabled = true;
+        leftPanel.appendChild(nextTaskButton);
+        if (this.annotationRemainder() === 0) {
+            nextTaskButton.disabled = false;
         }
 
         if (config.app.showRemainingAnnot === true) {
-            questions.appendChild(this.getAnnotationsRemainderElem());
+            leftPanel.appendChild(this.getAnnotationsRemainderElem());
         }
     }
 
     getQuestion(event) {
         // return "Can the event (<span style=\"color:red\">" + event.getTokens() + "</span>) be anchored in time?";
-        return "Select the events that can be anchored in time, for details see the instructions.";
+        return "Select the events that can be anchored in time, for more details see the instructions.";
     }
 
     formatText() {
@@ -112,79 +121,60 @@ class AxisForm extends UIForm {
 
         return count;
     }
-
-    axisToOption(axisType) {
-        if (axisType === AxisType.MAIN) {
-            return options[0];
-        } else if (axisType === AxisType.NOT_EVENT) {
-            return options[1];
-        } else {
-            throw new Error('Invalid axis type');
-        }
-    }
 }
 
 function showSpanOptions(event, annotationIndex) {
     const span = event.target;
 
-    const dropdownAnchor = document.createElement("div");
-    dropdownAnchor.id = "dropdown-anchor";
-    dropdownAnchor.className = "dropdown-anchor";
-
-    const dropdownAnchorOpt = document.createElement("div");
-    dropdownAnchorOpt.className = "dropdown-anchor-options";
-
-    const button1 = document.createElement("button");
-    button1.onclick = () => selectOption(annotationIndex, 'Yes - It\'s anchorable', dropdownAnchor, span);
-    button1.innerHTML = 'Yes - It\'s anchorable';
-
-    const button2 = document.createElement("button");
-    button2.onclick = () => selectOption(annotationIndex, 'No', dropdownAnchor, span);
-    button2.innerHTML = 'No';
-    dropdownAnchorOpt.appendChild(button1);
-    dropdownAnchorOpt.appendChild(button2);
-
-    dropdownAnchor.appendChild(dropdownAnchorOpt);
-    document.body.appendChild(dropdownAnchor);
-
-    const rect = span.getBoundingClientRect();
-    dropdownAnchor.style.left = `${rect.left + window.scrollX}px`;
-    dropdownAnchor.style.top = `${rect.bottom + window.scrollY}px`;
-
-    // Show the dropdown
-    dropdownAnchor.style.display = "block";
-
-    // Close the dropdown if clicked outside
-    document.addEventListener("click", function closeDropdown(e) {
-        if (!dropdownAnchor.contains(e.target) && e.target !== span) {
-            dropdownAnchor.style.display = "none";
-            document.removeEventListener("click", closeDropdown);
-        }
-    });
-}
-
-function selectOption(annotationIndex, option, dropdown, span) {
-    // const dropdown = document.getElementById("dropdown-anchor");
-    dropdown.style.display = "none";
-
-    let selectedAxisType = convertOptionToAxis(option, span);
-    pages[currentPageIdx].handleSelection(selectedAxisType, annotationIndex);
-
-    if (pages[currentPageIdx].annotationRemainder() === 0 && document.getElementById("next-task") == null) {
-        const questions = document.getElementById("questions");
-        questions.appendChild(pages[currentPageIdx].createNextTaskButton());
-    }
-}
-
-function convertOptionToAxis(value, span) {
-    if (value === options[0]) {
+    let selectedAxisType = null;
+    if (span.className === "label NA") {
+        selectedAxisType = AxisType.MAIN;
         span.className = "label ANC";
-        return AxisType.MAIN;
-    } else if (value === options[1]) {
+    } else if (span.className === "label ANC") {
+        selectedAxisType = AxisType.NOT_EVENT;
         span.className = "label NOT";
-        return AxisType.NOT_EVENT;
-    } else {
+    } else if (span.className === "label NOT") {
+        selectedAxisType = AxisType.NA;
         span.className = "label NA";
-        return AxisType.NA;
     }
+
+    if (selectedAxisType != null) {
+        pages[currentPageIdx].handleSelection(selectedAxisType, annotationIndex);
+        const nextTaskButton = document.getElementById("next-task");
+        nextTaskButton.disabled = pages[currentPageIdx].annotationRemainder() !== 0;
+    }
+}
+
+function addLegend(container) {
+    // Define the legend items
+    const legendItems = [
+        { colorClass: "ANC", description: "Anchorable event" },
+        { colorClass: "NOT", description: "Un-anchorable event" },
+        { colorClass: "NA", description: "Undetermined" },
+    ];
+
+    // Create a legend container
+    const legend = document.createElement("div");
+    legend.className = "legend";
+
+    // Add legend items
+    legendItems.forEach((item) => {
+        const legendItem = document.createElement("div");
+        legendItem.className = "legend-item";
+
+        const colorBox = document.createElement("span");
+        colorBox.className = `legend-color ${item.colorClass}`; // Use the same classes as spans
+        colorBox.textContent = "\u00A0\u00A0"; // Add space for visibility
+
+        const description = document.createElement("span");
+        description.className = "legend-description";
+        description.textContent = ` = ${item.description}`;
+
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(description);
+        legend.appendChild(legendItem);
+    });
+
+    // Append the legend to the container
+    container.appendChild(legend);
 }
