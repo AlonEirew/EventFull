@@ -46,6 +46,40 @@ class UIForm {
         return paragraph;
     }
 
+    createButtonContainer(isBackTask, isNextTask, isNextUnhandled) {
+        const buttonContainer = document.createElement("div");
+        buttonContainer.className = "button-container";
+        const nextTaskButton = this.createNextTaskButton();
+        nextTaskButton.style.marginRight = "0";
+
+        const centerWrapper = document.createElement("div");
+
+        const unhandledNextButton = this.createUnhandledNextButton("Next Unhandled Event");
+        centerWrapper.appendChild(unhandledNextButton);
+
+        const prevTaskButton = this.createPrevTaskButton();
+        prevTaskButton.style.marginLeft = "0";
+
+        buttonContainer.appendChild(prevTaskButton); // Left-aligned
+
+        if (!isBackTask) {
+            prevTaskButton.disabled = true;
+        }
+
+        if (isNextUnhandled) {
+            unhandledNextButton.disabled = false;
+            buttonContainer.appendChild(centerWrapper); // Center-aligned
+        }
+
+        buttonContainer.appendChild(nextTaskButton); // Right-aligned
+
+        if (!isNextTask) {
+            nextTaskButton.disabled = true;
+        }
+
+        return buttonContainer;
+    }
+
     createNextTaskButton() {
         const buttonNextTask = document.createElement("button");
         buttonNextTask.type = "button";

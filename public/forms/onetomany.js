@@ -130,8 +130,7 @@ class OneToManyForm extends UIForm {
         }
 
         const summaryPanel = document.createElement("div");
-        const buttonBackTask = this.createPrevTaskButton();
-        const buttonNextTask = this.createNextTaskButton();
+        const buttCont = this.createButtonContainer(true, true, true);
         const paragraph = this.getParagraph();
 
         if (eventInFocus != null) {
@@ -140,30 +139,18 @@ class OneToManyForm extends UIForm {
 
             let divQuestion1 = this.getQuestion(eventInFocus);
             summaryPanel.appendChild(divQuestion1);
-            summaryPanel.appendChild(document.createElement("br"));
-            summaryPanel.appendChild(buttonBackTask);
-            summaryPanel.appendChild(this.createBackButton("Back"));
-            summaryPanel.appendChild(this.createNextButton("Next"));
-
-            if (this.addNextUnhandled === true) {
-                let nextUnhldButt = this.createUnhandledNextButton("Next Unhandled Event");
-                nextUnhldButt.disabled = false;
-                summaryPanel.appendChild(nextUnhldButt);
-            }
-
-            summaryPanel.appendChild(buttonNextTask);
 
             if (config.app.showRemainingAnnot === true) {
                 summaryPanel.appendChild(this.getAnnotationsRemainderElem());
             }
 
+            summaryPanel.appendChild(buttCont);
             questions.appendChild(summaryPanel);
 
         } else {
             paragraph.innerHTML = "<p><b>All done with this annotation task! You can proceed to the next task.</b></p>";
             questions.appendChild(paragraph);
-            questions.appendChild(buttonBackTask);
-            questions.appendChild(buttonNextTask);
+            questions.appendChild(buttCont);
         }
 
         refreshGraphElem(this.formType);

@@ -45,8 +45,7 @@ class TemporalForm extends UIForm {
         }
 
         const summaryPanel = document.createElement("div");
-        const buttonBackTask = this.createPrevTaskButton();
-        const buttonNextTask = this.createNextTaskButton();
+        const buttCont = this.createButtonContainer(true, true, false);
         const paragraph = this.getParagraph();
 
         if (pair != null) {
@@ -56,9 +55,8 @@ class TemporalForm extends UIForm {
             let divQuestion1 = this.getQuestion(pair);
             summaryPanel.appendChild(divQuestion1);
             summaryPanel.appendChild(document.createElement("br"));
-            summaryPanel.appendChild(buttonBackTask);
 
-            summaryPanel.appendChild(buttonNextTask);
+            summaryPanel.appendChild(buttCont);
             if (config.app.showRemainingAnnot === true) {
                 summaryPanel.appendChild(this.getAnnotationsRemainderElem());
             }
@@ -67,8 +65,7 @@ class TemporalForm extends UIForm {
         } else {
             paragraph.innerHTML = "<p><b>All done with this annotation task! You can proceed to the next task.</b></p>";
             questions.appendChild(paragraph);
-            questions.appendChild(buttonBackTask);
-            questions.appendChild(buttonNextTask);
+            questions.appendChild(buttCont);
         }
 
         let nodes = refreshGraphElem(this.formType);

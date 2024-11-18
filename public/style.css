@@ -97,6 +97,16 @@ p {
     height: 100%;
 }
 
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    /*border: 1px solid #ccc;*/
+    /*padding: 20px;*/
+}
+
 .button {
     background-color: #8CA9D3;
     border: none;

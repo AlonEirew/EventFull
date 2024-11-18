@@ -46,13 +46,8 @@ class AxisForm extends UIForm {
         paragraph.innerHTML = this.formatText();
         leftPanel.appendChild(paragraph);
 
-        let nextTaskButton = this.createNextTaskButton();
-        nextTaskButton.id = "next-task";
-        nextTaskButton.disabled = true;
-        leftPanel.appendChild(nextTaskButton);
-        if (this.annotationRemainder() === 0) {
-            nextTaskButton.disabled = false;
-        }
+        let buttContainer = this.createButtonContainer(false, true, false);
+        leftPanel.appendChild(buttContainer);
 
         if (config.app.showRemainingAnnot === true) {
             leftPanel.appendChild(this.getAnnotationsRemainderElem());
@@ -79,7 +74,7 @@ class AxisForm extends UIForm {
                 let startIdx = allEvents[eventIdx].getTokensIds()[0];
                 let endIdx = allEvents[eventIdx].getTokensIds().at(-1);
                 for (let i = startIdx; i <= endIdx; i++) {
-                    this.setAxisSpan(allEvents[eventIdx], eventIdx, text, i, false);
+                    this.setAxisSpan(allEvents[eventIdx], eventIdx, text, i, true);
                 }
             }
         }
@@ -150,7 +145,7 @@ function addLegend(container) {
     const legendItems = [
         { colorClass: "ANC", description: "Anchorable event" },
         { colorClass: "NOT", description: "Un-anchorable event" },
-        { colorClass: "NA", description: "Undetermined" },
+        { colorClass: "NA", description: "Require Annotation" },
     ];
 
     // Create a legend container
