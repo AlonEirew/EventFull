@@ -40,6 +40,12 @@ class UIForm {
         this.createUI();
     }
 
+    getParagraph() {
+        const paragraph = document.createElement("p");
+        paragraph.className = "paragraph";
+        return paragraph;
+    }
+
     createNextTaskButton() {
         const buttonNextTask = document.createElement("button");
         buttonNextTask.type = "button";

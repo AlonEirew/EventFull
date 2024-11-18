@@ -36,7 +36,7 @@ class TemporalForm extends UIForm {
         const summaryPanel = document.createElement("div");
         const buttonBackTask = this.createPrevTaskButton();
         const buttonNextTask = this.createNextTaskButton();
-        const paragraph = document.createElement("p");
+        const paragraph = this.getParagraph();
         paragraph.style.backgroundColor = "#EBF5FB";
 
         if (pair != null) {

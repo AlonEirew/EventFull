@@ -14,7 +14,7 @@ class Axis {
             axis._axisType = jsonObject._axisType;
             axis._anchoringEventId = jsonObject._anchoringEventId;
             axis._eventIds = new Set(jsonObject._eventIds);
-            if(jsonObject._axisGraph) {
+            if(jsonObject._axisGraph && jsonObject._axisGraph._graphMatrix) {
                 axis._axisGraph = GraphObj.fromJsonObject(jsonObject._axisGraph);
             } else if ('_pairs' in jsonObject) {
                 axis._axisGraph.initGraph(Array.from(axis._eventIds));

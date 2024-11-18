@@ -131,8 +131,7 @@ class OneToManyForm extends UIForm {
         const summaryPanel = document.createElement("div");
         const buttonBackTask = this.createPrevTaskButton();
         const buttonNextTask = this.createNextTaskButton();
-        const paragraph = document.createElement("p");
-        paragraph.style.backgroundColor = "#EBF5FB";
+        const paragraph = this.getParagraph();
 
         if (eventInFocus != null) {
             paragraph.innerHTML = this.formatText(eventInFocus);

@@ -54,7 +54,7 @@ class GraphObj {
     }
 
     static fromJsonObject(jsonObject) {
-        if (jsonObject != null) {
+        if (jsonObject._graphMatrix != null) {
             const graphObj = new GraphObj();
             graphObj._graphIndices = jsonObject._graphIndices;
             graphObj._graphMatrix = Array(graphObj._graphIndices.length).fill().map(() => Array(graphObj._graphIndices.length).fill(

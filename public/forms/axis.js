@@ -1,7 +1,7 @@
 // ####################################################
 // ################# axis functions #################
 // ####################################################
-const options = ["Yes. It's anchorable", "No."];
+const options = ["Yes - It's anchorable", "No"];
 
 class AxisForm extends UIForm {
     constructor(pageIndex, allAxes) {
@@ -14,15 +14,13 @@ class AxisForm extends UIForm {
         return config.instFiles.axis;
     }
 
-    handleSelection() {
-        const radiosSelected = this.getRadiosSelected("multiChoice");
-        if (radiosSelected != null) {
-            let selectedAxisType = this.convertOptionToAxis(radiosSelected);
-            if (selectedAxisType !== this._annotations[this._annotationIndex].getAxisType()) {
+    handleSelection(selectedAxisType, annotationIndex) {
+        if (selectedAxisType != null) {
+            if (selectedAxisType !== this._annotations[annotationIndex].getAxisType()) {
                 console.log("User AxisType selection: " + selectedAxisType);
-                this._allAxes.removeEventFromAxes(this._annotations[this._annotationIndex]);
-                this._annotations[this._annotationIndex].setAxisTypeFromOption(selectedAxisType);
-                this._allAxes.addEventToAxes(this._annotations[this._annotationIndex]);
+                this._allAxes.removeEventFromAxes(this._annotations[annotationIndex]);
+                this._annotations[annotationIndex].setAxisTypeFromOption(selectedAxisType);
+                this._allAxes.addEventToAxes(this._annotations[annotationIndex]);
             }
         }
 
@@ -32,44 +30,15 @@ class AxisForm extends UIForm {
     createUI() {
         cleanQuestions();
         const questions = document.getElementById("questions");
-        const paragraph = document.createElement("p");
-        paragraph.style.backgroundColor = "#EBF5FB";
-
-        paragraph.innerHTML = this.formatText();
-        questions.appendChild(paragraph);
+        const paragraph = this.getParagraph();
 
         const question = document.createElement("h2");
         question.innerHTML = this.getQuestion(this._annotations[this._annotationIndex]);
         question.style.color = "black";
         questions.appendChild(question);
 
-        let selectedValue = null;
-        if (this._annotations[this._annotationIndex].getAxisType() !== AxisType.NA) {
-            const selectAxisType = this._annotations[this._annotationIndex].getAxisType();
-            selectedValue = this.axisToOption(selectAxisType);
-        }
-
-        let hasSelected = null;
-        for (let j = 0; j < options.length; j++) {
-            const input = getOption(options[j], "multiChoice");
-
-            if (j === 0) {
-                hasSelected = input;
-            }
-
-            if (selectedValue === options[j]) {
-                hasSelected = input;
-            }
-
-            questions.appendChild(input);
-            questions.appendChild(document.createTextNode(options[j]));
-            questions.appendChild(document.createElement("br"));
-        }
-
-        hasSelected.checked = true;
-
-        questions.appendChild(this.createBackButton("Back"));
-        questions.appendChild(this.createNextButton("Next"));
+        paragraph.innerHTML = this.formatText();
+        questions.appendChild(paragraph);
 
         if (this.annotationRemainder() === 0 && document.getElementById("next-task") == null) {
             const questions = document.getElementById("questions");
@@ -82,25 +51,26 @@ class AxisForm extends UIForm {
     }
 
     getQuestion(event) {
-        return "Can the event (<span style=\"color:red\">" + event.getTokens() + "</span>) be anchored in time?";
+        // return "Can the event (<span style=\"color:red\">" + event.getTokens() + "</span>) be anchored in time?";
+        return "Select the events that can be anchored in time, for details see the instructions.";
     }
 
     formatText() {
-        let event = this._annotations[this._annotationIndex];
+        let mention = this._annotations[this._annotationIndex];
         let text = [...this._allAxes.getMainDocTokens()];
         const allEvents = this._allAxes.getAllAxesEventsSorted();
         for (let eventIdx = 0; eventIdx < allEvents.length; eventIdx++) {
-            if (eventIdx === event.getEventIndex()) {
-                let startIdx = event.getTokensIds()[0];
-                let endIdx = event.getTokensIds().at(-1);
+            if (eventIdx === mention.getEventIndex()) {
+                let startIdx = mention.getTokensIds()[0];
+                let endIdx = mention.getTokensIds().at(-1);
                 for (let i = startIdx; i <= endIdx; i++) {
-                    this.setAxisSpan(event, text, i, true);
+                    this.setAxisSpan(mention, eventIdx, text, i, true);
                 }
             } else {
                 let startIdx = allEvents[eventIdx].getTokensIds()[0];
                 let endIdx = allEvents[eventIdx].getTokensIds().at(-1);
                 for (let i = startIdx; i <= endIdx; i++) {
-                    this.setAxisSpan(allEvents[eventIdx], text, i, false);
+                    this.setAxisSpan(allEvents[eventIdx], eventIdx, text, i, false);
                 }
             }
         }
@@ -108,7 +78,7 @@ class AxisForm extends UIForm {
         return text.join(" ");
     }
 
-    setAxisSpan(event, text, i, weight) {
+    setAxisSpan(mention, annotationIndex, text, i, weight) {
         let fontWeight = "normal";
         let border = "";
         if (weight) {
@@ -119,15 +89,15 @@ class AxisForm extends UIForm {
             border = "none";
         }
 
-        switch (event.getAxisType()) {
+        switch (mention.getAxisType()) {
             case AxisType.MAIN:
-                text[i] = `<span class=\"label ANC\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                text[i] = `<span class=\"label ANC\" onclick=\"showSpanOptions(event, ${annotationIndex})\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
                 break;
             case AxisType.NOT_EVENT:
-                text[i] = `<span class=\"label NOT\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                text[i] = `<span class=\"label NOT\" onclick=\"showSpanOptions(event, ${annotationIndex})\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
                 break;
             default:
-                text[i] = `<span class=\"label NA\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                text[i] = `<span class=\"label NA\" onclick=\"showSpanOptions(event, ${annotationIndex})\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
                 break;
         }
     }
@@ -152,14 +122,69 @@ class AxisForm extends UIForm {
             throw new Error('Invalid axis type');
         }
     }
+}
 
-    convertOptionToAxis(value) {
-        if (value === options[0]) {
-            return AxisType.MAIN;
-        } else if (value === options[1]) {
-            return AxisType.NOT_EVENT;
-        } else {
-            throw new Error('Invalid axis type');
+function showSpanOptions(event, annotationIndex) {
+    const span = event.target;
+
+    const dropdownAnchor = document.createElement("div");
+    dropdownAnchor.id = "dropdown-anchor";
+    dropdownAnchor.className = "dropdown-anchor";
+
+    const dropdownAnchorOpt = document.createElement("div");
+    dropdownAnchorOpt.className = "dropdown-anchor-options";
+
+    const button1 = document.createElement("button");
+    button1.onclick = () => selectOption(annotationIndex, 'Yes - It\'s anchorable', dropdownAnchor, span);
+    button1.innerHTML = 'Yes - It\'s anchorable';
+
+    const button2 = document.createElement("button");
+    button2.onclick = () => selectOption(annotationIndex, 'No', dropdownAnchor, span);
+    button2.innerHTML = 'No';
+    dropdownAnchorOpt.appendChild(button1);
+    dropdownAnchorOpt.appendChild(button2);
+
+    dropdownAnchor.appendChild(dropdownAnchorOpt);
+    document.body.appendChild(dropdownAnchor);
+
+    const rect = span.getBoundingClientRect();
+    dropdownAnchor.style.left = `${rect.left + window.scrollX}px`;
+    dropdownAnchor.style.top = `${rect.bottom + window.scrollY}px`;
+
+    // Show the dropdown
+    dropdownAnchor.style.display = "block";
+
+    // Close the dropdown if clicked outside
+    document.addEventListener("click", function closeDropdown(e) {
+        if (!dropdownAnchor.contains(e.target) && e.target !== span) {
+            dropdownAnchor.style.display = "none";
+            document.removeEventListener("click", closeDropdown);
         }
+    });
+}
+
+function selectOption(annotationIndex, option, dropdown, span) {
+    // const dropdown = document.getElementById("dropdown-anchor");
+    dropdown.style.display = "none";
+
+    let selectedAxisType = convertOptionToAxis(option, span);
+    pages[currentPageIdx].handleSelection(selectedAxisType, annotationIndex);
+
+    if (pages[currentPageIdx].annotationRemainder() === 0 && document.getElementById("next-task") == null) {
+        const questions = document.getElementById("questions");
+        questions.appendChild(pages[currentPageIdx].createNextTaskButton());
+    }
+}
+
+function convertOptionToAxis(value, span) {
+    if (value === options[0]) {
+        span.className = "label ANC";
+        return AxisType.MAIN;
+    } else if (value === options[1]) {
+        span.className = "label NOT";
+        return AxisType.NOT_EVENT;
+    } else {
+        span.className = "label NA";
+        return AxisType.NA;
     }
 }
