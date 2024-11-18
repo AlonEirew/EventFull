@@ -138,7 +138,7 @@ class OneToManyForm extends UIForm {
             paragraph.innerHTML = this.formatText(eventInFocus);
             summaryPanel.appendChild(paragraph);
 
-            const divQuestion1 = this.getQuestion(eventInFocus);
+            let divQuestion1 = this.getQuestion(eventInFocus);
             summaryPanel.appendChild(divQuestion1);
             summaryPanel.appendChild(document.createElement("br"));
             summaryPanel.appendChild(buttonBackTask);

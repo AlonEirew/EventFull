@@ -53,7 +53,7 @@ class TemporalForm extends UIForm {
             paragraph.innerHTML = this.formatText(pair);
             summaryPanel.appendChild(paragraph);
 
-            const divQuestion1 = this.getQuestion(pair);
+            let divQuestion1 = this.getQuestion(pair);
             summaryPanel.appendChild(divQuestion1);
             summaryPanel.appendChild(document.createElement("br"));
             summaryPanel.appendChild(buttonBackTask);
@@ -266,19 +266,13 @@ class TemporalForm extends UIForm {
 
     getQuestion(pair) {
         const divQuestion1 = document.createElement("div");
+
         const question1 = document.createElement("h2");
         question1.innerHTML = "Which event started first?";
-        question1.style.color = "black";
+        // question1.style.color = "black";
         divQuestion1.appendChild(question1);
-        this.prepareQuestion1Div(divQuestion1, pair);
-
-        divQuestion1.addEventListener('change', function(event) {
-            let mainSelectedValue = document.querySelector('input[name="multiChoice1"]:checked').value;
-            let checkedElement = document.querySelector('input[name="containChoice"]:checked');
-            if (checkedElement !== null) {
-                mainSelectedValue = TemporalForm.getCombinedQRelations(mainSelectedValue);
-            }
-        });
+        const radioGroup = this.prepareQuestion1Div(pair);
+        divQuestion1.appendChild(radioGroup);
 
         return divQuestion1;
     }
@@ -292,67 +286,77 @@ class TemporalForm extends UIForm {
         return retRel;
     }
 
-    prepareQuestion1Div(divQuestion1, pair) {
-        const input1 = getOption(EventRelationType.BEFORE, "multiChoice1");
-        divQuestion1.appendChild(input1);
+    prepareQuestion1Div(pair) {
+        let radioGroup = document.createElement("div");
+        radioGroup.className = "radio-group";
+
         let span1 = document.createElement("span");
         span1.style.color = "royalblue";
         span1.style.fontWeight = "bold";
         span1.innerHTML = this._allAxes.getEventByEventId(pair.getFirstId()).getTokens();
-        divQuestion1.appendChild(span1);
-        divQuestion1.appendChild(document.createElement("br"));
+        const [label1, input1] = this.getOption(EventRelationType.BEFORE, "multiChoice1", span1);
+        radioGroup.appendChild(label1);
 
-        const input2 = getOption(EventRelationType.AFTER, "multiChoice1");
-        divQuestion1.appendChild(input2);
         let span2 = document.createElement("span");
         span2.style.color = "orangered";
         span2.style.fontWeight = "bold";
         span2.innerHTML = this._allAxes.getEventByEventId(pair.getSecondId()).getTokens();
-        divQuestion1.appendChild(span2);
-        divQuestion1.appendChild(document.createElement("br"));
+        const [label2, input2] = this.getOption(EventRelationType.AFTER, "multiChoice1", span2);
+        radioGroup.appendChild(label2);
 
-        const input3 = getOption(EventRelationType.EQUAL, "multiChoice1");
-        divQuestion1.appendChild(input3);
-        divQuestion1.appendChild(document.createTextNode("Both started at the same time"));
-        divQuestion1.appendChild(document.createElement("br"));
+        const [label3, input3] = this.getOption(EventRelationType.EQUAL, "multiChoice1", document.createTextNode("Both started at the same time"));
+        radioGroup.appendChild(label3);
 
-        const input4 = getOption(EventRelationType.VAGUE, "multiChoice1");
-        divQuestion1.appendChild(input4);
-        divQuestion1.appendChild(document.createTextNode("Uncertain"));
-        divQuestion1.appendChild(document.createElement("br"));
+        const [label4, input4] = this.getOption(EventRelationType.VAGUE, "multiChoice1", document.createTextNode("Uncertain"));
+        radioGroup.appendChild(label4);
 
-        let divContains = null;
         if (pair.getRelation() !== EventRelationType.NA) {
-            if (getRelationMapping(pair.getRelation()) === EventRelationType.BEFORE) {
-                input1.checked = true;
-                input2.checked = false;
-                input3.checked = false;
-                input4.checked = false;
-            } else if (getRelationMapping(pair.getRelation()) === EventRelationType.EQUAL) {
-                input1.checked = false;
-                input2.checked = false;
-                input3.checked = true;
-                input4.checked = false;
-            } else if (pair.getRelation() === EventRelationType.VAGUE) {
-                input1.checked = false;
-                input2.checked = false;
-                input3.checked = false;
-                input4.checked = true;
-            } else if (getRelationMapping(pair.getRelation()) === EventRelationType.AFTER) { // AFTER
-                input2.checked = false;
-                input2.checked = true;
-                input3.checked = false;
-                input4.checked = false;
-            } else {
-                // CONTAINS
-                input1.checked = true;
-                input2.checked = false;
-                input3.checked = false;
-                input4.checked = false;
+            switch (pair.getRelation()) {
+                case EventRelationType.BEFORE:
+                    input1.checked = true;
+                    break;
+                case EventRelationType.AFTER:
+                    input2.checked = true;
+                    break;
+                case EventRelationType.EQUAL:
+                    input3.checked = true;
+                    break;
+                case EventRelationType.VAGUE:
+                    input4.checked = true;
+                    break;
+                default:
+                    console.error("Unknown relation type: " + pair.getRelation());
             }
 
             highlightCurrentPair(pair);
         }
+
+        return radioGroup;
+    }
+
+    getOption(answer, name, textValue) {
+        let label = document.createElement("label");
+        label.className = "radio-option";
+        const input = document.createElement("input");
+        input.onclick = function() {
+            const elementById = document.getElementById("nextUnhandled");
+            if (elementById !== null)
+                elementById.disabled = false;
+        };
+
+        input.type = "radio";
+        input.name = name;
+        input.value = answer;
+        label.appendChild(input);
+
+        const span = document.createElement("span");
+        span.className = "custom-radio";
+        label.appendChild(span);
+
+        // const labelText = document.createTextNode(answer);
+        label.appendChild(textValue);
+
+        return [label, input];
     }
 
     annotationRemainder() {

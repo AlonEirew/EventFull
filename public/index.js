@@ -220,19 +220,6 @@ function cleanPanel(parantElem) {
     }
 }
 
-function getOption(answer, name) {
-    const input1 = document.createElement("input");
-    input1.onclick = function() {
-        const elementById = document.getElementById("nextUnhandled");
-        if (elementById !== null)
-            elementById.disabled = false;
-    };
-    input1.type = "radio";
-    input1.name = name;
-    input1.value = answer;
-    return input1;
-}
-
 function toggleGraphDivOn() {
     const divGraph = document.getElementById("cy");
     divGraph.style.display = "block";
