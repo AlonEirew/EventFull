@@ -1,5 +1,6 @@
 let cy = null;
 let graphEventsToPreset = null;
+let isConstraining = false; // Flag to prevent recursion
 
 function styleSelect(relation) {
     let styleClass;
@@ -243,8 +244,60 @@ function renderGraph(curForm) {
             minZoom: 1,
             maxZoom: 1,
             zoomingEnabled: false,
+            userPanningEnabled: true, // Allow panning
         });
+
+        cy.on('pan', constrainPanning);
+        cy.on('dragfree', constrainPanning);
     } else {
         cy.style(this.getGraphStyle(curForm));
     }
+}
+
+function constrainPanning() {
+    if (isConstraining) return; // Prevent recursion
+    isConstraining = true;
+
+    const container = cy.container();
+    const rect = container.getBoundingClientRect();
+
+    // Get the current pan and zoom values
+    const pan = cy.pan();
+    const zoom = cy.zoom();
+
+    // Get the current extent (visible graph area)
+    const extent = cy.extent();
+
+    // Calculate the boundaries
+    const containerWidth = rect.width;
+    const containerHeight = rect.height;
+
+    const graphWidth = extent.w * zoom;
+    const graphHeight = extent.h * zoom;
+
+    const minPanX = Math.min(0, containerWidth - graphWidth);
+    const maxPanX = Math.max(0, containerWidth - graphWidth);
+
+    const minPanY = Math.min(0, containerHeight - graphHeight);
+    const maxPanY = Math.max(0, containerHeight - graphHeight);
+
+    // Constrain pan values
+    const constrainedPanX = Math.max(minPanX, Math.min(maxPanX, pan.x));
+    const constrainedPanY = Math.max(minPanY, Math.min(maxPanY, pan.y));
+
+    // Apply constrained pan
+    cy.pan({ x: constrainedPanX, y: constrainedPanY });
+
+    isConstraining = false; // Reset the flag
+}
+
+function rearrangeGraph() {
+    const layoutOptions = {
+        name: 'grid', // Replace with your preferred layout
+        fit: true,    // Ensure the graph fits within the viewport
+        padding: 30,  // Optional: Add padding around the graph
+    };
+
+    const layout = cy.layout(layoutOptions);
+    layout.run(); // Execute the layout
 }

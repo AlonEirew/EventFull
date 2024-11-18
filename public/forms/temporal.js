@@ -26,6 +26,12 @@ class TemporalForm extends UIForm {
 
         toggleGraphDivOn();
         renderGraph(this);
+
+        window.addEventListener('resize', () => {
+            cy.resize(); // Adjust the Cytoscape viewport
+            rearrangeGraph(); // Trigger layout recalculation
+        });
+
         super.loadForm();
     }
 
