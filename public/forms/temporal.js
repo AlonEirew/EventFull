@@ -57,17 +57,8 @@ class TemporalForm extends UIForm {
             summaryPanel.appendChild(divQuestion1);
             summaryPanel.appendChild(document.createElement("br"));
             summaryPanel.appendChild(buttonBackTask);
-            summaryPanel.appendChild(this.createBackButton("Back"));
-            summaryPanel.appendChild(this.createNextButton("Next"));
 
-            let nextUnhldButt = this.createUnhandledNextButton("Next Unhandled Pair");
-            if (pair.getRelation() !== EventRelationType.NA) {
-                nextUnhldButt.disabled = false;
-            }
-
-            summaryPanel.appendChild(nextUnhldButt);
             summaryPanel.appendChild(buttonNextTask);
-
             if (config.app.showRemainingAnnot === true) {
                 summaryPanel.appendChild(this.getAnnotationsRemainderElem());
             }
@@ -271,7 +262,7 @@ class TemporalForm extends UIForm {
         question1.innerHTML = "Which event started first?";
         // question1.style.color = "black";
         divQuestion1.appendChild(question1);
-        const radioGroup = this.prepareQuestion1Div(pair);
+        const radioGroup = this.prepareTempOptions(pair);
         divQuestion1.appendChild(radioGroup);
 
         return divQuestion1;
@@ -286,7 +277,7 @@ class TemporalForm extends UIForm {
         return retRel;
     }
 
-    prepareQuestion1Div(pair) {
+    prepareTempOptions(pair) {
         let radioGroup = document.createElement("div");
         radioGroup.className = "radio-group";
 
@@ -339,9 +330,8 @@ class TemporalForm extends UIForm {
         label.className = "radio-option";
         const input = document.createElement("input");
         input.onclick = function() {
-            const elementById = document.getElementById("nextUnhandled");
-            if (elementById !== null)
-                elementById.disabled = false;
+            const curPage = pages[currentPageIdx];
+            curPage.nextUnhandledClick();
         };
 
         input.type = "radio";
