@@ -54,7 +54,11 @@ class UIForm {
 
         const centerWrapper = document.createElement("div");
 
+        const nextButton = this.createNextButton("Next Event");
+        const backButton = this.createBackButton("Prev Event");
         const unhandledNextButton = this.createUnhandledNextButton("Next Unhandled Event");
+        centerWrapper.appendChild(backButton);
+        centerWrapper.appendChild(nextButton);
         centerWrapper.appendChild(unhandledNextButton);
 
         const prevTaskButton = this.createPrevTaskButton();

@@ -189,20 +189,25 @@ class TemporalForm extends UIForm {
         const currentRelation = discrepancy[3];
         const inferredRelation = discrepancy[4];
 
+        const rootNodeText = disRootEdge + " (" + discrepancy[0] + ")";
+        const otherNodeText = disOtherEdge + " (" + discrepancy[1] + ")";
+        const viaNodeText = viaNode + " (" + discrepancy[2] + ")";
+
         Swal.fire({
             icon: "error",
             title: 'Discrepancy Alert',
             html:
-                '<p>Your last selection has created a discrepancy between two events.<br/><br/>The relation currently set between the events: <span style=\"color:orangered; font-weight: bold;\">' + disRootEdge +'</span> and ' +
-                '<span style=\"color:orangered; font-weight: bold;\">' + disOtherEdge + '</span> is <span style=\"color:royalblue; font-weight: bold;\">' +
-                currentRelation + '</span>. However, due to the last selection, the events can now be inferred indirectly via event ' +
-                '<span style=\"color:green; font-weight: bold;\">' + viaNode + '</span> as also having a ' +
+                '<p>Your last selection has created a discrepancy.<br/><br/>The relation currently set between the events <span style=\"color:orangered; font-weight: bold;\">' + rootNodeText + '</span> and ' +
+                '<span style=\"color:orangered; font-weight: bold;\">' + otherNodeText + '</span> is <span style=\"color:royalblue; font-weight: bold;\">' +
+                currentRelation + '</span>. However, based on the latest selection, the events can now be inferred indirectly through the event ' +
+                '<span style=\"color:green; font-weight: bold;\">' + viaNodeText + '</span> to also have a ' +
                 '<span style=\"color:royalblue; font-weight: bold;\">' + inferredRelation + '</span> relation.<br/><br/>' +
                 '<span style=\"font-weight: bold;\">Please fix or contact the task admin for help.</p>',
             showCancelButton: false,
             confirmButtonText: 'OK',
             allowOutsideClick: false,
-            scrollbarPadding: true
+            scrollbarPadding: true,
+            position: 'top-start',
         });
     }
 

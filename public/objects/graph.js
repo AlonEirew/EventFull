@@ -153,7 +153,7 @@ function getNodeStyle() {
             'width': 15,
             'height': 15,
             'background-color': '#666',
-            'font-size': 15,
+            'font-size': 14,
             'label': 'data(label)'
         }
     };
@@ -163,13 +163,14 @@ function getEdgeStyle() {
     return {
         selector: 'edge',
         style: {
-            'width': 2,
-            'font-size': 10,
+            'width': 1,
+            'font-size': 12,
             'line-color': '#808080',
             'target-arrow-color': '#808080',
             'target-arrow-shape': 'triangle-tee',
             'curve-style': 'bezier',
             'label': 'data(label)',
+            'color': '#1711C7'
         }
     };
 }
