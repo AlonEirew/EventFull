@@ -93,6 +93,7 @@ class GraphObj {
                     if (addedEventsIdxs[i] === true) {
                         // Add new row and column
                         this._graphMatrix.splice(i, 0, Array(this._graphMatrix.length).fill().map(() => new GraphEdge(EventRelationType.NA, false)));
+                        this._graphIndices.splice(i, 0, graphIndices[i]);
                         for (let j = this._graphMatrix.length - 1; j >= 0; j--) {
                             this._graphMatrix[j].splice(i, 0, new GraphEdge(EventRelationType.NA, false));
                         }
@@ -104,13 +105,12 @@ class GraphObj {
                     if (removedEventsIdxs[i] === true) {
                         // Add new row and column
                         this._graphMatrix.splice(i, 1);
+                        this._graphIndices.splice(i, 1);
                         for (let j = this._graphMatrix.length - 1; j >= 0; j--) {
                             this._graphMatrix[j].splice(i, 1);
                         }
                     }
                 }
-
-                this._graphIndices = graphIndices;
             }
         }
     }

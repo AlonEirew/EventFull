@@ -32,7 +32,7 @@ class TemporalForm extends UIForm {
             if (rightPanel.style.display === "none") {
                 return;
             }
-            
+
             rearrangeGraph(); // Trigger layout recalculation
         });
 
@@ -75,26 +75,32 @@ class TemporalForm extends UIForm {
         let nodes = refreshGraphElem(this.formType);
         highlightCurrentPair(pair);
         // check if nodes already listening to click event
-        if (nodes[0].emitter().listeners.length === 0) {
-            nodes.on('click', function (event) {
-                const curPage = pages[currentPageIdx];
-                if (this.animated()) {
-                    curPage._selectedNodes.splice(curPage._selectedNodes.indexOf(this.id()), 1);
-                    this.stop(true);
-                    this.animate({style: {'opacity': 1}});
-                } else if (curPage._selectedNodes.length === 1) {
-                    curPage._selectedNodes.push(this.id());
-                    curPage.handleManualNodeSelection();
-                    nodes.stop(true);
-                    nodes.animate({style: {'opacity': 1}});
-                    curPage._selectedNodes = [];
-                    curPage.createUI();
-                } else {
-                    curPage._selectedNodes.push(this.id());
-                    TemporalForm.blinkNode(this);
-                }
-            });
-        }
+        nodes.forEach(node => {
+            if (node.emitter().listeners.length === 0) {
+                node.on('click', function (event) {
+                    const curPage = pages[currentPageIdx];
+                    if (node.animated()) {
+                        curPage._selectedNodes.splice(curPage._selectedNodes.indexOf(node.id()), 1);
+                        node.stop(true);
+                        node.animate({style: {'opacity': 1}});
+                    } else if (curPage._selectedNodes.length === 1) {
+                        curPage._selectedNodes.push(node.id());
+                        curPage.handleManualNodeSelection();
+
+                        for (let i = 0; i < curPage._selectedNodes.length; i++) {
+                            cy.getElementById(curPage._selectedNodes[i]).stop(true);
+                            cy.getElementById(curPage._selectedNodes[i]).animate({style: {'opacity': 1}});
+                        }
+
+                        curPage._selectedNodes = [];
+                        curPage.createUI();
+                    } else {
+                        curPage._selectedNodes.push(node.id());
+                        TemporalForm.blinkNode(node);
+                    }
+                });
+            }
+        });
     }
 
     static blinkNode(node) {
