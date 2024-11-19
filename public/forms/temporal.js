@@ -309,7 +309,7 @@ class TemporalForm extends UIForm {
         radioGroup.appendChild(label4);
 
         if (pair.getRelation() !== EventRelationType.NA) {
-            switch (pair.getRelation()) {
+            switch (getRelationMapping(pair.getRelation())) {
                 case EventRelationType.BEFORE:
                     input1.checked = true;
                     break;

@@ -210,89 +210,79 @@ button:disabled {
     display: block;
 }
 
-.dropdown-check-list {
-    display: inline-block;
+/* Container for the checkbox group */
+.styled-checkbox-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align text to the left */
+    font-family: 'Georgia', serif; /* Match the elegant style */
+    font-size: 14px;
+    gap: 4px; /* Add space between items */
+    margin-bottom: 20px; /* Space below the group */
 }
 
-.dropdown-check-list .anchor {
+/* Title above the checkbox group */
+.checkbox-title {
+    font-family: 'Georgia', serif; /* Match checkbox font */
+    font-size: 14px; /* Slightly larger for emphasis */
+    font-weight: bold; /* Make the title stand out */
+    color: #333; /* Neutral color */
+    margin-bottom: 10px; /* Space between the title and the checkboxes */
+}
+
+/* Label for the checkbox */
+.styled-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Pointer cursor for interactivity */
     position: relative;
-    cursor: pointer;
-    display: inline-block;
-    padding: 5px 50px 5px 10px;
-    border: 1px solid #ccc;
+    gap: 4px; /* Space between checkbox and text */
 }
 
-.dropdown-check-list .anchor:after {
-    position: absolute;
-    content: "";
-    border-left: 2px solid black;
-    border-top: 2px solid black;
-    padding: 5px;
-    right: 10px;
-    top: 20%;
-    -moz-transform: rotate(-135deg);
-    -ms-transform: rotate(-135deg);
-    -o-transform: rotate(-135deg);
-    -webkit-transform: rotate(-135deg);
-    transform: rotate(-135deg);
-}
-
-.dropdown-check-list .anchor:active:after {
-    right: 8px;
-    top: 21%;
-}
-
-.dropdown-check-list ul.items {
-    padding: 2px;
+/* Hide the default checkbox */
+.styled-checkbox input[type="checkbox"] {
     display: none;
-    margin: 0;
-    border: 1px solid #ccc;
-    border-top: none;
 }
 
-.dropdown-check-list ul.items li {
-    list-style: none;
+/* Custom checkbox design */
+.custom-checkbox {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #5DADE2; /* Blue border to match the theme */
+    border-radius: 4px; /* Subtle rounded corners */
+    background-color: white; /* White background */
+    position: relative;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
 }
 
-.dropdown-check-list.visible .anchor {
-    color: #0094ff;
-}
-
-.dropdown-check-list.visible .items {
+/* Checkmark styling when checked */
+.styled-checkbox input[type="checkbox"]:checked + .custom-checkbox::after {
+    content: '';
     display: block;
-}
-
-.dropdown-anchor {
+    width: 10px;
+    height: 10px;
+    background-color: #5DADE2; /* Blue checkmark */
     position: absolute;
-    display: none; /* Hidden by default */
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    z-index: 1000; /* Ensure it's above other elements */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 2px; /* Subtle rounding for the checkmark */
 }
 
-.dropdown-anchor-options button {
-    display: block;
-    width: 100%;
-    background-color: #f9f9f9;
-    border: none;
-    padding: 8px;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-bottom: 5px;
-    transition: background-color 0.3s ease;
+/* Hover effect */
+.styled-checkbox:hover .custom-checkbox {
+    border-color: #3498DB; /* Darker blue on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Enhance shadow */
 }
 
-.dropdown-anchor-options button:hover {
-    background-color: #f1f1f1; /* Light gray on hover */
+/* Active state (when clicking) */
+.styled-checkbox:active .custom-checkbox {
+    background-color: #1B4F72; /* Dark blue for active state */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Inner shadow for pressed effect */
 }
 
-.dropdown-anchor-options button:last-child {
-    margin-bottom: 0;
-}
 
 .label {
     padding: 2px 4px;

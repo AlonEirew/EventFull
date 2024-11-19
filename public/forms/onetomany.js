@@ -80,41 +80,42 @@ class OneToManyForm extends UIForm {
         divQuestion1.appendChild(question1);
 
         let items = this.getAllRelevantRelations(eventInFocus.getId());
-        const withinListPairsByType = this._allAxes.getMainAxis().getAxisGraph().getWithinListPairsByType(items, this.formType);
+        // const withinListPairsByType = this._allAxes.getMainAxis().getAxisGraph().getWithinListPairsByType(items, this.formType);
 
         const dropdown = document.createElement("div");
         dropdown.id = "list1";
-        dropdown.className = "dropdown-check-list";
-        dropdown.tabIndex = 100;
+        dropdown.className = "styled-checkbox-container";
 
-        const spanText = document.createElement('span');
-        spanText.className = "anchor";
-        spanText.innerHTML = this.getDropDownTitle();
-        dropdown.classList.add('visible');
+        const dropTitle = document.createElement('div');
+        dropTitle.className = "checkbox-title";
+        dropTitle.innerHTML = this.getDropDownTitle();
+        dropdown.appendChild(dropTitle);
 
-        dropdown.appendChild(spanText);
-        const allItems = document.createElement('ul');
-        allItems.className = "items";
         for (let i = 0; i < items.length; i++) {
-            const container = document.createElement('li');
+            const container = document.createElement('label');
+            container.className = "styled-checkbox";
+
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = items[i].getFirstId();
             checkbox.checked = items[i].getRelation() === this.getPosFormRel();
 
             const textElem = document.createElement('span');
-            textElem.innerHTML = this._allAxes.getEventByEventId(items[i].getFirstId()).getTokensWithEventId();
-            if (withinListPairsByType != null && withinListPairsByType.has(i)) {
-                textElem.style.color = "green";
-                textElem.style.fontWeight = "bold";
-            }
+            textElem.className = "custom-checkbox";
 
             container.appendChild(checkbox);
             container.appendChild(textElem);
-            allItems.appendChild(container);
+
+            const labelText = document.createElement("span");
+            labelText.textContent = this._allAxes.getEventByEventId(items[i].getFirstId()).getTokensWithEventId();
+            labelText.style.color = "red";
+            labelText.style.marginLeft = "8px";
+
+            container.appendChild(labelText);
+
+            dropdown.appendChild(container);
         }
 
-        dropdown.appendChild(allItems);
         divQuestion1.appendChild(dropdown);
         this.highlightRelRelations(eventInFocus);
         return divQuestion1;
@@ -235,7 +236,8 @@ class OneToManyForm extends UIForm {
     getSelectedItems() {
         const checkedItems = [];
         const uncheckedItems = [];
-        const checkboxes = document.querySelectorAll('#list1 .items input[type="checkbox"]');
+        const container = document.getElementById('list1');
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
 
         checkboxes.forEach((checkbox) => {
             if (checkbox.checked) {
