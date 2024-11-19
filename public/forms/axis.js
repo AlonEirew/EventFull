@@ -38,7 +38,6 @@ class AxisForm extends UIForm {
         const question = document.createElement("h2");
         question.innerHTML = this.getQuestion(this._annotations[this._annotationIndex]);
         question.id = "axisQuestion";
-        // question.style.color = "black";
         rightPanel.appendChild(question);
         addLegend(rightPanel);
 
@@ -48,6 +47,9 @@ class AxisForm extends UIForm {
 
         let buttContainer = this.createButtonContainer(false, true, false);
         leftPanel.appendChild(buttContainer);
+
+        const nextTaskButton = document.getElementById("next-task");
+        nextTaskButton.disabled = pages[currentPageIdx].annotationRemainder() !== 0;
 
         if (config.app.showRemainingAnnot === true) {
             leftPanel.appendChild(this.getAnnotationsRemainderElem());

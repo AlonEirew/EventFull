@@ -166,9 +166,6 @@ function loadSavedState(filePath) {
         }
 
         pages[0].loadForm();
-
-        const buttonIstruct = document.getElementById("instruct-button");
-
     }
 }
 
