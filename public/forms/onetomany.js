@@ -237,18 +237,18 @@ class OneToManyForm extends UIForm {
         const checkedItems = [];
         const uncheckedItems = [];
         const container = document.getElementById('list1');
-        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-
-        checkboxes.forEach((checkbox) => {
-            if (checkbox.checked) {
-                const selEventId = checkbox.value;
-                checkedItems.push(selEventId);
-            } else {
-                const selEventId = checkbox.value;
-                uncheckedItems.push(selEventId);
-            }
-        });
-
+        if (container !== null) {
+            const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    const selEventId = checkbox.value;
+                    checkedItems.push(selEventId);
+                } else {
+                    const selEventId = checkbox.value;
+                    uncheckedItems.push(selEventId);
+                }
+            });
+        }
         return [checkedItems, uncheckedItems];
     }
 
