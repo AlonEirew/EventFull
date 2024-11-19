@@ -68,13 +68,13 @@ class AxisForm extends UIForm {
                 let startIdx = mention.getTokensIds()[0];
                 let endIdx = mention.getTokensIds().at(-1);
                 for (let i = startIdx; i <= endIdx; i++) {
-                    this.setAxisSpan(mention, eventIdx, text, i, true);
+                    this.setAxisSpan(mention, eventIdx, text, i);
                 }
             } else {
                 let startIdx = allEvents[eventIdx].getTokensIds()[0];
                 let endIdx = allEvents[eventIdx].getTokensIds().at(-1);
                 for (let i = startIdx; i <= endIdx; i++) {
-                    this.setAxisSpan(allEvents[eventIdx], eventIdx, text, i, true);
+                    this.setAxisSpan(allEvents[eventIdx], eventIdx, text, i);
                 }
             }
         }
@@ -82,26 +82,16 @@ class AxisForm extends UIForm {
         return text.join(" ");
     }
 
-    setAxisSpan(mention, annotationIndex, text, i, weight) {
-        let fontWeight = "normal";
-        let border = "";
-        if (weight) {
-            fontWeight = "bold";
-            border = '2px solid black'
-        } else {
-            fontWeight = "normal";
-            border = "none";
-        }
-
+    setAxisSpan(mention, annotationIndex, text, i) {
         switch (mention.getAxisType()) {
             case AxisType.MAIN:
-                text[i] = `<span class=\"label ANC\" onclick=\"showSpanOptions(event, ${annotationIndex})\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                text[i] = `<span class=\"label ANC\" onclick=\"showSpanOptions(event, ${annotationIndex})\">${text[i]}</span>`;
                 break;
             case AxisType.NOT_EVENT:
-                text[i] = `<span class=\"label NOT\" onclick=\"showSpanOptions(event, ${annotationIndex})\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                text[i] = `<span class=\"label NOT\" onclick=\"showSpanOptions(event, ${annotationIndex})\">${text[i]}</span>`;
                 break;
             default:
-                text[i] = `<span class=\"label NA\" onclick=\"showSpanOptions(event, ${annotationIndex})\" style=\"font-weight: ${fontWeight}; border: ${border};\">${text[i]}</span>`;
+                text[i] = `<span class=\"label NA\" onclick=\"showSpanOptions(event, ${annotationIndex})\">${text[i]}</span>`;
                 break;
         }
     }

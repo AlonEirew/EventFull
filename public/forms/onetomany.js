@@ -76,7 +76,7 @@ class OneToManyForm extends UIForm {
         const divQuestion1 = document.createElement("div");
         const question1 = document.createElement("h2");
         question1.innerHTML = this.getQuestionText(eventInFocus);
-        question1.style.color = "black";
+        // question1.style.color = "black";
         divQuestion1.appendChild(question1);
 
         let items = this.getAllRelevantRelations(eventInFocus.getId());
@@ -192,25 +192,26 @@ class OneToManyForm extends UIForm {
 
     formatText(eventInFocus) {
         let text = [...this._allAxes.getMainDocTokens()];
-        const allEvents = this._annotations;
+        let retText = text.slice();
+        const allEvents = this._allAxes.getAllRelEvents();
         let start1Idx = eventInFocus.getTokensIds()[0];
         let end1Idx = eventInFocus.getTokensIds().at(-1);
-        let handledIds = new Set();
 
         for (let i = 0; i < allEvents.length; i++) {
             const eventStartId = allEvents[i].getTokensIds()[0];
             const eventEndId = allEvents[i].getTokensIds().at(-1);
             for (let j = eventStartId; j <= eventEndId; j++) {
-                text[j] = `<span style=\"font-weight: bold;\">${text[j]}`;
+                retText[j] = `<span style=\"font-weight: bold;\">${text[j]}`;
             }
 
-            text[eventEndId] += " (" + allEvents[i].getId() + ")</span>";
-            handledIds.add(allEvents[i].getId());
+            retText[eventEndId] += " (" + allEvents[i].getId() + ")</span>";
         }
 
         for (let i = start1Idx; i <= end1Idx; i++) {
-            text[i] = `<span class=\"label ANC\">${text[i]}</span>`;
+            retText[i] = `<span class=\"label ANC\">${text[i]}`;
         }
+
+        retText[end1Idx] += " (" + eventInFocus.getId() + ")</span>";
 
         const allRelevantPairs = this.getAllRelevantRelations(eventInFocus.getId());
         for (let i = 0; i < allRelevantPairs.length; i++) {
@@ -218,18 +219,13 @@ class OneToManyForm extends UIForm {
             let start2Idx = curEvent.getTokensIds()[0];
             let end2Idx = curEvent.getTokensIds().at(-1);
             for (let j = start2Idx; j <= end2Idx; j++) {
-                text[j] = `<span class=\"label NOT\">${text[j]}`;
+                retText[j] = `<span class=\"label NOT\">${text[j]}`;
             }
 
-            if (!handledIds.has(curEvent.getId())) {
-                text[end2Idx] += " (" + curEvent.getId() + ")</span>";
-                handledIds.add(curEvent.getId());
-            } else {
-                text[end2Idx] += "</span>";
-            }
+            retText[end2Idx] += " (" + curEvent.getId() + ")</span>";
         }
 
-        return text.join(" ");
+        return retText.join(" ");
     }
 
     annotationRemainder() {

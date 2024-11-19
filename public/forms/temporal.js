@@ -117,6 +117,7 @@ class TemporalForm extends UIForm {
 
     formatText(pair) {
         let text = [...this._allAxes.getMainDocTokens()];
+        let retText = text.slice();
         const allEvents = this._allAxes.getAllRelEvents();
         const allTimeExpressions = this._allAxes.getAllTimeExpressions();
         let event1 = this._allAxes.getEventByEventId(pair.getFirstId());
@@ -128,27 +129,31 @@ class TemporalForm extends UIForm {
             const eventStartIds = allEvents[i].getTokensIds()[0];
             const eventEndIds = allEvents[i].getTokensIds().at(-1);
             for (let i = eventStartIds; i <= eventEndIds; i++) {
-                text[i] = `<span style=\"font-weight: bold;\">${text[i]}`;
+                retText[i] = `<span style=\"font-weight: bold;\">${text[i]}`;
             }
 
-            text[eventEndIds] += " (" + allEvents[i].getId() + ")</span>";
+            retText[eventEndIds] += " (" + allEvents[i].getId() + ")</span>";
         }
 
         for (let i = 0; i < allTimeExpressions.length; i++) {
-            text[allTimeExpressions[i]] = `<span style=\"text-decoration: underline;\">${text[allTimeExpressions[i]]}</span>`;
+            retText[allTimeExpressions[i]] = `<span style=\"text-decoration: underline;\">${text[allTimeExpressions[i]]}</span>`;
         }
 
         for (let i = start1Idx; i <= end1Idx; i++) {
-            text[i] = `<span class=\"label ANC\" \">${text[i]}</span>`;
+            retText[i] = `<span class=\"label ANC\">${text[i]}`;
         }
+
+        retText[end1Idx] += " (" + pair.getFirstId() + ")</span>";
 
         let start2Idx = event2.getTokensIds()[0];
         let end2Idx = event2.getTokensIds().at(-1);
         for (let i = start2Idx; i <= end2Idx; i++) {
-            text[i] = `<span class=\"label NOT\">${text[i]}</span>`;
+            retText[i] = `<span class=\"label NOT\">${text[i]}`;
         }
 
-        return text.join(" ");
+        retText[end2Idx] += " (" + pair.getSecondId() + ")</span>";
+
+        return retText.join(" ");
     }
 
     handleSelection() {
@@ -284,16 +289,16 @@ class TemporalForm extends UIForm {
         radioGroup.className = "radio-group";
 
         let span1 = document.createElement("span");
-        span1.style.color = "royalblue";
-        span1.style.fontWeight = "bold";
-        span1.innerHTML = this._allAxes.getEventByEventId(pair.getFirstId()).getTokens();
+        span1.style.color = "#28A745";
+        let firstId = pair.getFirstId();
+        span1.innerHTML = this._allAxes.getEventByEventId(firstId).getTokens() + " (" + firstId + ")";
         const [label1, input1] = this.getOption(EventRelationType.BEFORE, "multiChoice1", span1);
         radioGroup.appendChild(label1);
 
         let span2 = document.createElement("span");
         span2.style.color = "orangered";
-        span2.style.fontWeight = "bold";
-        span2.innerHTML = this._allAxes.getEventByEventId(pair.getSecondId()).getTokens();
+        let secondId = pair.getSecondId();
+        span2.innerHTML = this._allAxes.getEventByEventId(secondId).getTokens() + " (" + secondId + ")";
         const [label2, input2] = this.getOption(EventRelationType.AFTER, "multiChoice1", span2);
         radioGroup.appendChild(label2);
 
@@ -422,7 +427,8 @@ class TemporalForm extends UIForm {
             const event1 = this._allAxes.getEventByEventId(this._selectedNodes[0]);
             const event2 = this._allAxes.getEventByEventId(this._selectedNodes[1]);
             const eventAxisId = this._allAxes.getEventAxisId(event1);
-            const allPairs = this._allAxes.getAxisById(eventAxisId).getAxisGraph().exportAllReachAndTransGraphPairs(eventAxisId);
+            let axisById = this._allAxes.getAxisById(eventAxisId);
+            const allPairs = axisById.getAxisGraph().exportAllReachAndTransGraphPairs(eventAxisId);
             index = this.findPair(allPairs);
             if(this._allAxes.isValidPair(event1, event2)) {
                 this._annotationIndex = this._annotations.length;

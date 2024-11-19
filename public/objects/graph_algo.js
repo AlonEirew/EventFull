@@ -463,7 +463,7 @@ class CorefGraphHandler extends TemporalGraphHandler {
                     // Check cases that the transitive closure should be also annotated (path cannot determine if caused or not)
                     const ikNoCoref = reachAndTransGraph[i][k] === EventRelationType.NO_COREF || reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_COREF;
                     const kjNoCoref = reachAndTransGraph[k][j] === EventRelationType.NO_COREF || reachAndTransGraph[k][j] === EventRelationType.UNCERTAIN_COREF;
-                    const notDirectCoref = reachAndTransGraph[i][j] !== EventRelationType.COREF;
+                    const notDirectCoref = reachAndTransGraph[i][j] !== EventRelationType.COREF && reachAndTransGraph[i][j] !== EventRelationType.NO_COREF;
                     if (i !== j && (getRelationMapping(reachAndTransGraph[i][j]) === EventRelationType.EQUAL ||
                         getRelationMapping(reachAndTransGraph[i][j]) === EventRelationType.NA) &&
                         ikNoCoref && kjNoCoref && notDirectCoref) {

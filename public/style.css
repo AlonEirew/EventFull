@@ -127,7 +127,7 @@ button:disabled {
 }
 
 .button-next-task {
-    background-color: #F26659;
+    background-color: #5DADE2;
     border: none;
     color: white;
     padding: 8px 12px;
@@ -364,9 +364,21 @@ button:disabled {
     border-radius: 3px; /* Rounded corners like the spans */
 }
 
-.ANC { background-color: #28A745; }
-.NOT { background-color: #E74C3C; }
-.NA { background-color: #3498DB; }
+.ANC {
+    background-color: #28A745;
+    font-weight: normal;
+    border: 2px solid black;
+}
+.NOT {
+    background-color: #CD5C5C;
+    font-weight: normal;
+    border: 2px solid black;
+}
+.NA {
+    background-color: #3498DB;
+    font-weight: normal;
+    border: 2px solid black;
+}
 
 .radio-group {
     display: flex;
