@@ -101,6 +101,7 @@ function refreshGraphElem(formType) {
     for (let i = 0; i < graphEventsToPreset.length; i++) {
         let nodeId = graphEventsToPreset[i].getId();
         if (cy.hasElementWithId(nodeId)) {
+            cy.getElementById(nodeId).lock();
             const nodeIdx = allCyNodes.indexOf(String(nodeId));
             allCyNodes.splice(nodeIdx, 1);
             setNodeSytleByType(nodeId, graphEventsToPreset[i].getAxisType());
@@ -116,6 +117,11 @@ function refreshGraphElem(formType) {
             cy.remove(removeId);
         }
     }
+
+    rearrangeGraph();
+    cy.nodes().forEach((node) => {
+        node.unlock();
+    });
 
     const axisEdges = this.getAxisEdges(formType);
     const cyEdges = cy.edges();
@@ -238,7 +244,8 @@ function renderGraph(curForm) {
 
             layout: {
                 name: 'grid',
-                // rows: 1
+                fit: true,    // Ensure the graph fits within the viewport
+                padding: 30,  // Optional: Add padding around the graph
             },
 
             zoom: 1,
@@ -293,12 +300,7 @@ function constrainPanning() {
 }
 
 function rearrangeGraph() {
-    const layoutOptions = {
-        name: 'grid', // Replace with your preferred layout
-        fit: true,    // Ensure the graph fits within the viewport
-        padding: 30,  // Optional: Add padding around the graph
-    };
-
-    const layout = cy.layout(layoutOptions);
+    cy.resize(); // Recalculates the container dimensions
+    const layout = cy.layout({name: 'grid'});
     layout.run(); // Execute the layout
 }

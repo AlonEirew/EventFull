@@ -28,7 +28,11 @@ class TemporalForm extends UIForm {
         renderGraph(this);
 
         window.addEventListener('resize', () => {
-            cy.resize(); // Adjust the Cytoscape viewport
+            const rightPanel = document.getElementById("cy");
+            if (rightPanel.style.display === "none") {
+                return;
+            }
+            
             rearrangeGraph(); // Trigger layout recalculation
         });
 

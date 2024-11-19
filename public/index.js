@@ -232,10 +232,9 @@ function readInstructions(instFile) {
     });
 }
 
-function cleanPanel(parantElem) {
-    console.log("cleaning the main div element 'questions'");
-    while (parantElem.firstChild) {
-        parantElem.removeChild(parantElem.firstChild);
+function cleanPanel(parentElem) {
+    while (parentElem.firstChild) {
+        parentElem.removeChild(parentElem.firstChild);
     }
 }
 
