@@ -46,6 +46,11 @@ function jsonReplacer(key, value) {
 }
 
 function finalExport() {
+    if (!pages || pages.length === 0) {
+        showMissingFileError();
+        return;
+    }
+
     if (!config.app.exportAlways) {
         for (let i = 0; i < pages.length; i++) {
             if (!pages[i].isFinalized() || pages[i].annotationRemainder() > 0) {
@@ -82,6 +87,11 @@ function finalExport() {
 
 function saveFile() {
     console.log("Saving current state");
+    if (!pages || pages.length === 0) {
+        showMissingFileError();
+        return;
+    }
+
     const json = JSON.stringify(allAxesGlobal, jsonReplacer, 2);
     const blob = new Blob([json], { type: "application/json" });
     const a = document.createElement('a');
@@ -112,6 +122,10 @@ function loadSavedState(filePath) {
     clearAll();
     const input = document.getElementById(filePath);
     const file = input.files[0];
+    if (!file) {
+        showMissingFileError();
+        return;
+    }
     const reader = new FileReader();
     reader.readAsText(file);
     currentLoadedFileName = file.name;
@@ -156,6 +170,11 @@ function loadSavedState(filePath) {
 }
 
 function toggleInstructions() {
+    if (!pages || pages.length === 0) {
+        showInstructError();
+        return;
+    }
+
     console.log("toggle instructions button clicked");
     const divIstructs = document.getElementsByClassName("instructions-container");
     const buttonIstruct = document.getElementById("instruct-button");
@@ -230,12 +249,25 @@ function toggleGraphDivOff() {
     divGraph.style.display = "none";
 }
 
-function showErrorMessage() {
+function showMissingFileError() {
     Swal.fire({
         icon: "error",
-        title: 'Something is not right!',
+        title: 'No File Selected!',
         html:
-            '<p>To see the application log:<br>Mouse menu-->inspect-->console</p>',
+            '<p>Please select a file first using the "Choose File" button.</p>',
+        showCancelButton: false,
+        confirmButtonText: 'OK',
+        allowOutsideClick: false,
+        scrollbarPadding: true
+    });
+}
+
+function showInstructError() {
+    Swal.fire({
+        icon: "error",
+        title: 'Tool not loaded yet!',
+        html:
+            '<p>The tool needs to be loaded by importing a file for annotation first. Only then will the instructions become available.</p>',
         showCancelButton: false,
         confirmButtonText: 'OK',
         allowOutsideClick: false,
