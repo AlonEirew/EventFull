@@ -166,26 +166,9 @@ function loadSavedState(filePath) {
         }
 
         pages[0].loadForm();
-    }
-}
 
-function toggleInstructions() {
-    if (!pages || pages.length === 0) {
-        showInstructError();
-        return;
-    }
+        const buttonIstruct = document.getElementById("instruct-button");
 
-    console.log("toggle instructions button clicked");
-    const divIstructs = document.getElementsByClassName("instructions-container");
-    const buttonIstruct = document.getElementById("instruct-button");
-    if (divIstructs.length > 0) {
-        if (divIstructs[0].style.display === "none") {
-            divIstructs[0].style.display = "block";
-            buttonIstruct.innerHTML = "Instructions &#10225;";
-        } else {
-            divIstructs[0].style.display = "none";
-            buttonIstruct.innerHTML = "Instructions &#10224;";
-        }
     }
 }
 
@@ -202,11 +185,29 @@ function setToggleMode(mode) {
     const divIstructs = document.getElementsByClassName("instructions-container");
     if (divIstructs.length > 0) {
         const buttonIstruct = document.getElementById("instruct-button");
+        let instPrefix = pageTitles[currentPageIdx].split(":")[1].trim();
         divIstructs[0].style.display = mode;
         if (mode === "none") {
-            buttonIstruct.innerHTML = "Instructions &#10224;";
+            buttonIstruct.innerHTML = instPrefix + " Instructions &#10224;";
         } else {
-            buttonIstruct.innerHTML = "Instructions &#10225;";
+            buttonIstruct.innerHTML = instPrefix + " Instructions &#10225;";
+        }
+    }
+}
+
+function toggleInstructions() {
+    if (!pages || pages.length === 0) {
+        showInstructError();
+        return;
+    }
+
+    console.log("toggle instructions button clicked");
+    const divIstructs = document.getElementsByClassName("instructions-container");
+    if (divIstructs.length > 0) {
+        if (divIstructs[0].style.display === "none") {
+            setToggleMode("block");
+        } else {
+            setToggleMode("none");
         }
     }
 }

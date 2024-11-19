@@ -257,9 +257,9 @@ class OneToManyForm extends UIForm {
 
         Swal.fire({
             icon: "error",
-            title: 'Graph Pair Selection Not Supported',
+            title: 'Not Supported',
             html:
-                '<p>Selecting pairs in graph is not supported</p>',
+                '<p>Selecting pairs in the graph at this step is not supported.</p>',
             showCancelButton: false,
             confirmButtonText: 'OK',
             allowOutsideClick: false,
