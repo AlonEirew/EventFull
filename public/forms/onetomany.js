@@ -178,8 +178,8 @@ class OneToManyForm extends UIForm {
     }
 
     handleDiscrepancies(discrepancy) {
-        const disRootEdge = this._allAxes.getEventByEventId(discrepancy[0]).getTokens();
-        const disOtherEdge = this._allAxes.getEventByEventId(discrepancy[1]).getTokens();
+        const disRootEdge = this._allAxes.getEventByEventId(discrepancy[0]).getTokens() + " (" + discrepancy[0] + ")";
+        const disOtherEdge = this._allAxes.getEventByEventId(discrepancy[1]).getTokens() + " (" + discrepancy[1] +")";
         // Handle presenting k
         const currentRelation = discrepancy[3];
         const inferredRelation = discrepancy[4];
@@ -188,16 +188,32 @@ class OneToManyForm extends UIForm {
             icon: "info",
             title: 'Cluster Update!',
             html:
-                '<p>Your last selection has change the relation between two events.<br/><br/>' +
-                'The relation currently set between the events: <span style=\"color:orangered; font-weight: bold;\">' + disRootEdge +'</span> and ' +
-                '<span style=\"color:orangered; font-weight: bold;\">' + disOtherEdge + '</span> is <span style=\"color:royalblue; font-weight: bold;\">' +
-                currentRelation + '</span>. However, due to your last selection, the events can be inferred as having a ' +
-                '<span style=\"color:royalblue; font-weight: bold;\">' + inferredRelation + '</span> relation. This will be fixed automaticly to maintain consistency with your last selection.<br/><br/>' +
-                '<span style=\"font-weight: bold;\">Make sure this is correct, and continue by clicking again on the \"next\" button.</p>',
+                '<p>Your last selection has changed the relation between two events.<br/><br/>' +
+                    'The relation currently set between the events: ' +
+                    '<span style=\"color:orangered; font-weight: bold;\">' + disRootEdge + '</span> and ' +
+                    '<span style=\"color:orangered; font-weight: bold;\">' + disOtherEdge + '</span> is ' +
+                    '<span style=\"color:royalblue; font-weight: bold;\">' + currentRelation + '</span>. ' +
+                    'However, due to your last selection, the events can now be inferred as having a ' +
+                    '<span style=\"color:royalblue; font-weight: bold;\">' + inferredRelation + '</span> relation. ' +
+                    'This will be updated automatically to maintain consistency with your last selection.<br/><br/>' +
+                    '<span style=\"font-weight: bold;\">Please ensure this is correct (note that the change is not reflected yet in the graph visualization), ' +
+                    'approve selection by clicking the "Next" button again.</span>' +
+                '</p>',
+
             showCancelButton: false,
             confirmButtonText: 'OK',
             allowOutsideClick: false,
-            scrollbarPadding: true
+            backdrop: false,
+            scrollbarPadding: true,
+            position: 'top-start',
+            didOpen: () => {
+                let elementById = document.getElementById("questions");
+                this.disableAllChildren(elementById);
+            },
+            willClose: () => {
+                let elementById = document.getElementById("questions");
+                this.enableAllChildren(elementById);
+            },
         });
     }
 

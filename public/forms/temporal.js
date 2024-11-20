@@ -231,8 +231,17 @@ class TemporalForm extends UIForm {
             showCancelButton: false,
             confirmButtonText: 'OK',
             allowOutsideClick: false,
+            backdrop: false,
             scrollbarPadding: true,
             position: 'top-start',
+            didOpen: () => {
+                let elementById = document.getElementById("questions");
+                this.disableAllChildren(elementById);
+            },
+            willClose: () => {
+                let elementById = document.getElementById("questions");
+                this.enableAllChildren(elementById);
+            },
         });
     }
 
