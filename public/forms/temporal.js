@@ -487,10 +487,18 @@ class TemporalForm extends UIForm {
                 };
             case EventRelationType.EQUAL:
             case EventRelationType.COREF:
+                return {
+                    selector: '.equal',
+                    style: {
+                        'line-style': 'dotted',
+                        'target-arrow-shape': 'none',
+                        'source-arrow-shape': 'none',
+                    }
+                };
             case EventRelationType.NO_COREF:
             case EventRelationType.UNCERTAIN_COREF:
                 return {
-                    selector: '.equal',
+                    selector: '.no_coref',
                     style: {
                         'line-style': 'dotted',
                         'target-arrow-shape': 'none',

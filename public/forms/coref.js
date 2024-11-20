@@ -131,8 +131,6 @@ class CorefForm extends OneToManyForm {
                 };
             case EventRelationType.EQUAL:
             case EventRelationType.COREF:
-            case EventRelationType.NO_COREF:
-            case EventRelationType.UNCERTAIN_COREF:
                 return {
                     selector: '.equal',
                     style: {
@@ -140,6 +138,17 @@ class CorefForm extends OneToManyForm {
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
                         'width': 2,
+                    }
+                };
+            case EventRelationType.NO_COREF:
+            case EventRelationType.UNCERTAIN_COREF:
+                return {
+                    selector: '.no_coref',
+                    style: {
+                        'line-style': 'dotted',
+                        'target-arrow-shape': 'none',
+                        'source-arrow-shape': 'none',
+                        'opacity': 0.2,
                     }
                 };
             case EventRelationType.BEFORE:

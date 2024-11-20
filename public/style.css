@@ -212,7 +212,8 @@ button:disabled {
 
 /* Container for the checkbox group */
 .styled-checkbox-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Maximum 3 columns, equally spaced */
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align text to the left */
     font-family: 'Georgia', serif; /* Match the elegant style */

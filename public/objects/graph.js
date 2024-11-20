@@ -6,12 +6,14 @@ function styleSelect(relation) {
     let styleClass;
     if (relation === EventRelationType.VAGUE) {
         styleClass = EventRelationType.VAGUE;
-    } else if (getRelationMapping(relation) === EventRelationType.EQUAL) {
+    } else if (relation === EventRelationType.EQUAL || relation === EventRelationType.COREF) {
         styleClass = EventRelationType.EQUAL;
     } else if (relation === EventRelationType.CAUSE) {
         styleClass = "causal";
     } else if (relation === EventRelationType.NO_CAUSE || relation === EventRelationType.UNCERTAIN_CAUSE) {
         styleClass = "no_causal";
+    } else if (relation === EventRelationType.NO_COREF || relation === EventRelationType.UNCERTAIN_COREF) {
+        styleClass = "no_coref";
     } else {
         styleClass = relation;
     }
@@ -223,6 +225,7 @@ function getGraphStyle(curForm) {
         curForm.graphPairRelationStyle(EventRelationType.BEFORE),
         curForm.graphPairRelationStyle(EventRelationType.CAUSE),
         curForm.graphPairRelationStyle(EventRelationType.NO_CAUSE),
+        curForm.graphPairRelationStyle(EventRelationType.NO_COREF),
         this.getNodeTypeStyle(AxisType.MAIN),
         this.getNodeTypeStyle(AxisType.NA),
         this.getHighlightStyle(),

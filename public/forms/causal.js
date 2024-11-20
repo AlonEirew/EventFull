@@ -140,15 +140,24 @@ class CausalForm extends OneToManyForm {
                 };
             case EventRelationType.EQUAL:
             case EventRelationType.COREF:
-            case EventRelationType.NO_COREF:
-            case EventRelationType.UNCERTAIN_COREF:
                 return {
                     selector: '.equal',
                     style: {
                         'line-style': 'dotted',
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
-                        'opacity': 0.2,
+                        'opacity': 0.3,
+                    }
+                };
+            case EventRelationType.NO_COREF:
+            case EventRelationType.UNCERTAIN_COREF:
+                return {
+                    selector: '.no_coref',
+                    style: {
+                        'line-style': 'dotted',
+                        'target-arrow-shape': 'none',
+                        'source-arrow-shape': 'none',
+                        'opacity': 0,
                     }
                 };
             case EventRelationType.BEFORE:
@@ -170,6 +179,7 @@ class CausalForm extends OneToManyForm {
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none',
+                        'opacity': 1,
                     }
                 };
             case EventRelationType.NO_CAUSE:
