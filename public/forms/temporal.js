@@ -41,6 +41,11 @@ class TemporalForm extends UIForm {
 
     createUI() {
         const questions = document.getElementById("questions");
+        let scrollTop = 0;
+        if (document.getElementById("paragraph") != null) {
+            scrollTop = document.getElementById("paragraph").scrollTop;
+        }
+
         cleanPanel(questions);
 
         let pair = null;
@@ -54,6 +59,11 @@ class TemporalForm extends UIForm {
 
         if (pair != null) {
             paragraph.innerHTML = this.formatText(pair);
+
+            setTimeout(() => {
+                paragraph.scrollTop = scrollTop;
+            }, 0);
+
             summaryPanel.appendChild(paragraph);
 
             let divQuestion1 = this.getQuestion(pair);

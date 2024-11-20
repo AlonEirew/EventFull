@@ -43,6 +43,7 @@ class UIForm {
     getParagraph() {
         const paragraph = document.createElement("p");
         paragraph.className = "paragraph";
+        paragraph.id = "paragraph";
         return paragraph;
     }
 

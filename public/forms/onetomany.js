@@ -123,6 +123,11 @@ class OneToManyForm extends UIForm {
 
     createUI() {
         const questions = document.getElementById("questions");
+        let scrollTop = 0;
+        if (document.getElementById("paragraph") != null) {
+            scrollTop = document.getElementById("paragraph").scrollTop;
+        }
+
         cleanPanel(questions);
 
         let eventInFocus = null;
@@ -136,6 +141,11 @@ class OneToManyForm extends UIForm {
 
         if (eventInFocus != null) {
             paragraph.innerHTML = this.formatText(eventInFocus);
+
+            setTimeout(() => {
+                paragraph.scrollTop = scrollTop;
+            }, 0);
+
             summaryPanel.appendChild(paragraph);
 
             let divQuestion1 = this.getQuestion(eventInFocus);
