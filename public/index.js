@@ -271,3 +271,23 @@ function showInstructError() {
         scrollbarPadding: true
     });
 }
+
+function showLoadWarning() {
+    if (pages && pages.length > 0) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This will clear the current state. Do you want to proceed?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                loadSavedState('file2');
+            }
+        });
+    } else {
+        loadSavedState('file2');
+    }
+}
