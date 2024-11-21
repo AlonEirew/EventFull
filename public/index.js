@@ -291,3 +291,34 @@ function showLoadWarning() {
         loadSavedState('file2');
     }
 }
+
+function showAnnotCompleteAlert() {
+    Swal.fire({
+        icon: "success",
+        title: 'Annotation Complete!',
+        html:
+            '<p>Well done!\nYou have completed all tasks.<br/>Please SAVE your work.</p>',
+        showCancelButton: false,
+        confirmButtonText: 'OK',
+        allowOutsideClick: false,
+        scrollbarPadding: true
+    });
+}
+
+function discrepencyAlertSimulate() {
+    Swal.fire({
+        icon: "error",
+        title: 'Discrepancy Alert',
+        html:
+            '<p>Your last selection has created a discrepancy.<br/><br/>The relation currently set between the events <span style=\"color:orangered; font-weight: bold;\">kidnapped (12)</span> and ' +
+            '<span style=\"color:orangered; font-weight: bold;\">said (17)</span> is <span style=\"color:royalblue; font-weight: bold;\">before</span>. ' +
+            'However, based on the latest selection, the events can now be inferred indirectly through the event ' +
+            '<span style=\"color:green; font-weight: bold;\">demanding (10)</span> to also have a ' +
+            '<span style=\"color:royalblue; font-weight: bold;\">equal</span> relation.<br/><br/>' +
+            '<span style=\"font-weight: bold;\">Please fix or contact the task admin for help.</p>',
+        showCancelButton: false,
+        confirmButtonText: 'OK',
+        allowOutsideClick: true,
+        scrollbarPadding: true,
+    });
+}

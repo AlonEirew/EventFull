@@ -148,16 +148,7 @@ class UIForm {
                             return;
                         }
                     }
-                    Swal.fire({
-                        icon: "success",
-                        title: 'Annotation Complete!',
-                        html:
-                            '<p>Well done!\nYou have completed all tasks.<br/>Please SAVE your work.</p>',
-                        showCancelButton: false,
-                        confirmButtonText: 'OK',
-                        allowOutsideClick: false,
-                        scrollbarPadding: true
-                    });
+                    showAnnotCompleteAlert();
                 }
             }
         }

@@ -1,61 +1,121 @@
 <div id="temporal-instructions" class="instructions-container">
   <div class="form-group">
-    <h2>Overview</h2>
-    <p><strong>You'll see sentences with two events marked with different colors and you need to decide the temporal order taking into consideration only the starting time of the events. For example,</strong></p>
-    <p dir="ltr">
-      <em>[A traveler is <span style="color: royalblue">kidnapped</span>, and the police officers <span style="color: orangered">said</span> the kidnapper is demanding money.]</em>
-    </p>
+    <h1>Temporal Step - Tool Overview</h1>
+    <p>You will see a paragraph with two event mentions marked in <span class="label ANC">green</span> and <span class="label NOT">red</span>.
+      You need to determine the temporal order between the two mentions, considering only the starting time of the events (as further explained below in "Task Overview").</p>
+
+    <p>After each selection, the tool will guide you through the pairs of events that need judging. Once all pairs are annotated,
+      a <a style="color: blue; text-decoration: underline; cursor: pointer;" onclick="showAnnotCompleteAlert()">notification</a> indicating that all pairs are complete will be displayed.</p>
+
+    <p>At any time, you can manually select a pair to annotate by clicking on two events (nodes) in the graph visualization. Additionally, you can move the nodes in the graph as you see fit.</p>
+
+    <p>In the case of a <a style="color: blue; text-decoration: underline; cursor: pointer;" onclick="discrepencyAlertSimulate()">discrepancy alert</a> (i.e., an annotation that logically contradicts a previous related annotation), you will be required to carefully review the message and the event mentions involved in the discrepancy, and then fix it.</p>
+
+    <h1>Task Overview</h1>
+    <p>Below are examples of how to perform the temporal annotation task.</p>
+    <p>Given the sentence:</p>
+    <p class="paragraph">A traveler is <span class="label ANC">kidnapped</span>, and the police officers <span class="label NOT">said</span> the kidnapper is demanding money.</p>
 
     <p dir="ltr">[QUESTION] Which event started first?</p>
-    <ul>
-      <li style="color:rgb(97, 189, 109);">kidnapped (You need to choose this)</li>
-      <li>said</li>
-      <li>Both started at the same time</li>
-      <li>Uncertain</li>
-    </ul>
+    <div class="radio-group">
+      <label class="radio-option">
+        <input type="radio" name="options1" value="option1" checked="checked">
+        <span class="custom-radio"></span>
+        <span style="color: #28A745">kidnapped</span>
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options1" value="option2" disabled="disabled">
+        <span class="custom-radio"></span>
+        <span style="color: orangered">said</span>
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options1" value="option3" disabled="disabled">
+        <span class="custom-radio"></span>
+        Both started at the same time
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options1" value="option4" disabled="disabled">
+        <span class="custom-radio"></span>
+        Uncertain
+      </label>
+    </div>
 
-    <p><strong>EXPLANATION:</strong> (<span style="color: royalblue">kidnapped</span>) DEFINITELY started before (<span style="color: orangered">said</span>) if we consider the chain of events.
-      The 2nd answer is obviously NOT POSSIBLE. The 3nd answer might be possible if considering that kidnapped event is still ongoing. However, <strong>even if an event is durative, e.g., (<span style="color: royalblue">kidnapped</span>) is during a period of time, you only need to consider the
-      STARTING time (when the event began/started) to make the decision.</strong>
+    <p><strong>EXPLANATION:</strong> <span class="label ANC">kidnapped</span> DEFINITELY started before <span class="label NOT">said</span> if we consider the chain of events.
+      The 2nd answer is obviously NOT POSSIBLE. The 3nd answer might be possible if considering that <span class="label ANC">kidnapped</span> event is still ongoing. However, even if an event is durative,
+      e.g., kidnapped is during a period of time, you only need to consider the STARTING time (when the event began or started) to make the decision.
 
-    <p><strong>Not all cases are a clear-cut as (<span style="color: royalblue">kidnapped</span>) and (<span style="color: orangered">said</span>). For example,</strong></p>
-    <p>[I <span style="color: royalblue">ate</span> a burger and <span style="color: orangered">drank</span> a bottle of water for lunch today.]</p>
+    <p>However, Not all cases are a clear-cut as kidnapped and said.</p>
+    <p>For example:</p>
+    <p class="paragraph">I <span class="label ANC">ate</span> a burger and <span class="label NOT">drank</span> a bottle of water for lunch today.</p>
 
     <p dir="ltr">[QUESTION] Which event started first?</p>
-    <ul>
-      <li>ate</li>
-      <li>drank</li>
-      <li>Both started at the same time</li>
-      <li style="color:rgb(97, 189, 109);">Uncertain (You need to choose this)</li>
-    </ul>
+    <div class="radio-group">
+      <label class="radio-option">
+        <input type="radio" name="options2" value="option1" disabled="disabled">
+        <span class="custom-radio"></span>
+        <span style="color: #28A745">ate</span>
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options2" value="option2" disabled="disabled">
+        <span class="custom-radio"></span>
+        <span style="color: orangered">drank</span>
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options2" value="option3" disabled="disabled">
+        <span class="custom-radio"></span>
+        Both started at the same time
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options2" value="option4" checked="checked">
+        <span class="custom-radio"></span>
+        Uncertain
+      </label>
+    </div>
 
-    <p><strong>EXPLANATION:</strong> Here we only know that (<span style="color: royalblue">ate</span>) and (<span style="color: orangered">drank</span>) happened during lunchtime today.
-      Based on the text, we cannot rule out the possibility that (<span style="color: royalblue">ate</span>) is earlier than (<span style="color: orangered">drank</span>),
-      and we cannot rule out the possibility that (<span style="color: orangered">drank</span>) is earlier than (<span style="color: royalblue">ate</span>), either.</p>
+    <p>EXPLANATION: Here we only know that <span class="label ANC">ate</span> and <span class="label NOT">drank</span> happened during lunchtime today.
+      Based on the text, we cannot rule out the possibility that <span class="label ANC">ate</span> is earlier than <span class="label NOT">drank</span>,
+      and we cannot rule out the possibility that <span class="label NOT">drank</span> is earlier than <span class="label ANC">ate</span>, either.</p>
 
     <h2>IMPORTANT RULE 2</h2>
-    <p><strong>Two events may have exactly the same start time, although it's not quite often. For example,</strong></p>
-    <p>[They (<span style="color: royalblue">filed</span>) objections to the court, (<span style="color: orangered">claiming</span>) that the suspects were treated unfairly.]</p>
+    <p>Two events may have exactly the same start time, although it's not quite often.</p>
+    <p>For example:</p>
+    <p class="paragraph">They <span class="label ANC">filed</span> objections to the court, <span class="label NOT">claiming</span> that the suspects were treated unfairly.</p>
 
     <p dir="ltr">[QUESTION] Which event started first?</p>
-    <ul>
-      <li>filed</li>
-      <li>claiming</li>
-      <li style="color:rgb(97, 189, 109);">Both started at the same time (You need to choose this)</li>
-      <li>Uncertain</li>
-    </ul>
+    <div class="radio-group">
+      <label class="radio-option">
+        <input type="radio" name="options3" value="option1" disabled="disabled">
+        <span class="custom-radio"></span>
+        <span style="color: #28A745">filed</span>
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options3" value="option2" disabled="disabled">
+        <span class="custom-radio"></span>
+        <span style="color: orangered">claiming</span>
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options3" value="option3" checked="checked">
+        <span class="custom-radio"></span>
+        Both started at the same time
+      </label>
+      <label class="radio-option">
+        <input type="radio" name="options3" value="option4">
+        <span class="custom-radio"></span>
+        Uncertain
+      </label>
+    </div>
 
-    <p><strong>EXPLANATION:</strong> (<span style="color: royalblue">filed</span>) and (<span style="color: orangered">claiming</span>) are the same thing, so their start times are equal: neither before nor after.</p>
+    <p><strong>EXPLANATION:</strong> <span class="label ANC">filed</span> and <span class="label NOT">claiming</span> are the same thing, so their start times are equal: neither before nor after.</p>
 
     <h2>RECOMMENDED STRATEGY</h2>
-    <p><strong>For each question, try to place both events on a timeline considering only the starting time of the events. (1) Try to find explicit indicators between the events (before that, after, simultaneously, etc..), (2) use common sense (like in the above kidnapped example),
-      and (3) In case common-sense is needed, try to determine the events order, test if changing the events order still makes sense, in case it does then its inconclusive/uncertain.</strong></p>
-    <p>Take the above questions for example. First, assume (<span style="color: royalblue">kidnapped</span>) indeed starts before (<span style="color: orangered">said</span>) starts. Then ask yourself if it makes sense.
+    <p>For each question, try to place both events on a timeline considering only the starting time of the events. (1) Try to find explicit indicators between the events (before that, after, simultaneously, etc..), (2) use common sense (like in the above kidnapped example),
+      and (3) In case common-sense is needed, try to determine the events order, test if changing the events order still makes sense, in case it does then its inconclusive/uncertain.</p>
+    <p>Take the above questions for example. First, assume <span class="label ANC">kidnapped</span> indeed starts before <span class="label NOT">said</span> starts. Then ask yourself if it makes sense.
       We know from the sentence that the police are working on the kidnap, so based on common sense, the kidnap must start earlier so that the police can work on it.
       Any other way is logically impossible.</p>
 
-    <p>In the (<span style="color: royalblue">ate</span>) and (<span style="color: orangered">drank</span>) example, first assume (<span style="color: royalblue">ate</span>) starts before (<span style="color: orangered">drank</span>) starts, does it makes sense?
-      Then try to replace the order so now (<span style="color: royalblue">drank</span>) starts before (<span style="color: orangered">ate</span>), does it make sense?
+    <p>In the <span class="label ANC">ate</span> and <span class="label NOT">drank</span> example, first assume <span class="label ANC">ate</span> starts before <span class="label NOT">drank</span> starts, does it makes sense?
+      Then try to replace the order so now <span class="label NOT">drank</span> starts before <span class="label ANC">ate</span>, does it make sense?
       Since both cases makes sense, we cannot determine which one started first <u>inconclusively</u>.</p>
 
   </div>
