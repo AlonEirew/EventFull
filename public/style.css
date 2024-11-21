@@ -1,10 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Georgia', serif;
     background-color: #ECF0F1;
 }
 
 h1 {
-    font-family: Arial, sans-serif;
+    font-family: 'Georgia', serif;
     color: #848884;
 }
 
@@ -21,14 +21,82 @@ h2 {
     padding-bottom: 5px; /* Space between text and underline */
 }
 
-table, th, td {
-    border: 1px solid black;
+/* Table styling */
+table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Remove double borders */
+    font-family: 'Georgia', serif; /* Elegant font */
+    font-size: 14px; /* Readable size */
+    color: #333; /* Neutral text color */
+    margin: 0; /* Center the table */
+    background-color: #f9f9f9; /* Light background for the table */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 8px; /* Soft rounding for the table */
+    overflow: hidden; /* Ensure border-radius works */
+}
+
+/* Table headers */
+thead th {
+    background-color: #5DADE2; /* Blue background for headers */
+    color: white; /* White text for contrast */
+    text-align: left; /* Align text to the left */
+    padding: 12px; /* Add padding inside cells */
+    border-bottom: 2px solid #ddd; /* Subtle border below headers */
+}
+
+/* Table body rows */
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternating row background */
+}
+
+tbody tr:hover {
+    background-color: #e6f7ff; /* Light blue on hover */
+}
+
+/* Table cells */
+td {
+    padding: 10px; /* Add padding inside cells */
+    border-bottom: 1px solid #ddd; /* Subtle border below each row */
+    text-align: left; /* Align text to the left */
+}
+
+/* Header cells */
+th {
+    padding: 10px; /* Add padding for header cells */
+    border-bottom: 2px solid #ddd; /* Add emphasis with a thicker border */
+    font-size: 18px;
+}
+
+/* Highlight the first column */
+td:first-child, th:first-child {
+    font-weight: bold; /* Emphasize the first column */
+    color: black; /* Blue text for the first column */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    table {
+        font-size: 12px; /* Reduce font size for smaller screens */
+    }
+
+    td, th {
+        padding: 8px; /* Reduce padding for smaller screens */
+    }
+}
+
+li {
+    font-family: 'Georgia', serif; /* Professional font */
+    font-size: 18px; /* Readable font size */
+    line-height: 1.8; /* Comfortable line spacing */
+    color: #333; /* Neutral text color */
 }
 
 p {
-    font-family: Arial, sans-serif;
-    line-height: 1.5;
-    font-size: 16px;
+    font-family: 'Georgia', serif; /* Professional font */
+    font-size: 18px; /* Readable font size */
+    line-height: 1.8; /* Comfortable line spacing */
+    color: #333; /* Neutral text color */
+    /*padding: 10px; !* Add padding for spacing *!*/
 }
 
 .title-transparent-container {
