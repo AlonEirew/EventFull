@@ -1,60 +1,85 @@
 <div id="anchor-instructions" class="instructions-container" xmlns="http://www.w3.org/1999/html">
     <div class="form-group">
-        <h2>Overview</h2>
-        <p><strong>You'll be asked to find the event(s) that is the reason another event have happened. To do so, you'll be given events that started (in time) before the event in question. You need to decide if one of those events was/is the reason. For example,</strong></p>
-        <p dir="ltr">
-            <em>[The hurricane <span style="color: orangered">hit</span> the Florida coast causing severe property <span style="color: royalblue">damage</span>.]</em>
-        </p>
+        <h1>Causal Step - Tool Overview</h1>
+        <p>You will see a paragraph with one event marked in <span class="label ANC">green</span>, and all events that preceded it (selected as "after" in the temporal step)
+            marked in <span class="label NOT">red</span>. You need to decide which of the red event mentions caused the green event to happen, is happening, or will happen (as further explained below in "Task Overview").</p>
 
-        <p dir="ltr">[QUESTION] Why (<span style="color: royalblue">damage</span>) had (have/will) happened?</p>
-        <a>Because of:</a><br>
-        <label>
-            <input type="checkbox" checked="checked" disabled="disabled"><span style="color:rgb(97, 189, 109);">hit (You need to choose this)</span><br>
-        </label>
+        <p>After each selection, you can navigate to the next set of events requiring annotation using the <button class="button">Next Unhandled</button> button,
+            or navigate sequentially through the sets of events using the <button class="button">Next</button> and <button class="button">Prev</button> buttons.
+            Once all event mention sets have been annotated, a <a style="color: blue; text-decoration: underline; cursor: pointer;" onclick="showAnnotCompleteAlert()">notification</a>
+            indicating that the annotation process is complete will be displayed.</p>
 
-        <p><strong>EXPLANATION:</strong> (<span style="color: orangered">damage</span>) happened because the hurricane (<span style="color: royalblue">hit</span>) Florida coast,
-            this case is rather simple as it is indicated explicitly in the sentence by the word <b>"causing"</b>.</p>
+        <p>Note that at this step, manually selecting event mentions (nodes) from the graph visualization is not supported. However, you can move the nodes in the graph as you see fit.</p>
 
-        <h2>IMPORTANT RULE 1</h2>
-        <p><strong>Look for a clear indication in the context (i.e., causation words such as: cause, because, incite, influence, inspire, lead, prompt, push, force, make, set, start, trigger and so on).
-            Such indicator can help make the decision when they exist and indicate one event caused the other.</strong>
-        </p>
+        <h2>Task Overview</h2>
+        <p>Below are examples of how to perform the causal annotation task.</p>
 
-        <p><strong>However, Not all cases are a clear-cut as (<span style="color: orangered">hit</span>) and (<span style="color: royalblue">damage</span>), in many cases, there will be no clear indication in the sentence. For example,</strong></p>
-        <p dir="ltr">
-            <em>[He <span style="color: orangered">loaded</span> the gun, <span style="color: orangered">shot</span> and <span style="color: royalblue">killed</span> the attacker.]</em>
-        </p>
+        <p class="paragraph">The hurricane <span class="label NOT">hit</span> the Florida coast, causing severe property <span class="label ANC">damage</span>.</p>
 
-        <p dir="ltr">[QUESTION] Why (<span style="color: royalblue">killed</span>) had (have/will) happened?</p>
-        <a>Because of:</a><br>
-        <label>
-            <input type="checkbox" checked="checked" style="font-weight: bold" disabled="disabled"><span style="color:rgb(97, 189, 109);">shot (You need to choose this)</span><br>
-            <input type="checkbox" disabled="disabled">loaded<br>
-        </label>
+        <p dir="ltr">[QUESTION] Why has, is, or will <span style="color: #28A745">damage</span> happen?</p>
+        <div class="checkbox-title">Because of:</div>
+        <div class="styled-checkbox-container">
+            <label class="styled-checkbox">
+                <input type="checkbox" checked="checked" disabled="disabled">
+                <span class="custom-checkbox"></span>
+                hit
+            </label>
+        </div>
 
-        <p><strong>EXPLANATION:</strong> Here we need to use a bit of common-sense to figure that (<span style="color: royalblue">killed</span>) happened because of (<span style="color: orangered">shot</span>).</p>
+        <p><strong>EXPLANATION:</strong> <span class="label ANC">Damage</span> happened because the hurricane <span class="label NOT">hit</span> the Florida coast.
+            This case is straightforward, as it is explicitly indicated in the sentence by the word <b>"causing."</b></p>
 
-        <h2>IMPORTANT RULE 2</h2>
-        <p><strong>Given an event in context, ask why the event happened, what triggered the event or caused it to happened. For example "why the attacker was killed?.
-            We can search if the answer is one of the events in the list."</strong>
-        </p>
+        <h3>IMPORTANT RULE 1</h3>
+        <p><strong>Look for a clear indication in the context (e.g., causation words such as: cause, because, incite, influence, inspire, lead, prompt, push, force, make, set, start, trigger, and so on).
+            These indicators can help make the decision when they exist and show that one event caused the other.</strong></p>
 
-        <p><strong>However, events are not always triggered by other events, for example:</strong></p>
+        <p><strong>However, not all cases are as clear-cut as (<span style="color: #CD5C5C">hit</span>) and (<span style="color: #28A745">damage</span>). In many cases, there will be no clear indication in the sentence. For example:</strong></p>
 
-        <p dir="ltr">
-            <em>[She <span style="color: royalblue">arrived</span> home, <span style="color: royalblue">connected</span> to the Wifi and <span style="color: orangered">logged</span> in to her email account.]</em>
-        </p>
-        <p dir="ltr">[QUESTION] Why (<span style="color: royalblue">logged</span>) had (have/will) happened?</p>
-        <a>Because of:</a><br>
-        <label>
-            <input type="checkbox" disabled="disabled">arrived<br>
-            <input type="checkbox" disabled="disabled">connected<br>
-        </label>
+        <p class="paragraph">He <span class="label NOT">loaded</span> the gun, <span class="label NOT">shot</span>, and <span class="label ANC">killed</span> the attacker.</p>
 
-        <p><strong>EXPLANATION:</strong> (<span style="color: royalblue">logged</span>) didn't happened because she (<span style="color: orangered">arrived</span>) or (<span style="color: orangered">connected</span>).
-            While the <span style="color: orangered">connected</span> event enabled her to log into her account, if we ask "why she logged into her email account?" a reasonable answer will be that she wanted to check her emails rather then because she connected to the WiFi.
-            Events that enable the event in question to happened should not be considered as the causing events.
-        </p>
+        <p dir="ltr">[QUESTION] Why has, is, or will <span style="color: #28A745">killed</span> happen?</p>
+        <div class="checkbox-title">Because of:</div>
+        <div class="styled-checkbox-container" style="display: block">
+            <label class="styled-checkbox">
+                <input type="checkbox" checked="checked" disabled="disabled">
+                <span class="custom-checkbox"></span>
+                shot
+            </label>
+            <label class="styled-checkbox">
+                <input type="checkbox" disabled="disabled">
+                <span class="custom-checkbox"></span>
+                loaded
+            </label>
+        </div>
+
+        <p><strong>EXPLANATION:</strong> Here, we need to use a bit of common sense to determine that <span class="label ANC">killed</span> happened because
+            of <span class="label NOT">shot</span>. While the act of <span class="label NOT">loading</span> the gun enabled the attacker to be killed, it was the shooting that directly caused the event.</p>
+
+        <h3>IMPORTANT RULE 2</h3>
+        <p><strong>Given an event in context, ask why the event happened, what triggered the event, or what caused it to happen. For example: "Why was the attacker killed?"
+            We can search to see if the answer is one of the events in the list.</strong></p>
+
+        <p><strong>However, events are not always triggered by other events. For example:</strong></p>
+
+        <p class="paragraph">She <span class="label NOT">arrived</span> home, <span class="label NOT">connected</span> to the WiFi, and <span class="label ANC">logged</span> into her email account.</p>
+        <p dir="ltr">[QUESTION] Why has, is, or will <span style="color: #28A745">logged</span> happen?</p>
+        <div class="checkbox-title">Because of:</div>
+        <div class="styled-checkbox-container" style="display: block">
+            <label class="styled-checkbox">
+                <input type="checkbox" disabled="disabled">
+                <span class="custom-checkbox"></span>
+                arrived
+            </label>
+            <label class="styled-checkbox">
+                <input type="checkbox" disabled="disabled">
+                <span class="custom-checkbox"></span>
+                connected
+            </label>
+        </div>
+
+        <p><strong>EXPLANATION:</strong> The event <span class="label ANC">logged</span> did not happen because she <span class="label NOT">arrived</span> or <span class="label NOT">connected</span>.
+            While the <span class="label NOT">connected</span> event enabled her to log into her account, if we ask, "Why did she log into her email account?" a reasonable answer would be that she wanted to check her emails rather than because she connected to the WiFi.
+            Events that merely enable the event in question to happen should not be considered as causing events.</p>
 
     </div>
 </div>
