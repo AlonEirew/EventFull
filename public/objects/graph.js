@@ -62,7 +62,7 @@ function getAxisEdges(formType) {
         const pair = allPairs[i];
         if (pair.getRelation() !== EventRelationType.NA) {
             const edge = this.createEdge(pair.getFirstId(),
-                pair.getSecondId(), pair.getRelation(),
+                pair.getSecondId(), pair.getEdgeLabel(),
                 this.styleSelect(pair.getRelation()));
             elements.push(edge);
         }
@@ -81,7 +81,7 @@ function highlightCurrentPair(pair) {
         cy.remove(removeId2);
 
         const edge = this.createEdge(pair.getFirstId(),
-            pair.getSecondId(), pair.getRelation(),
+            pair.getSecondId(), pair.getEdgeLabel(),
             this.styleSelect(pair.getRelation()) + " highlight");
         cy.add(edge);
     }
@@ -172,7 +172,7 @@ function getEdgeStyle() {
         selector: 'edge',
         style: {
             'width': 1,
-            'font-size': 12,
+            'font-size': 10,
             'line-color': '#808080',
             'target-arrow-color': '#808080',
             'target-arrow-shape': 'triangle-tee',

@@ -148,7 +148,8 @@ class CorefForm extends OneToManyForm {
                         'line-style': 'dotted',
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
-                        'opacity': 0,
+                        'opacity': 0.2,
+                        'width': 1,
                     }
                 };
             case EventRelationType.BEFORE:

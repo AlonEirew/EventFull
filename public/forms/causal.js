@@ -147,6 +147,7 @@ class CausalForm extends OneToManyForm {
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
                         'opacity': 0.3,
+                        'width': 1,
                     }
                 };
             case EventRelationType.NO_COREF:
@@ -180,6 +181,7 @@ class CausalForm extends OneToManyForm {
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none',
                         'opacity': 1,
+                        'width': 2,
                     }
                 };
             case EventRelationType.NO_CAUSE:
@@ -191,7 +193,8 @@ class CausalForm extends OneToManyForm {
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
                         'source-arrow-shape': 'none',
-                        'opacity': 0,
+                        'opacity': 0.2,
+                        'width': 1,
                     }
                 };
             default:

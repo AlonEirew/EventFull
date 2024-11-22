@@ -41,6 +41,33 @@ class EventPair {
         return this._relation;
     }
 
+    getEdgeLabel() {
+        switch (this._relation) {
+            case EventRelationType.EQUAL:
+                return "EQUAL";
+            case EventRelationType.AFTER:
+                return "AFTER";
+            case EventRelationType.BEFORE:
+                return "BEFORE";
+            case EventRelationType.COREF:
+                return "COREF";
+            case EventRelationType.NO_COREF:
+                return "EQUAL";
+            case EventRelationType.CAUSE:
+                return "CAUSE";
+            case EventRelationType.NO_CAUSE:
+                return "BEFORE";
+            case EventRelationType.EFFECT:
+                return "EFFECT";
+            case EventRelationType.NO_EFFECT:
+                return "AFTER";
+            case EventRelationType.VAGUE:
+                return "VAGUE";
+            default:
+                throw new Error("Unknown relation type!");
+        }
+    }
+
     getAxisId() {
         return this._axisId;
     }

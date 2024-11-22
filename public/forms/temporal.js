@@ -502,6 +502,7 @@ class TemporalForm extends UIForm {
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
                         'opacity': 0.2,
+                        'width': 1,
                     }
                 };
             case EventRelationType.EQUAL:
@@ -512,6 +513,7 @@ class TemporalForm extends UIForm {
                         'line-style': 'dotted',
                         'target-arrow-shape': 'none',
                         'source-arrow-shape': 'none',
+                        'width': 2,
                     }
                 };
             case EventRelationType.NO_COREF:
@@ -531,7 +533,8 @@ class TemporalForm extends UIForm {
                         'line-style': 'solid',
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
-                        'source-arrow-shape': 'none'
+                        'source-arrow-shape': 'none',
+                        'width': 2,
                     }
                 };
             case EventRelationType.CAUSE:
@@ -541,7 +544,8 @@ class TemporalForm extends UIForm {
                         'line-style': 'solid',
                         'target-arrow-color': '#808080',
                         'target-arrow-shape': 'triangle-tee',
-                        'source-arrow-shape': 'none'
+                        'source-arrow-shape': 'none',
+                        'width': 1,
                     }
                 };
             case EventRelationType.NO_CAUSE:
