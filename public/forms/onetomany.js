@@ -186,7 +186,7 @@ class OneToManyForm extends UIForm {
 
         Swal.fire({
             icon: "info",
-            title: 'Cluster Update!',
+            title: 'Implicit Relation Update!',
             html:
                 '<p>Your last selection has changed the relation between two events.<br/><br/>' +
                     'The relation currently set between the events: ' +

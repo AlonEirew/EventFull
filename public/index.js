@@ -310,12 +310,36 @@ function discrepencyAlertSimulate() {
         icon: "error",
         title: 'Discrepancy Alert',
         html:
-            '<p>Your last selection has created a discrepancy.<br/><br/>The relation currently set between the events <span style=\"color:orangered; font-weight: bold;\">kidnapped (12)</span> and ' +
-            '<span style=\"color:orangered; font-weight: bold;\">said (17)</span> is <span style=\"color:royalblue; font-weight: bold;\">before</span>. ' +
+            '<p>Your last selection has created a discrepancy.<br/><br/>The relation currently set between the events <span style=\"color:orangered; font-weight: bold;\">kidnapped</span> and ' +
+            '<span style=\"color:orangered; font-weight: bold;\">said</span> is <span style=\"color:royalblue; font-weight: bold;\">before</span>. ' +
             'However, based on the latest selection, the events can now be inferred indirectly through the event ' +
-            '<span style=\"color:green; font-weight: bold;\">demanding (10)</span> to also have a ' +
+            '<span style=\"color:green; font-weight: bold;\">demanding</span> to also have a ' +
             '<span style=\"color:royalblue; font-weight: bold;\">equal</span> relation.<br/><br/>' +
             '<span style=\"font-weight: bold;\">Please fix or contact the task admin for help.</p>',
+        showCancelButton: false,
+        confirmButtonText: 'OK',
+        allowOutsideClick: true,
+        scrollbarPadding: true,
+    });
+}
+
+function clusterUpdateSimulate() {
+    Swal.fire({
+        icon: "info",
+        title: 'Implicit Relation Update!',
+        html:
+            '<p>Your last selection has changed the relation between two events.<br/><br/>' +
+            'The relation currently set between the events: ' +
+            '<span style=\"color:orangered; font-weight: bold;\">kidnapped</span> and ' +
+            '<span style=\"color:orangered; font-weight: bold;\">said</span> is ' +
+            '<span style=\"color:royalblue; font-weight: bold;\">equal/coref</span>. ' +
+            'However, due to your last selection, the events can now be inferred as having a ' +
+            '<span style=\"color:royalblue; font-weight: bold;\">equal/no_coref</span> relation. ' +
+            'This will be updated automatically to maintain consistency with your last selection.<br/><br/>' +
+            '<span style=\"font-weight: bold;\">Please ensure this is correct (note that the change is not reflected yet in the graph visualization), ' +
+            'approve selection by clicking the "Next" button again.</span>' +
+            '</p>',
+
         showCancelButton: false,
         confirmButtonText: 'OK',
         allowOutsideClick: true,

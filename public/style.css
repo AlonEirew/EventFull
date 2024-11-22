@@ -29,6 +29,19 @@ h2 {
     padding-bottom: 5px; /* Space between text and underline */
 }
 
+h3 {
+    font-family: 'Georgia', serif; /* Match the paragraph's font for consistency */
+    font-size: 16px; /* Slightly larger than the paragraph font */
+    font-weight: bold; /* Make it stand out */
+    color: #5DADE2; /* Complementary blue tone for emphasis */
+    margin-bottom: 15px; /* Spacing between the heading and paragraph */
+    text-align: left; /* Align the heading with the paragraph */
+    letter-spacing: 0.5px; /* Slight letter spacing for elegance */
+    line-height: 1.5; /* Comfortable line spacing */
+    border-bottom: 2px solid #5DADE2; /* Decorative underline */
+    padding-bottom: 5px; /* Space between text and underline */
+}
+
 /* Table styling */
 table {
     width: 100%; /* Full width */

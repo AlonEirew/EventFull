@@ -1,39 +1,69 @@
 <div id="coref-instructions" class="instructions-container">
     <div class="form-group">
-        <h2>Overview</h2>
-        <p><strong>You'll see sentences with events sharing an equal time relation (events that started at the same time). You need to decide IF these events refer to the same event in the world. <br> For example,</strong></p>
-        <p dir="ltr">
-            <em>[A traveler is <span style="color: royalblue">kidnapped</span>, and the police officers <span style="color: royalblue">said</span> he was <span style="color: orangered">taken</span> two days ago.]</em>
-        </p>
+        <h1>Coreference Step - Tool Overview</h1>
+        <p>You will see a paragraph with event mentions sharing an equal time (as selected in the previous temporal step). One event will be marked in <span class="label ANC">green</span>,
+            and all others will be marked in <span class="label NOT">red</span>.
+            You need to decide if these red event mentions refer to the same event in the world as the green one (as further explained below in "Task Overview").</p>
 
-        <p dir="ltr">[QUESTION] Which of the highlighted events refers to the same (<span style="color: royalblue">kidnapped</span>) event?</p>
-        <label>
-            <input type="checkbox" checked="checked" disabled="disabled"><span style="color:rgb(97, 189, 109);">taken (You need to choose this)</span><br>
-        </label>
+        <p>After each selection, you can navigate to the next set of events requiring annotation using the <button class="button">Next Unhandled</button> button,
+            or navigate sequentially through the sets of events using the <button class="button">Next</button> and <button class="button">Prev</button> buttons.
+            Once all event mention sets have been annotated, a <a style="color: blue; text-decoration: underline; cursor: pointer;" onclick="showAnnotCompleteAlert()">notification</a>
+            indicating that the annotation process is complete will be displayed.</p>
 
-        <p><strong>EXPLANATION:</strong> Here, we have only a single event mention candidate that has equal start time with the event mention in focus.
-            We need to determine if the event mentions (<span style="color: royalblue">kidnapped</span>) and (<span style="color: orangered">taken</span>) describe the same real-world event.
-            To make this decision, we must consider the arguments associated with both event mentions—the time, location, and participants.
+        <p>Note that at this step, manually selecting event mentions (nodes) from the graph visualization is not supported. However, you can move the nodes in the graph as you see fit.</p>
+
+        <p>In some cases, a change you make may implicitly impact other relations. In such cases, an
+            <a style="color: blue; text-decoration: underline; cursor: pointer;" onclick="clusterUpdateSimulate()">Implicit Relation Update</a> message will be displayed,
+            and you will be required to review the changes before proceeding.</p>
+
+        <h2>Task Overview</h2>
+        <p>Below are examples of how to perform the coreference annotation task.</p>
+
+        <h3>Example 1:</h3>
+        <p class="paragraph">A traveler is <span class="label ANC">kidnapped</span>, and the police officers said he was <span class="label NOT">taken</span> two days ago.</p>
+
+        <p dir="ltr">[QUESTION] Which of the highlighted events refers to the same <span style="color: #28A745">kidnapped</span> event?</p>
+
+        <div class="styled-checkbox-container">
+            <label class="styled-checkbox">
+                <input type="checkbox" checked="checked" disabled="disabled">
+                <span class="custom-checkbox"></span>
+                taken
+            </label>
+        </div>
+
+        <p><strong>EXPLANATION:</strong> In this example, we have only a single event mention candidate that shares the same starting time as the event mention in focus.
+            We need to determine if the event mentions <span class="label ANC">kidnapped</span> and <span class="label NOT">taken</span> describe the same real-world event.
+            To make this decision, we must consider the arguments associated with both event mentions: the time, location, and participants.
             We observe that both mentions share the same participants (the kidnapped individual, "traveler/he") and the same time frame ("two days ago"),
-            confirming that they indeed represent the same event.
-        </p>
+            confirming that they indeed represent the same event.</p>
 
-        <h2>IMPORTANT RULE</h2>
-        <p><strong>An event is usually associated with four components: 1) an action component referring to what happens or holds; 2) a time slot which is responsible for anchoring the action in time ; 3) a location component which links the action component to a place/location; and 4) a participant component, which illustrates the "who" or "what" is involved in the action component.</strong></p>
-        <p><strong>We can say that two events are the same event if and only if we can infer that they share the same action, time, location, and participant(s), as much as indicated in the text and using common-sense. </strong></p>
+        <h3>IMPORTANT RULE</h3>
+        <p><strong>An event is usually associated with four components:</strong></p>
+        <ul>
+            <li><strong>Action component:</strong> Refers to what happens or holds.</li>
+            <li><strong>Time slot:</strong> Anchors the action in time.</li>
+            <li><strong>Location component:</strong> Links the action to a place or location.</li>
+            <li><strong>Participant component:</strong> Indicates the "who" or "what" is involved in the action.</li>
+        </ul>
+        <p><strong>Two events can be considered the same if and only if we can infer that they share the same action, time, location, and participant(s),
+            as much as is indicated in the text and through the use of common sense.</strong></p>
 
-        <p dir="ltr">
-            <em>
-                [Achilles was <span style="color: royalblue">running</span> in the left lane and the turtle was <span style="color: orangered">running</span> in the right lane]
-            </em>
-        </p>
+        <h3>Example 2:</h3>
+        <p class="paragraph">Achilles was <span class="label ANC">running</span> in the left lane, and the turtle was <span class="label NOT">running</span> in the right lane.</p>
 
         <p dir="ltr">[QUESTION] Which of the highlighted events refers to the same (<span style="color: royalblue">running</span>) event?</p>
-        <label>
-            <input type="checkbox" disabled="disabled">running<br>
-        </label>
 
-        <p><strong>EXPLANATION:</strong> while both (<span style="color: royalblue">running</span>) and (<span style="color: orangered">running</span>) share the same time and action,
-            they are clearly referring to different participant (Achilles and the turtle), therefore we can deduce they are two different events.</p>
+        <div class="styled-checkbox-container">
+            <label class="styled-checkbox">
+                <input type="checkbox" disabled="disabled">
+                <span class="custom-checkbox"></span>
+                running
+            </label>
+        </div>
+
+        <p><strong>EXPLANATION:</strong> While both <span class="label ANC">running</span> and <span class="label NOT">running</span> share the same time and action,
+            they clearly refer to different participants (Achilles and the turtle). Therefore, we can deduce that they are two different events.</p>
+
     </div>
 </div>
