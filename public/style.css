@@ -303,12 +303,17 @@ button:disabled {
 .styled-checkbox-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Maximum 3 columns, equally spaced */
+    grid-auto-rows: minmax(30px, auto); /* Minimum row height */
     flex-direction: column; /* Stack items vertically */
     align-items: flex-start; /* Align text to the left */
     font-family: 'Georgia', serif; /* Match the elegant style */
     font-size: 14px;
     gap: 4px; /* Add space between items */
     margin-bottom: 20px; /* Space below the group */
+    height: calc(4 * 30px + 4 * 4px); /* Fixed height based on row height */
+    /*overflow-y: hidden; !* Prevent vertical resizing due to fewer items *!*/
+    overflow-x: hidden; /* Ensure no horizontal scroll appears */
+    /*max-height: 300px;*/
 }
 
 /* Title above the checkbox group */
