@@ -78,6 +78,7 @@ class GraphObj {
             this._graphMatrix = Array(this._graphIndices.length).fill().map(() =>
                 Array(this._graphIndices.length).fill().map(() => new GraphEdge(EventRelationType.NA, false))
             );
+
             for (let i = 0; i < this._graphIndices.length - 1; i++) {
                 this._graphMatrix[i][i+1] = new GraphEdge(EventRelationType.CANDIDATE, false);
                 this._graphMatrix[i+1][i] = new GraphEdge(EventRelationType.CANDIDATE, false);

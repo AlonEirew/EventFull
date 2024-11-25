@@ -197,6 +197,15 @@ class CausalForm extends OneToManyForm {
                         'width': 1,
                     }
                 };
+            case EventRelationType.NA:
+                return {
+                    selector: '.unknown',
+                    style: {
+                        'target-arrow-shape': 'none',
+                        'source-arrow-shape': 'none',
+                        'opacity': 0,
+                    }
+                };
             default:
                 throw new Error("Unknown relation type: " + relationType);
         }

@@ -148,6 +148,7 @@ class UIForm {
                             return;
                         }
                     }
+                    toggleGraphDivOn();
                     showAnnotCompleteAlert();
                 }
             }

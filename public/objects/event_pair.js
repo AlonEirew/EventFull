@@ -62,7 +62,9 @@ class EventPair {
             case EventRelationType.NO_EFFECT:
                 return "AFTER";
             case EventRelationType.VAGUE:
-                return "VAGUE";
+                return "UNCERTAIN";
+            case EventRelationType.NA:
+                return "???";
             default:
                 throw new Error("Unknown relation type!");
         }

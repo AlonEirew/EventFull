@@ -453,16 +453,19 @@ button:disabled {
     background-color: #28A745;
     font-weight: normal;
     border: 2px solid black;
+    user-select: none;
 }
 .NOT {
     background-color: #CD5C5C;
     font-weight: normal;
     border: 2px solid black;
+    user-select: none;
 }
 .NA {
     background-color: #3498DB;
     font-weight: normal;
     border: 2px solid black;
+    user-select: none;
 }
 
 .radio-group {

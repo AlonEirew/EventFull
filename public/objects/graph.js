@@ -226,6 +226,7 @@ function getGraphStyle(curForm) {
         curForm.graphPairRelationStyle(EventRelationType.CAUSE),
         curForm.graphPairRelationStyle(EventRelationType.NO_CAUSE),
         curForm.graphPairRelationStyle(EventRelationType.NO_COREF),
+        curForm.graphPairRelationStyle(EventRelationType.NA),
         this.getNodeTypeStyle(AxisType.MAIN),
         this.getNodeTypeStyle(AxisType.NA),
         this.getHighlightStyle(),
