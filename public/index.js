@@ -28,6 +28,12 @@ function clearAll() {
     currentPageIdx = 0;
     const leftPanel = document.getElementById("questions");
     const rightPanel = document.getElementById("cy");
+    const figure1 = document.getElementById("figure1");
+
+    if (figure1) {
+        figure1.style.display = "none";
+    }
+
     cleanPanel(leftPanel);
     cleanPanel(rightPanel);
     toggleGraphDivOff();

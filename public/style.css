@@ -120,6 +120,23 @@ p {
     /*padding: 10px; !* Add padding for spacing *!*/
 }
 
+img {
+    align-items: center;
+    max-width: 100%; /* Ensure the image scales to fit its container */
+    width: 80%;
+    height: auto;    /* Maintain the image's aspect ratio */
+    border: 2px solid #ccc; /* Optional: Add a border */
+    border-radius: 8px; /* Optional: Rounded corners */
+    margin: 10px 0; /* Optional: Add some spacing */
+}
+
+.image-container {
+    display: flex; /* Enables Flexbox for centering */
+    justify-content: center; /* Centers horizontally */
+    /*align-items: center; !* Centers vertically *!*/
+    /*height: 100vh; !* Full height of the viewport *!*/
+}
+
 .title-transparent-container {
     max-width: 95%;
     margin: 0 auto;
