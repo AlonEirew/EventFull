@@ -135,9 +135,9 @@ function showSpanOptions(event, annotationIndex) {
 function addLegend(container) {
     // Define the legend items
     const legendItems = [
-        { colorClass: "ANC", description: "Anchorable event" },
-        { colorClass: "NOT", description: "Un-anchorable event" },
-        { colorClass: "NA", description: "Require Annotation" },
+        { colorClass: "ANC", description: "Events to be considered in the next steps" },
+        { colorClass: "NOT", description: "Events to exclude from the next steps" },
+        { colorClass: "NA", description: "Events requiring annotation" },
     ];
 
     // Create a legend container
