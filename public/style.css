@@ -3,6 +3,17 @@ body {
     background-color: #ECF0F1;
 }
 
+#appTitle{
+    font-family: 'Libre Baskerville', sans-serif;
+    font-size: 60px;
+    text-align: center;
+    /*margin-bottom: 30px;*/
+    color: #FFF;
+    background-color: #17202A;
+    border-radius: 10px;
+    border-bottom: none;"
+}
+
 h1 {
     font-family: 'Georgia', serif; /* Match the paragraph's font for consistency */
     font-size: 24px; /* Slightly larger than the paragraph font */
@@ -140,8 +151,8 @@ img {
 .title-transparent-container {
     max-width: 95%;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #D6EAF8;
+    /*padding: 10px;*/
+    /*background-color: #D6EAF8;*/
 }
 
 .form-container {
