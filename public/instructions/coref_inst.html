@@ -10,7 +10,8 @@
             Once all event mention sets have been annotated, a <a style="color: blue; text-decoration: underline; cursor: pointer;" onclick="showAnnotCompleteAlert()">notification</a>
             indicating that the annotation process is complete will be displayed.</p>
 
-        <p>Note that at this step, manually selecting event mentions (nodes) from the graph visualization is not supported. However, you can move the nodes in the graph as you see fit.</p>
+        <p>Note that at this step, only events marked with equal relation in the temporal task will be visible. Additionally, the graph edges representing coreferring relations will be highlighted, while those representing non-coreferring relations will appear faded. Last, manually selecting event mentions (nodes) from the graph visualization is not supported. However, you can move the nodes in the graph as you see fit.
+        </p>
 
         <p>In some cases, a change you make may implicitly impact other relations. In such cases, an
             <a style="color: blue; text-decoration: underline; cursor: pointer;" onclick="clusterUpdateSimulate()">Implicit Relation Update</a> message will be displayed,
