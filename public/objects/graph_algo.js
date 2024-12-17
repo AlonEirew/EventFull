@@ -27,30 +27,13 @@ class GraphObj {
         }
     }
 
-    getFormTransitiveAndDiscrepancies(formType) {
-        switch (formType) {
-            case FormType.TEMPORAL:
-                return this._temporalGraphHandler.reachAndTransitiveClosureRel(this);
-            case FormType.CAUSAL:
-                return this._causalGraphHandler.reachAndTransitiveClosureRel(this);
-            case FormType.COREF:
-                return this._corefGraphHandler.reachAndTransitiveClosureRel(this);
-        }
+    getFormTransitiveAndDiscrepancies() {
+        return this._temporalGraphHandler.reachAndTransitiveClosureRel(this);
     }
 
-    fillFormMissingRel(formType) {
-        let reachAndDiscrepancies;
-        switch (formType) {
-            case FormType.TEMPORAL:
-                reachAndDiscrepancies = this._temporalGraphHandler.reachAndTransitiveClosureRel(this);
-                return this._temporalGraphHandler.fillMissingRelations(this, reachAndDiscrepancies[0]);
-            case FormType.CAUSAL:
-                reachAndDiscrepancies = this._causalGraphHandler.reachAndTransitiveClosureRel(this);
-                return this._causalGraphHandler.fillMissingRelations(this, reachAndDiscrepancies[0]);
-            case FormType.COREF:
-                reachAndDiscrepancies = this._corefGraphHandler.reachAndTransitiveClosureRel(this);
-                return this._corefGraphHandler.fillMissingRelations(this, reachAndDiscrepancies[0]);
-        }
+    fillFormMissingRel() {
+        let reachAndDiscrepancies = this._temporalGraphHandler.reachAndTransitiveClosureRel(this);
+        return this._temporalGraphHandler.fillMissingRelations(this, reachAndDiscrepancies[0]);
     }
 
     static fromJsonObject(jsonObject) {
@@ -153,16 +136,6 @@ class GraphObj {
 
     getCausalCandidatesBeforePairs(eventId) {
         return this._causalGraphHandler.getAllCausalPairCandidates(this, eventId);
-    }
-
-    getWithinListPairsByType(allPairs, formType) {
-        if (formType === FormType.CAUSAL) {
-            return this._causalGraphHandler.getWithinCausalPairs(this, allPairs);
-        } else if(formType === FormType.COREF) {
-            return this._corefGraphHandler.getWithinCorefPairs(this, allPairs);
-        }
-
-        return null;
     }
 
     getAllCoreferringEvents(eventId) {
@@ -442,7 +415,7 @@ class CorefGraphHandler extends TemporalGraphHandler {
                     // Check discrepancies for the other relations (this might create some dups but not a big deal as showing to user only one each time)
                     if (reachGraph[i][j] === EventRelationType.COREF && inferredTranRel === EventRelationType.NO_COREF && i !== j) {
                         // Check that the transitive closure was annotated as coref however the path indicate a contradicting relation of no coref
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], reachGraph[i][j], inferredTranRel]);
+                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
                     } else if ((reachGraph[i][j] === EventRelationType.NO_COREF || reachGraph[i][j] === EventRelationType.UNCERTAIN_COREF) &&
                         inferredTranRel === EventRelationType.COREF && i !== j) {
                         // Check that the transitive closure was annotated as coref however the path indicate a contradicting relation
@@ -511,26 +484,6 @@ class CorefGraphHandler extends TemporalGraphHandler {
             return super.getInferredTransitiveRelationType(reachAndTransGraph, i, j, k);
         }
     }
-
-    getWithinCorefPairs(graphObj, allPairs) {
-        let reachAndDiscrepancies = this.reachAndTransitiveClosureRel(graphObj)[0];
-        const graphIndices = graphObj.getGraphIndices();
-        let withinCorefPairs = new Set();
-        for (let i = 0; i < allPairs.length; i++) {
-            const secondId = graphIndices.indexOf(allPairs[i].getFirstId());
-            for (let j = 0; j < allPairs.length; j++) {
-                if (i !== j) {
-                    const firstId = graphIndices.indexOf(allPairs[j].getFirstId());
-                    if (reachAndDiscrepancies[firstId][secondId] === EventRelationType.COREF) {
-                        withinCorefPairs.add(i);
-                        withinCorefPairs.add(j);
-                    }
-                }
-            }
-        }
-
-        return withinCorefPairs;
-    }
 }
 
 class CausalGraphHandler extends CorefGraphHandler {
@@ -559,8 +512,6 @@ class CausalGraphHandler extends CorefGraphHandler {
             graphMatrix[graphSecondId][graphFirstId].setEdgeRelation(EventRelationType.UNCERTAIN_CAUSE);
         }
 
-        // let reachAndDiscrepancies = this.reachAndTransitiveClosureRel(axisGraph);
-        // this.fillMissingRelations(axisGraph, reachAndDiscrepancies[0]);
         console.log("Axis pairs AFTER selection (for pair-{" + firstId + ", " + secondId + "})");
         return null;
     }
@@ -581,103 +532,8 @@ class CausalGraphHandler extends CorefGraphHandler {
         return beforePairs;
     }
 
-    getWithinCausalPairs(axisGraph, beforePairs) {
-        let reachAndDiscrepancies = this.reachAndTransitiveClosureRel(axisGraph)[0];
-        const graphIndices = axisGraph.getGraphIndices();
-        let withinCausalParis = new Set();
-        for (let i = 0; i < beforePairs.length; i++) {
-            const secondId = graphIndices.indexOf(beforePairs[i].getFirstId());
-            for (let j = 0; j < beforePairs.length; j++) {
-                if (i !== j) {
-                    const firstId = graphIndices.indexOf(beforePairs[j].getFirstId());
-                    if (reachAndDiscrepancies[firstId][secondId] === EventRelationType.CAUSE) {
-                        withinCausalParis.add(i);
-                        withinCausalParis.add(j);
-                    }
-                }
-            }
-        }
-
-        // for (let i = withinCausalParis.length - 1; i >= 0; i--) {
-        //     beforePairs.splice(withinCausalParis[i], 1);
-        // }
-
-        return withinCausalParis;
-    }
-
     reachAndTransitiveClosureRel(axisGraph) {
-        let reachGraph = super.reachAndTransitiveClosureRel(axisGraph)[0];
-        let discrepancies = [];
-        const length = reachGraph.length;
-        for (let k = 0; k < length; k++) {
-            for (let i = 0; i < length; i++) {
-                for (let j = 0; j < length; j++) {
-                    const inferredTranRel = this.getInferredTransitiveRelationType(reachGraph, i, j, k);
-                    const emptyTransRel = reachGraph[i][j] === EventRelationType.NA || reachGraph[i][j] === EventRelationType.CANDIDATE ||
-                        reachGraph[i][j] === EventRelationType.BEFORE;
-                    // Check cases that the transitive closure should be also annotated (as before relation)
-                    if (inferredTranRel === EventRelationType.CAUSE && i !== j) {
-                        if (emptyTransRel) {
-                            reachGraph[i][j] = EventRelationType.CAUSE;
-                            reachGraph[j][i] = EventRelationType.EFFECT;
-                        } else if(getRelationMapping(reachGraph[i][j]) !== EventRelationType.BEFORE) {
-                            discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
-                        }
-                    }
-
-                    // Check discrepancies for the other relations (this might create some dups but not a big deal as showing to user only one each time)
-                    if (i !== j && (reachGraph[i][j] === EventRelationType.NO_CAUSE || reachGraph[i][j] === EventRelationType.UNCERTAIN_CAUSE) &&
-                        inferredTranRel === EventRelationType.CAUSE) {
-                        // Check that the transitive closure was annotated as after however the path indicate a before/equal relation
-                        discrepancies.push([axisGraph.getGraphIndices()[i], axisGraph.getGraphIndices()[j], axisGraph.getGraphIndices()[k], reachGraph[i][j], inferredTranRel]);
-                    }
-                }
-            }
-        }
-
-        return [reachGraph, discrepancies];
-    }
-
-    fillMissingRelations(axisGraph, reachAndTransGraph) {
-        let graphMatrix = axisGraph.getGraphMatrix();
-        const length = graphMatrix.length;
-        for (let k = 0; k < length; k++) {
-            for (let i = 0; i < length; i++) {
-                for (let j = 0; j < length; j++) {
-                    // Check cases that the transitive closure should be also annotated (path cannot determine if caused or not)
-                    const isDirectCauseAnnot = reachAndTransGraph[i][j] === EventRelationType.CAUSE || reachAndTransGraph[i][j] === EventRelationType.NO_CAUSE ||
-                        reachAndTransGraph[i][j] === EventRelationType.UNCERTAIN_CAUSE;
-                    const isIKAnnot = reachAndTransGraph[i][k] === EventRelationType.CAUSE || reachAndTransGraph[i][k] === EventRelationType.NO_CAUSE ||
-                        reachAndTransGraph[i][k] === EventRelationType.UNCERTAIN_CAUSE;
-                    const isKJAnnot = reachAndTransGraph[k][j] === EventRelationType.CAUSE || reachAndTransGraph[k][j] === EventRelationType.NO_CAUSE ||
-                        reachAndTransGraph[k][j] === EventRelationType.UNCERTAIN_CAUSE
-                    const isInferredCause = this.getInferredTransitiveRelationType(reachAndTransGraph, i, j, k) === EventRelationType.CAUSE;
-                    const isInferredBefore = this.getInferredTransitiveRelationType(reachAndTransGraph, i, j, k) === EventRelationType.BEFORE;
-                    const isPathAnnotated = (isIKAnnot && isKJAnnot) ||
-                        (isIKAnnot && getRelationMapping(reachAndTransGraph[k][j]) === EventRelationType.EQUAL ||
-                            (isKJAnnot && getRelationMapping(reachAndTransGraph[i][k]) === EventRelationType.EQUAL));
-                    if (i !== j && !isDirectCauseAnnot && !isInferredCause && isPathAnnotated && isInferredBefore) {
-                        // Adding the transitive before relation to check if its a cause or no cause (as it is undetermined)
-                        // will trigger the logic to ask the user
-                        reachAndTransGraph[i][j] = EventRelationType.BEFORE;
-                        reachAndTransGraph[j][i] = EventRelationType.AFTER;
-                        graphMatrix[i][j].setEdgeRelation(EventRelationType.BEFORE);
-                        graphMatrix[j][i].setEdgeRelation(EventRelationType.AFTER);
-                    } else if (!isDirectCauseAnnot && isInferredCause && graphMatrix[i][j] === EventRelationType.BEFORE) {
-                        graphMatrix[i][j].setEdgeRelation(EventRelationType.CAUSE);
-                        graphMatrix[j][i].setEdgeRelation(EventRelationType.EFFECT);
-                    }
-                }
-            }
-        }
-    }
-
-    getInferredTransitiveRelationType(reachGraph, i, j, k) {
-        if(reachGraph[i][k] === EventRelationType.CAUSE && reachGraph[k][j] === EventRelationType.CAUSE) {
-            return EventRelationType.CAUSE;
-        } else {
-            return super.getInferredTransitiveRelationType(reachGraph, i, j, k);
-        }
+        return super.reachAndTransitiveClosureRel(axisGraph);
     }
 }
 

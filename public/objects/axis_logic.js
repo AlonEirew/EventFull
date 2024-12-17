@@ -70,15 +70,11 @@ class Axis {
         return this._axisType;
     }
 
-    getAnchorEventId() {
-        return this._anchoringEventId;
-    }
-
     // Method first check if the pair already exists (as it might be already annotated with relation)
     // This is directed, so only before without after
     fromGraphToPairs(formType) {
         let pairs = [];
-        this._axisGraph.fillFormMissingRel(formType);
+        this._axisGraph.fillFormMissingRel();
         const eventIds = this._axisGraph.getGraphIndices();
         for(let i = 0; i < eventIds.length; i++) {
             for(let j = 0; j < eventIds.length; j++) {

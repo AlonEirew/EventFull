@@ -403,7 +403,7 @@ class TemporalForm extends UIForm {
     isFinalized() {
         let allRelAxes = this._allAxes.getAllRelAxes();
         for (let i = 0; i < allRelAxes.length; i++) {
-            let discrepancies = allRelAxes[i].getAxisGraph().getFormTransitiveAndDiscrepancies(this.formType)[1];
+            let discrepancies = allRelAxes[i].getAxisGraph().getFormTransitiveAndDiscrepancies()[1];
             if (discrepancies.length > 0) {
                 this.handleDiscrepancies(discrepancies[i]);
                 return false;
