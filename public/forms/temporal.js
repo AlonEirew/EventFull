@@ -197,7 +197,7 @@ class TemporalForm extends UIForm {
                     return false;
                 }
 
-                this._annotations = this._allAxes.getAllAxesPairsFlat(FormType.TEMPORAL);
+                this._annotations = this._allAxes.getAxisPairsFlat(FormType.TEMPORAL);
             } else if (this._discrepancy.length > 0) {
                 this.handleDiscrepancies(this._discrepancy[0]);
                 return false;
@@ -401,49 +401,47 @@ class TemporalForm extends UIForm {
     }
 
     isFinalized() {
-        let allRelAxes = this._allAxes.getAllRelAxes();
-        for (let i = 0; i < allRelAxes.length; i++) {
-            let discrepancies = allRelAxes[i].getAxisGraph().getFormTransitiveAndDiscrepancies()[1];
-            if (discrepancies.length > 0) {
-                this.handleDiscrepancies(discrepancies[i]);
-                return false;
-            }
+        let mainAxis = this._allAxes.getMainAxis();
+        let discrepancies = mainAxis.getAxisGraph().getFormTransitiveAndDiscrepancies()[1];
+        if (discrepancies.length > 0) {
+            this.handleDiscrepancies(discrepancies[0]);
+            return false;
         }
 
         return true;
     }
 
     initTmpPairs() {
-        const allAxesEvents = this._allAxes.getAllAxesEventsSorted()
+        const allAxesEvents = this._allAxes.getEventsSorted()
         if(allAxesEvents == null || allAxesEvents.length === 0) {
             return;
         }
 
-        const allAxes = this._allAxes.getAllRelAxes();
+        const mainAxis = this._allAxes.getMainAxis();
         let allPairsFlat = [];
         let eventsToPresent = [];
-        for (let i = 0; i < allAxes.length; i++) {
-            let eventIds = allAxes[i].getEventIds();
-            let eventIdsSorted = [];
-            for (let j = 0; j < allAxesEvents.length; j++) {
-                if (eventIds.has(allAxesEvents[j].getId())) {
-                    eventIdsSorted.push(allAxesEvents[j].getId());
-                    eventsToPresent.push(allAxesEvents[j])
-                }
-            }
 
-            allAxes[i].getAxisGraph().initGraph(eventIdsSorted);
-            const axisPairs = allAxes[i].fromGraphToPairs(FormType.TEMPORAL);
-            for(let j = 0; j < axisPairs.length; j++) {
-                const pairToAdd = axisPairs[j];
-                if(!AllAxes.isDuplicatePair(pairToAdd, allPairsFlat)) {
-                    allPairsFlat.push(pairToAdd);
-                }
+        let eventIds = mainAxis.getEventIds();
+        let eventIdsSorted = [];
+        for (let j = 0; j < allAxesEvents.length; j++) {
+            if (eventIds.has(allAxesEvents[j].getId())) {
+                eventIdsSorted.push(allAxesEvents[j].getId());
+                eventsToPresent.push(allAxesEvents[j])
             }
-
-            console.log("Axis = " + allAxes[i].getAxisType() + " reach and transitive closure graph:");
-            console.log(allAxes[i].getAxisGraph().printGraph());
         }
+
+        mainAxis.getAxisGraph().initGraph(eventIdsSorted);
+        const axisPairs = mainAxis.fromGraphToPairs(FormType.TEMPORAL);
+        for(let j = 0; j < axisPairs.length; j++) {
+            const pairToAdd = axisPairs[j];
+            if(!AllAxes.isDuplicatePair(pairToAdd, allPairsFlat)) {
+                allPairsFlat.push(pairToAdd);
+            }
+        }
+
+        console.log("Axis = " + mainAxis.getAxisType() + " reach and transitive closure graph:");
+        console.log(mainAxis.getAxisGraph().printGraph());
+
 
         graphEventsToPreset = AllAxes.sortEventsByIndex(eventsToPresent);
         return allPairsFlat;

@@ -35,7 +35,7 @@ class AllAxes {
     createExport() {
         const tokens = this.main_doc.tokens;
         const allMentions = this.main_doc.mentions;
-        const allPairs = this.getAllAxesPairs();
+        const allPairs = this.getAxesPairs();
         const allClusters = this.getExportClusters();
         // Clean pairID and axisID
         for (let i = 0; i < allPairs.length; i++) {
@@ -58,28 +58,14 @@ class AllAxes {
         this._mainAxis = mainAxis;
     }
 
-    getMainAxis() {
-        return this._mainAxis;
-    }
-
     initTextAndEvents(jsonObject) {
         if(jsonObject != null) {
             this.main_doc = DocObject.fromJsonObject(jsonObject['main_doc']);
-            // This is only for the projection use-case
-            if('sources' in jsonObject) this.sources = jsonObject['sources'];
-            if('clusters' in jsonObject) {
-                this.clusters = jsonObject['clusters'];
-                this.clusters.forEach(cluster => {
-                    cluster['main_mention']['m_id'] = cluster['main_mention']['m_id'].toString();
-                });
-            }
-
             this.addEventsToAxes(this.main_doc.mentions);
         }
     }
 
     getExportClusters() {
-        // TBD - add the rest of the axis pairs
         let allUniqueClusters = new Set();
         let allClusters = [];
         this.getAllRelEvents().forEach(mention => {
@@ -121,39 +107,34 @@ class AllAxes {
         return null;
     }
 
-    getAllRelAxes() {
-        let allAxes = [];
-        allAxes.push(this._mainAxis);
-        return allAxes;
+    getMainAxis() {
+        return this._mainAxis;
     }
 
-    getAllAxesPairsFlat(formType) {
-        const allAxes = this.getAllRelAxes();
+    getAxisPairsFlat(formType) {
+        const axisPairs = this._mainAxis.fromGraphToPairs(formType);
         let allPairsFlat = [];
-        for (let i = 0; i < allAxes.length; i++) {
-            const axisPairs = allAxes[i].fromGraphToPairs(formType);
-            for(let j = 0; j < axisPairs.length; j++) {
-                const pairToAdd = axisPairs[j];
-                if(!AllAxes.isDuplicatePair(pairToAdd, allPairsFlat)) {
-                    allPairsFlat.push(pairToAdd);
-                }
+        for(let j = 0; j < axisPairs.length; j++) {
+            const pairToAdd = axisPairs[j];
+            if(!AllAxes.isDuplicatePair(pairToAdd, allPairsFlat)) {
+                allPairsFlat.push(pairToAdd);
             }
-
-            console.log("Initialized pairs for Axis = " + allAxes[i].getAxisType());
-            console.log("Axis = " + allAxes[i].getAxisType() + " reach and transitive closure graph:");
-            console.log(allAxes[i].getAxisGraph().printGraph());
         }
+
+        console.log("Initialized pairs for Axis = " + this._mainAxis.getAxisType());
+        console.log("Axis = " + this._mainAxis.getAxisType() + " reach and transitive closure graph:");
+        console.log(this._mainAxis.getAxisGraph().printGraph());
 
         return allPairsFlat;
     }
 
-    getAllAxesPairs() {
+    getAxesPairs() {
         let allPairs = [];
         allPairs.push.apply(allPairs, this._mainAxis.getAxisGraph().exportAllReachAndTransGraphPairs(this._mainAxis.getAxisId()));
         return allPairs;
     }
 
-    getAllAxesEventsSorted() {
+    getEventsSorted() {
         const sortedEvents = this.main_doc.mentions;
         let mentSorted = sortedEvents.sort((a, b) => a.tokens_ids[0] - b.tokens_ids[0]);
         for (let idx = 0; idx < mentSorted.length; idx++) {
@@ -166,13 +147,11 @@ class AllAxes {
     getAllRelEvents() {
         const allEvents = this.main_doc.mentions;
         let finalEvents = [];
-        const relAxis = this.getAllRelAxes();
+        const mainAxis = this.getMainAxis();
         for (let i = 0; i < allEvents.length; i++) {
-            for (let j = 0; j < relAxis.length; j++) {
-                if (relAxis[j].getEventIds().has(allEvents[i].getId())) {
-                    finalEvents.push(allEvents[i]);
-                    break;
-                }
+            if (mainAxis.getEventIds().has(allEvents[i].getId())) {
+                finalEvents.push(allEvents[i]);
+                break;
             }
         }
 
@@ -204,14 +183,8 @@ class AllAxes {
     }
 
     removeEventFromAxes(event) {
-        const allAxes = this.getAllRelAxes();
-        for (let i = 0; i < allAxes.length; i++) {
-            if(allAxes[i].removeEvent(event)) {
-                return true;
-            }
-        }
-
-        return false;
+        const mainAxis = this.getMainAxis();
+        return mainAxis.removeEvent(event);
     }
 
     addEventsToAxes(eventsToAdd) {

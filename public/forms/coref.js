@@ -95,13 +95,7 @@ class CorefForm extends OneToManyForm {
     }
 
     getAllRelevantRelations(eventId) {
-        const allRelAxes = this._allAxes.getAllRelAxes();
-        let allEqualEvents = [];
-        for (let i = 0; i < allRelAxes.length; i++) {
-            allEqualEvents = allEqualEvents.concat(allRelAxes[i].getAxisGraph().getAllEqualEventsPairs(eventId));
-        }
-
-        return allEqualEvents;
+        return this._allAxes.getMainAxis().getAxisGraph().getAllEqualEventsPairs(eventId);
     }
 
     annotationRemainder() {

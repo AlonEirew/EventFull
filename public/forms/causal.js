@@ -97,16 +97,15 @@ class CausalForm extends OneToManyForm {
     }
 
     getAllRelevantRelations(eventId) {
-        const allRelAxes = this._allAxes.getAllRelAxes();
+        const mainAxis = this._allAxes.getMainAxis();
         let allBeforePairs = [];
         let allCorefEvents = [];
-        for (let i = 0; i < allRelAxes.length; i++) {
-            const causalCandidatesBeforeRel = allRelAxes[i].getAxisGraph().getCausalCandidatesBeforePairs(eventId);
-            for (let j = 0; j < causalCandidatesBeforeRel.length; j++) {
-                allCorefEvents = this.getAllCorefEvents(causalCandidatesBeforeRel[j].getFirstId()).map(event => event.getId());
-                if (!allBeforePairs.some(pair => allCorefEvents.includes(pair.getFirstId()))) {
-                    allBeforePairs.push(causalCandidatesBeforeRel[j]);
-                }
+
+        const causalCandidatesBeforeRel = mainAxis.getAxisGraph().getCausalCandidatesBeforePairs(eventId);
+        for (let j = 0; j < causalCandidatesBeforeRel.length; j++) {
+            allCorefEvents = this.getAllCorefEvents(causalCandidatesBeforeRel[j].getFirstId()).map(event => event.getId());
+            if (!allBeforePairs.some(pair => allCorefEvents.includes(pair.getFirstId()))) {
+                allBeforePairs.push(causalCandidatesBeforeRel[j]);
             }
         }
 

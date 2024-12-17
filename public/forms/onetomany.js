@@ -40,13 +40,11 @@ class OneToManyForm extends UIForm {
     }
 
     getAllCorefEvents(eventId) {
-        const allRelAxes = this._allAxes.getAllRelAxes();
+        const mainAxis = this._allAxes.getMainAxis();
         let allCorefEvents = [];
-        for (let i = 0; i < allRelAxes.length; i++) {
-            const corefEvents = allRelAxes[i].getAxisGraph().getAllCoreferringEvents(eventId);
-            for (let j = 0; j < corefEvents.length; j++) {
-                allCorefEvents.push(this._allAxes.getEventByEventId(corefEvents[j]));
-            }
+        const corefEvents = mainAxis.getAxisGraph().getAllCoreferringEvents(eventId);
+        for (let j = 0; j < corefEvents.length; j++) {
+            allCorefEvents.push(this._allAxes.getEventByEventId(corefEvents[j]));
         }
 
         return allCorefEvents;
@@ -80,7 +78,6 @@ class OneToManyForm extends UIForm {
         divQuestion1.appendChild(question1);
 
         let items = this.getAllRelevantRelations(eventInFocus.getId());
-        // const withinListPairsByType = this._allAxes.getMainAxis().getAxisGraph().getWithinListPairsByType(items, this.formType);
 
         const dropdown = document.createElement("div");
         dropdown.id = "list1";

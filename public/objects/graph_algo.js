@@ -2,6 +2,7 @@ class GraphObj {
     constructor() {
         this._graphMatrix = null;
         this._graphIndices = null;
+        this._clusters = null;
 
         if (this._temporalGraphHandler == null) {
             this._temporalGraphHandler = new TemporalGraphHandler();

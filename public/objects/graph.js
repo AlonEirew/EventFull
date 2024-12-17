@@ -57,7 +57,7 @@ function getAllNodes() {
 
 function getAxisEdges(formType) {
     let elements = [];
-    const allPairs = allAxesGlobal.getAllAxesPairsFlat(formType);
+    const allPairs = allAxesGlobal.getAxisPairsFlat(formType);
     for (let i = 0; i < allPairs.length; i++) {
         const pair = allPairs[i];
         if (pair.getRelation() !== EventRelationType.NA) {

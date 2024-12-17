@@ -5,7 +5,7 @@
 class AxisForm extends UIForm {
     constructor(pageIndex, allAxes) {
         if (allAxes != null) {
-            super(pageIndex, allAxes, allAxes.getAllAxesEventsSorted());
+            super(pageIndex, allAxes, allAxes.getEventsSorted());
         }
     }
 
@@ -64,7 +64,7 @@ class AxisForm extends UIForm {
     formatText() {
         let mention = this._annotations[this._annotationIndex];
         let text = [...this._allAxes.getMainDocTokens()];
-        const allEvents = this._allAxes.getAllAxesEventsSorted();
+        const allEvents = this._allAxes.getEventsSorted();
         for (let eventIdx = 0; eventIdx < allEvents.length; eventIdx++) {
             if (eventIdx === mention.getEventIndex()) {
                 let startIdx = mention.getTokensIds()[0];
