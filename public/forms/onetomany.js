@@ -175,26 +175,28 @@ class OneToManyForm extends UIForm {
     }
 
     handleDiscrepancies(discrepancy) {
-        const disRootEdge = this._allAxes.getEventByEventId(discrepancy[0]).getTokens() + " (" + discrepancy[0] + ")";
-        const disOtherEdge = this._allAxes.getEventByEventId(discrepancy[1]).getTokens() + " (" + discrepancy[1] +")";
-        // Handle presenting k
-        const currentRelation = discrepancy[3];
-        const inferredRelation = discrepancy[4];
+        const clustBefore = [];
+        const clustAfter = [];
+        for (let i = 0; i < discrepancy[0].length; i++) {
+            clustBefore.push(this._allAxes.getEventByEventId(discrepancy[0][i]).getTokens() + " (" + discrepancy[0][i] + ")");
+        }
+
+        for (let i = 0; i < discrepancy[1].length; i++) {
+            clustAfter.push(this._allAxes.getEventByEventId(discrepancy[1][i]).getTokens() + " (" + discrepancy[1][i] + ")");
+        }
 
         Swal.fire({
             icon: "info",
-            title: 'Implicit Relation Update!',
+            title: 'Implicit Cluster Update!',
             html:
-                '<p>Your last selection has changed the relation between two events.<br/><br/>' +
-                    'The relation currently set between the events: ' +
-                    '<span style=\"color:orangered; font-weight: bold;\">' + disRootEdge + '</span> and ' +
-                    '<span style=\"color:orangered; font-weight: bold;\">' + disOtherEdge + '</span> is ' +
-                    '<span style=\"color:royalblue; font-weight: bold;\">' + currentRelation + '</span>. ' +
-                    'However, due to your last selection, the events can now be inferred as having a ' +
-                    '<span style=\"color:royalblue; font-weight: bold;\">' + inferredRelation + '</span> relation. ' +
-                    'This will be updated automatically to maintain consistency with your last selection.<br/><br/>' +
-                    '<span style=\"font-weight: bold;\">Please ensure this is correct (note that the change is not reflected yet in the graph visualization), ' +
-                    'approve selection by clicking the "Next" button again.</span>' +
+                '<p>Your last selection has impacted two clusters.<br/><br/>' +
+                    'Before your selection, the following events were considered to refer to the same real-world event: ' +
+                    '<span style=\"color:orangered; font-weight: bold;\">' + clustBefore + '</span>. ' +
+                    'However, after your current selection, the following update has occurred, and these events are now considered to refer to the same real-world event: ' +
+                    '<span style=\"color:royalblue; font-weight: bold;\">' + clustAfter + '</span>.<br/>' +
+                    'This update will be applied automatically to maintain consistency with your last selection.<br/><br/>' +
+                    '<span style=\"font-weight: bold;\">Please ensure this is correct (note that the change is not yet reflected in the graph visualization), ' +
+                    'approve selection by clicking the "Next" or "Next Unhandled" button again.</span>' +
                 '</p>',
 
             showCancelButton: false,

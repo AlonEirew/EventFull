@@ -29,34 +29,62 @@ class CorefForm extends OneToManyForm {
         super.loadForm();
     }
 
-    handleEventSelection(currentFocusEvent, checkedItems, uncheckedItems) {
-        let discrepancies = [];
+    addToCorefSet(eventList, clusterSet) {
+        for (let i = 0; i < eventList.length; i++) {
+            let allCoreferringEvents = this._allAxes.getMainAxis().getAxisGraph().getAllCoreferringEvents(eventList[i]);
+            allCoreferringEvents.push(eventList[i]);
+            let sortedClust = JSON.stringify(allCoreferringEvents.sort());
+            if(!clusterSet.has(sortedClust)) {
+                clusterSet.add(sortedClust);
+            }
+        }
+    }
 
+    handleEventSelection(currentFocusEvent, checkedItems, uncheckedItems) {
+        let allEventClustersBefore = new Set();
+        this.addToCorefSet(Array.from(this._allAxes.getMainAxis().getEventIds()), allEventClustersBefore);
+
+        const axis = this._allAxes.getMainAxis();
         // Handle focused with all in list
         for (let i = 0; i < checkedItems.length; i++) {
-            const axis = this._allAxes.getAxisById(this._allAxes.getEventAxisId(this._allAxes.getEventByEventId(checkedItems[i])));
-            discrepancies = discrepancies.concat(axis.handleFormRelations(currentFocusEvent, checkedItems[i], this.getPosFormRel(), this.formType));
+            axis.handleFormRelations(currentFocusEvent, checkedItems[i], this.getPosFormRel(), this.formType);
         }
 
         // Handle all in list that coref with focused (should coref to eachother)
         for (let i = 0; i < checkedItems.length; i++) {
             for (let j = i + 1; j < checkedItems.length; j++) {
-                const axis1 = this._allAxes.getAxisById(this._allAxes.getEventAxisId(this._allAxes.getEventByEventId(checkedItems[i])));
-                discrepancies = discrepancies.concat(axis1.handleFormRelations(checkedItems[i], checkedItems[j], this.getPosFormRel(), this.formType));
+                axis.handleFormRelations(checkedItems[i], checkedItems[j], this.getPosFormRel(), this.formType);
             }
         }
 
         // Handle focused with all unchecked items
         for (let i = 0; i < uncheckedItems.length; i++) {
-            const axis = this._allAxes.getAxisById(this._allAxes.getEventAxisId(this._allAxes.getEventByEventId(uncheckedItems[i])));
-            discrepancies = discrepancies.concat(axis.handleFormRelations(currentFocusEvent, uncheckedItems[i], this.getNegFormRel(), this.formType));
+            axis.handleFormRelations(currentFocusEvent, uncheckedItems[i], this.getNegFormRel(), this.formType);
         }
 
         // Handle all unchecked/checked items (should not coref to each-other)
         for (let i = 0; i < uncheckedItems.length; i++) {
             for (let j = 0; j < checkedItems.length; j++) {
-                const axis1 = this._allAxes.getAxisById(this._allAxes.getEventAxisId(this._allAxes.getEventByEventId(uncheckedItems[i])));
-                discrepancies = discrepancies.concat(axis1.handleFormRelations(uncheckedItems[i], checkedItems[j], this.getNegFormRel(), this.formType));
+                axis.handleFormRelations(uncheckedItems[i], checkedItems[j], this.getNegFormRel(), this.formType);
+            }
+        }
+
+        let focusedCluster = this._allAxes.getMainAxis().getAxisGraph().getAllCoreferringEvents(currentFocusEvent);
+        focusedCluster.push(currentFocusEvent);
+        let discrepancies = [];
+        for (let i = 0; i < checkedItems.length; i++) {
+            for (let j = 0; j < allEventClustersBefore.size; j++) {
+                const clust = JSON.parse(Array.from(allEventClustersBefore)[j]);
+                if (clust.includes(checkedItems[i])) {
+                    if (clust.length === 1) {
+                        break;
+                    } else if (clust.includes(currentFocusEvent)) {
+                        break
+                    } else {
+                        // [Cluster Before, Cluster After]
+                        discrepancies.push([clust, focusedCluster]);
+                    }
+                }
             }
         }
 

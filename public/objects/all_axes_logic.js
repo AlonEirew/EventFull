@@ -151,7 +151,6 @@ class AllAxes {
         for (let i = 0; i < allEvents.length; i++) {
             if (mainAxis.getEventIds().has(allEvents[i].getId())) {
                 finalEvents.push(allEvents[i]);
-                break;
             }
         }
 

@@ -39,9 +39,8 @@ class CausalForm extends OneToManyForm {
 
         const allFocusedCoreferringEvents = this.getAllCorefEvents(currentFocusEvent).map(event => event.getId());
         allFocusedCoreferringEvents.push(currentFocusEvent);
-
+        const axis = this._allAxes.getMainAxis();
         for (let i = 0; i < checkedItems.length; i++) {
-            const axis = this._allAxes.getAxisById(this._allAxes.getEventAxisId(this._allAxes.getEventByEventId(checkedItems[i])));
             let allCheckedCoreferringEvents = this.getAllCorefEvents(checkedItems[i]).map(event => event.getId());
             allCheckedCoreferringEvents.push(checkedItems[i]);
             for (let j = 0; j < allFocusedCoreferringEvents.length; j++) {
@@ -52,7 +51,6 @@ class CausalForm extends OneToManyForm {
         }
 
         for (let i = 0; i < uncheckedItems.length; i++) {
-            const axis = this._allAxes.getAxisById(this._allAxes.getEventAxisId(this._allAxes.getEventByEventId(uncheckedItems[i])));
             let allUnCheckedCoreferringEvents = this.getAllCorefEvents(uncheckedItems[i]).map(event => event.getId());
             allUnCheckedCoreferringEvents.push(uncheckedItems[i]);
             for (let j = 0; j < allFocusedCoreferringEvents.length; j++) {

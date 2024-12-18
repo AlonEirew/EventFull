@@ -186,10 +186,10 @@ class TemporalForm extends UIForm {
             }
 
             if (this.isRelationChanged(pair.getRelation(), combSelect)) {
-                let axisById = this._allAxes.getAxisById(pair.getAxisId());
+                let mainAxis = this._allAxes.getMainAxis();
                 const firstId = pair.getFirstId();
                 const secondId = pair.getSecondId();
-                this._discrepancy = axisById.handleFormRelations(firstId, secondId, combSelect, this.formType);
+                this._discrepancy = mainAxis.handleFormRelations(firstId, secondId, combSelect, this.formType);
                 if (this._discrepancy.length > 0) {
                     this.handleDiscrepancies(this._discrepancy[0]);
                     pair.setRelation(combSelect);
@@ -454,8 +454,8 @@ class TemporalForm extends UIForm {
             const event1 = this._allAxes.getEventByEventId(this._selectedNodes[0]);
             const event2 = this._allAxes.getEventByEventId(this._selectedNodes[1]);
             const eventAxisId = this._allAxes.getEventAxisId(event1);
-            let axisById = this._allAxes.getAxisById(eventAxisId);
-            const allPairs = axisById.getAxisGraph().exportAllReachAndTransGraphPairs(eventAxisId);
+            let mainAxis = this._allAxes.getMainAxis();
+            const allPairs = mainAxis.getAxisGraph().exportAllReachAndTransGraphPairs(eventAxisId);
             index = this.findPair(allPairs);
             if(this._allAxes.isValidPair(event1, event2)) {
                 this._annotationIndex = this._annotations.length;
