@@ -1,6 +1,9 @@
-# EventFull
-EventFull is a web-based tool designed to facilitate the annotation of complete and consistent event relation graphs over a manageable subset of key events.
-It takes as in- put a document with pre-identified event mentions, obtained using any off-the-shelf event extraction model, as well as an optional set of extracted tem- poral entities, highlighted in the text to aid the annotation process.
+# EventFull Annotation Tool
+This repository contains the implementation of our tool, as described in [this paper](https://arxiv.org/pdf/2412.12733).  
+
+
+![Alt text](https://raw.githubusercontent.com/AlonEirew/EventFull/refs/heads/main/imgs/figure1.png)
+
 
 ## Install and Deploy (with npm)
 ```bash
@@ -15,7 +18,7 @@ npm start
 [//]: # (3&#41; run the server.js file &#40;node server.js&#41;)
 [//]: # (4&#41; go to localhost:3000 in your browser)
 
-## Running the tasks
+## Running the Tasks
 1) Go to localhost:3000 in your browser
 2) Follow the instructions at each step and answer the questions
 3) Save your work occasionally
