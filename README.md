@@ -1,6 +1,7 @@
 # EventFull Annotation Tool
 This repository contains the implementation of our tool, as described in [this paper](https://arxiv.org/pdf/2412.12733).<br>
-A demo of the tool is available at [this link](https://eventgraphannotnew.onrender.com). 
+A live demo of the tool is available at [this link](https://eventgraphannotnew.onrender.com).
+A video tutorial of the tool is available at [this link](https://youtu.be/C-mbRnY90_U).
 
 
 ![Alt text](https://raw.githubusercontent.com/AlonEirew/EventFull/refs/heads/main/imgs/figure1.png)
